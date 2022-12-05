@@ -12,6 +12,7 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Fly]
 - `/ping`
 - `/presence content:string type?:string`
 - `/say content:string`
+- `/xkcd id:integer`
 
 ## Development
 

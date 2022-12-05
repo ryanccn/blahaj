@@ -10,6 +10,16 @@ export const reuploadCommands = async () => {
       .setName('ping')
       .setDescription('Replies with pong!'),
     new SlashCommandBuilder()
+      .setName('xkcd')
+      .setDescription('Send a comic from XKCD')
+      .addIntegerOption((opt) =>
+        opt
+          .setName('id')
+          .setDescription('ID of the comic')
+          .setMinValue(0)
+          .setRequired(true)
+      ),
+    new SlashCommandBuilder()
       .setName('say')
       .setDescription('Say something, yeah')
       .addStringOption((opt) =>

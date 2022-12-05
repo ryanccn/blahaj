@@ -12,6 +12,7 @@ import {
 import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
+import { xkcdCommand } from '~/commands/xkcd';
 import { getHajEmoji } from '~/utils';
 
 import { green, bold, yellow, cyan } from 'kleur/colors';
@@ -59,10 +60,6 @@ client.once(Events.ClientReady, async () => {
     )
   );
 
-  client.user!.setPresence({
-    activities: [{ type: ActivityType.Playing, name: 'IKEA' }],
-  });
-
   if (process.env.NODE_ENV !== 'development') {
     console.warn(yellow(bold('Running in production mode!')));
   }
@@ -79,8 +76,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await sayCommand(interaction);
       } else if (commandName === 'presence') {
         await presenceCommand(interaction);
+      } else if (commandName === 'xkcd') {
+        await xkcdCommand(interaction);
       }
-    } catch {
+    } catch (e) {
+      console.error(e);
+
       const errorEmbed = new EmbedBuilder()
         .setTitle(`${await getHajEmoji(interaction.guild!)} An error occurred!`)
         .setDescription('Hmm. What happened there?')
