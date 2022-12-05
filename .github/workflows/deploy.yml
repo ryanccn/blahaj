@@ -1,4 +1,4 @@
-name: Fly Deploy
+name: Deploy to Fly
 
 on:
   push:
@@ -7,16 +7,16 @@ on:
 
 jobs:
   deploy:
-    name: Deploy bot
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: yarn install --frozen-lockfile
-      - run: yarn reupload
-        env:
-          DISCORD_APP: ${{ secrets.DISCORD_APP }}
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          - run: yarn install --frozen-lockfile
+      - run: yarn reupload
+        env:
+          DISCORD_APP: ${{ secrets.DISCORD_APP }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
