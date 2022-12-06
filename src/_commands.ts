@@ -54,6 +54,26 @@ export const reuploadCommands = async () => {
           )
       )
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+
+    new SlashCommandBuilder()
+      .setName('info')
+      .setDescription('Display info about a member of Ryanland')
+      .addUserOption((opt) =>
+        opt
+          .setName('user')
+          .setDescription('The user to query for')
+          .setRequired(false)
+      ),
+    new SlashCommandBuilder()
+      .setName('exchange')
+      .setDescription('Get hajs from levels!')
+      .addNumberOption((opt) =>
+        opt
+          .setName('value')
+          .setDescription('The value of hajs to buy')
+          .setMinValue(0)
+          .setRequired(true)
+      ),
   ]
     .map((command) => command.setDMPermission(false))
     .map((command) => command.toJSON());

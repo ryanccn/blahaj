@@ -13,6 +13,7 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "kleur": "^4.1.5",
+    "mongodb": "^4.12.1",
     "tsx": "^3.12.1",
     "typescript": "^4.9.3"
   }

@@ -3,20 +3,24 @@ import {
   GatewayIntentBits,
   Partials,
   OAuth2Scopes,
-  ActivityType,
   EmbedBuilder,
   PermissionFlagsBits,
   Events,
 } from 'discord.js';
 
+import 'dotenv/config';
+
 import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 import { xkcdCommand } from '~/commands/xkcd';
-import { getHajEmoji } from '~/utils';
+import { infoCommand } from '~/commands/info';
+import { exchangeCommand } from '~/commands/exchange';
 
+import { logMessage } from '~/db';
+
+import { getHajEmoji } from '~/utils';
 import { green, bold, yellow, cyan } from 'kleur/colors';
-import 'dotenv/config';
 
 const client = new Client({
   intents: [
@@ -78,6 +82,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await presenceCommand(interaction);
       } else if (commandName === 'xkcd') {
         await xkcdCommand(interaction);
+      } else if (commandName === 'info') {
+        await infoCommand(interaction);
+      } else if (commandName === 'exchange') {
+        await exchangeCommand(interaction);
       }
     } catch (e) {
       console.error(e);
@@ -96,6 +104,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
       }
     }
   }
+});
+
+client.on(Events.MessageCreate, async (e) => {
+  if (e.author.bot) return;
+  await logMessage(e.author.id);
 });
 
 client.login(process.env.DISCORD_TOKEN).catch((e) => {
