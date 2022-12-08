@@ -65,8 +65,15 @@ export const reuploadCommands = async () => {
           .setRequired(false)
       ),
     new SlashCommandBuilder()
-      .setName('freehaj')
-      .setDescription('Get free hajs every hour!'),
+      .setName('exchange')
+      .setDescription('Get hajs from levels!')
+      .addNumberOption((opt) =>
+        opt
+          .setName('value')
+          .setDescription('The value of hajs to buy')
+          .setMinValue(0)
+          .setRequired(true)
+      ),
     new SlashCommandBuilder()
       .setName('flip')
       .setDescription('Flip a coin with your hajs!')

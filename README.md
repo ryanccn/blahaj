@@ -14,7 +14,7 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Fly]
 - `/say content:string`
 - `/xkcd id:integer`
 - `/info user:user`
-- `/freehaj`
+- `/exchange value:number`
 - `/flip choice:string bet:number`
 
 ## Development
