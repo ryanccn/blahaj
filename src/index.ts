@@ -15,8 +15,8 @@ import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 import { xkcdCommand } from '~/commands/xkcd';
 import { infoCommand } from '~/commands/info';
-import { exchangeCommand } from '~/commands/exchange';
 import { flipCommand } from '~/commands/flip';
+import { freehajCommand } from '~/commands/freehaj';
 
 import { logMessage } from '~/db';
 
@@ -85,8 +85,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await xkcdCommand(interaction);
       } else if (commandName === 'info') {
         await infoCommand(interaction);
-      } else if (commandName === 'exchange') {
-        await exchangeCommand(interaction);
+      } else if (commandName === 'freehaj') {
+        await freehajCommand(interaction);
       } else if (commandName === 'flip') {
         await flipCommand(interaction);
       }
