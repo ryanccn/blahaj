@@ -49,3 +49,20 @@ export const exchange = async (id: string, hajs: number) => {
 
   return true;
 };
+
+export const flip = async (id: string, bet: number) => {
+  if (bet <= 0) return 'error';
+
+  const info = await getInfo(id);
+
+  if (!info) return 'error';
+  if (info.hajs < bet) return 'error';
+
+  const win = Math.random() >= 0.5;
+
+  await (
+    await collection
+  ).updateOne({ id }, { $inc: { hajs: win ? +bet : -bet } });
+
+  return win ? 'win' : 'loss';
+};

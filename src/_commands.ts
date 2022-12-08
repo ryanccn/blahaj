@@ -74,6 +74,26 @@ export const reuploadCommands = async () => {
           .setMinValue(0)
           .setRequired(true)
       ),
+    new SlashCommandBuilder()
+      .setName('flip')
+      .setDescription('Flip a coin with your hajs!')
+      .addStringOption((opt) =>
+        opt
+          .setName('choice')
+          .setDescription('Your bet for the coin')
+          .setChoices(
+            { name: 'Heads', value: 'heads' },
+            { name: 'Tails', value: 'tails' }
+          )
+          .setRequired(true)
+      )
+      .addNumberOption((opt) =>
+        opt
+          .setName('bet')
+          .setDescription('The value of hajs to bet')
+          .setMinValue(0)
+          .setRequired(true)
+      ),
   ]
     .map((command) => command.setDMPermission(false))
     .map((command) => command.toJSON());

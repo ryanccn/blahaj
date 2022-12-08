@@ -5,7 +5,7 @@ import { exchange } from '~/db';
 import type { Command } from './_types';
 
 export const exchangeCommand: Command = async (i) => {
-  await i.deferReply({ ephemeral: true });
+  await i.deferReply();
 
   const value = i.options.getNumber('value', true);
 

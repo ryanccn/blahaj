@@ -13,6 +13,9 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Fly]
 - `/presence content:string type?:string`
 - `/say content:string`
 - `/xkcd id:integer`
+- `/info user:user`
+- `/exchange value:number`
+- `/flip choice:string bet:number`
 
 ## Development
 
