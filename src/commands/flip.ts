@@ -30,13 +30,15 @@ export const flipCommand: Command = async (i) => {
   await i.editReply({
     embeds: [
       new EmbedBuilder()
-        .setTitle(`You ${info === 'win' ? 'won' : 'lost'}!`)
-        .setDescription(
+        .setTitle(
           `${
             info === 'win'
               ? '<:blobfoxfloof:1036217137959800853>'
               : '<:blobfoxsad:1036216586207506483>'
-          }You ${
+          } You ${info === 'win' ? 'won' : 'lost'}!`
+        )
+        .setDescription(
+          `You ${
             info === 'win' ? 'won' : 'lost'
           } **${value} hajs**.\n\nNew balance: **${newUserInfo!.hajs} HAJ**`
         )
