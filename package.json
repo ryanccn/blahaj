@@ -9,7 +9,7 @@
     "start": "NODE_ENV=production tsx src/index.ts"
   },
   "devDependencies": {
-    "@types/node": "^18.11.10",
+    "@types/node": "^18.11.13",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "kleur": "^4.1.5",
