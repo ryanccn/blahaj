@@ -94,6 +94,9 @@ export const reuploadCommands = async () => {
           .setMinValue(0)
           .setRequired(true)
       ),
+    new SlashCommandBuilder()
+      .setName('self-ban')
+      .setDescription("Ban yourself. I wouldn't recommend it."),
   ]
     .map((command) => command.setDMPermission(false))
     .map((command) => command.toJSON());

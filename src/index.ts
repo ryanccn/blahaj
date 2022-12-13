@@ -17,6 +17,9 @@ import { xkcdCommand } from '~/commands/xkcd';
 import { infoCommand } from '~/commands/info';
 import { exchangeCommand } from '~/commands/exchange';
 import { flipCommand } from '~/commands/flip';
+import { selfBanCommand } from '~/commands/selfBan';
+
+import { handleButton } from '~/button';
 
 import { logMessage } from '~/db';
 
@@ -71,10 +74,11 @@ client.once(Events.ClientReady, async () => {
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  if (interaction.isChatInputCommand()) {
-    const { commandName } = interaction;
+  if (!interaction.isChatInputCommand() && !interaction.isButton()) return;
 
-    try {
+  try {
+    if (interaction.isChatInputCommand()) {
+      const { commandName } = interaction;
       if (commandName === 'ping') {
         await pingCommand(interaction);
       } else if (commandName === 'say') {
@@ -89,22 +93,26 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await exchangeCommand(interaction);
       } else if (commandName === 'flip') {
         await flipCommand(interaction);
+      } else if (commandName === 'self-ban') {
+        await selfBanCommand(interaction);
       }
-    } catch (e) {
-      console.error(e);
+    } else if (interaction.isButton()) {
+      await handleButton(interaction);
+    }
+  } catch (e) {
+    console.error(e);
 
-      const errorEmbed = new EmbedBuilder()
-        .setTitle(`${await getHajEmoji(interaction.guild!)} An error occurred!`)
-        .setDescription('Hmm. What happened there?')
-        .setColor(0xfa5252);
+    const errorEmbed = new EmbedBuilder()
+      .setTitle(`${await getHajEmoji(interaction.guild!)} An error occurred!`)
+      .setDescription('Hmm. What happened there?')
+      .setColor(0xfa5252);
 
-      if (interaction.deferred) {
-        await interaction.editReply({
-          embeds: [errorEmbed],
-        });
-      } else if (!interaction.replied) {
-        await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-      }
+    if (interaction.deferred) {
+      await interaction.editReply({
+        embeds: [errorEmbed],
+      });
+    } else if (!interaction.replied) {
+      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
     }
   }
 });
