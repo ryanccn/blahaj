@@ -56,45 +56,6 @@ export const reuploadCommands = async () => {
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
     new SlashCommandBuilder()
-      .setName('info')
-      .setDescription('Display info about a member of Ryanland')
-      .addUserOption((opt) =>
-        opt
-          .setName('user')
-          .setDescription('The user to query for')
-          .setRequired(false)
-      ),
-    new SlashCommandBuilder()
-      .setName('exchange')
-      .setDescription('Get hajs from levels!')
-      .addNumberOption((opt) =>
-        opt
-          .setName('value')
-          .setDescription('The value of hajs to buy')
-          .setMinValue(0)
-          .setRequired(true)
-      ),
-    new SlashCommandBuilder()
-      .setName('flip')
-      .setDescription('Flip a coin with your hajs!')
-      .addStringOption((opt) =>
-        opt
-          .setName('choice')
-          .setDescription('Your bet for the coin')
-          .setChoices(
-            { name: 'Heads', value: 'heads' },
-            { name: 'Tails', value: 'tails' }
-          )
-          .setRequired(true)
-      )
-      .addNumberOption((opt) =>
-        opt
-          .setName('bet')
-          .setDescription('The value of hajs to bet')
-          .setMinValue(0)
-          .setRequired(true)
-      ),
-    new SlashCommandBuilder()
       .setName('self-ban')
       .setDescription("Ban yourself. I wouldn't recommend it."),
   ]

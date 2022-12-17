@@ -14,17 +14,13 @@ import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 import { xkcdCommand } from '~/commands/xkcd';
-import { infoCommand } from '~/commands/info';
-import { exchangeCommand } from '~/commands/exchange';
-import { flipCommand } from '~/commands/flip';
 import { selfBanCommand } from '~/commands/selfBan';
 
 import { handleButton } from '~/button';
 
-import { logMessage } from '~/db';
-
 import { getHajEmoji } from '~/utils';
 import { green, bold, yellow, cyan } from 'kleur/colors';
+import { parseSDMetadata } from './sdMetadata';
 
 const client = new Client({
   intents: [
@@ -87,12 +83,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await presenceCommand(interaction);
       } else if (commandName === 'xkcd') {
         await xkcdCommand(interaction);
-      } else if (commandName === 'info') {
-        await infoCommand(interaction);
-      } else if (commandName === 'exchange') {
-        await exchangeCommand(interaction);
-      } else if (commandName === 'flip') {
-        await flipCommand(interaction);
       } else if (commandName === 'self-ban') {
         await selfBanCommand(interaction);
       }
@@ -119,7 +109,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 client.on(Events.MessageCreate, async (e) => {
   if (e.author.bot) return;
-  await logMessage(e.author.id);
+  await parseSDMetadata(e);
 });
 
 client.login(process.env.DISCORD_TOKEN).catch((e) => {
