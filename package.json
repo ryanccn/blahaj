@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/index.ts",
     "sync-commands": "tsx src/_commands.ts",
-    "start": "NODE_ENV=production tsx src/index.ts"
+    "start": "yarn sync-commands && NODE_ENV=production tsx src/index.ts"
   },
   "devDependencies": {
     "@types/node": "^18.11.10",
