@@ -5,7 +5,7 @@
 
 A multipurpose, fun Discord bot for [Ryan's Discord guild](https://discord.gg/ty7GCnN87U).
 
-Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Railway](https://railway.app/).
+Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Railway](https://railway.app/?referralCode=kmjX82).
 
 ## Development
 
