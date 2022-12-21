@@ -1,11 +1,12 @@
 import {
   Client,
+  Options,
   GatewayIntentBits,
   Partials,
+  Events,
   OAuth2Scopes,
   EmbedBuilder,
   PermissionFlagsBits,
-  Events,
 } from 'discord.js';
 
 import 'dotenv/config';
@@ -32,6 +33,13 @@ const client = new Client({
     GatewayIntentBits.GuildBans,
   ],
   partials: [Partials.Channel],
+  sweepers: {
+    ...Options.DefaultSweeperSettings,
+    messages: {
+      interval: 3600,
+      lifetime: 1800,
+    },
+  },
 });
 
 if (!process.env.DISCORD_GUILDS) {
