@@ -34,6 +34,12 @@ const client = new Client({
   partials: [Partials.Channel],
 });
 
+if (!process.env.DISCORD_GUILDS) {
+  throw new Error('DISCORD_GUILDS not defined!');
+}
+
+const GUILDS = process.env.DISCORD_GUILDS.split(',');
+
 client.once(Events.ClientReady, async () => {
   console.log(green('Discord bot ready!'));
 
@@ -104,6 +110,34 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.MessageCreate, async (e) => {
   if (e.author.bot) return;
   await parseSDMetadata(e);
+});
+
+client.on(Events.GuildBanAdd, async (ban) => {
+  for (const guild of GUILDS) {
+    if (ban.guild.id === guild) continue;
+
+    try {
+      const relayGuild = await client.guilds.fetch(guild);
+      await relayGuild.bans.create(ban.user, {
+        reason: `${ban.reason} (synced)`,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+});
+
+client.on(Events.GuildBanRemove, async (ban) => {
+  for (const guild of GUILDS) {
+    if (ban.guild.id === guild) continue;
+
+    try {
+      const relayGuild = await client.guilds.fetch(guild);
+      await relayGuild.bans.remove(ban.user, `(synced)`);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 });
 
 client.login(process.env.DISCORD_TOKEN).catch((e) => {
