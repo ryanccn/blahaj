@@ -117,6 +117,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 client.on(Events.MessageCreate, async (e) => {
   if (e.author.bot) return;
+  if (e.guildId !== GUILDS[0]) return;
   await parseSDMetadata(e);
 });
 
@@ -126,9 +127,7 @@ client.on(Events.GuildBanAdd, async (ban) => {
 
     try {
       const relayGuild = await client.guilds.fetch(guild);
-      await relayGuild.bans.create(ban.user, {
-        reason: `${ban.reason} (synced)`,
-      });
+      await relayGuild.bans.create(ban.user, { reason: '(synced)' });
     } catch (e) {
       console.error(e);
     }
