@@ -3,12 +3,18 @@
   Blåhaj
 </h1>
 
-A multipurpose, fun Discord bot for [Ryan's Discord guild](https://discord.gg/ty7GCnN87U).
+A multipurpose, fun Discord bot for Ryanland and the [Moddermore](https://moddermore.net/?ref=blahaj-readme) Discord.
 
 Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Railway](https://railway.app/?referralCode=kmjX82).
 
+## Features
+
+- Presence customization
+- Stable Diffusion metadata parsing
+- Ban syncing
+
 ## Development
 
-Set the environment variables `DISCORD_APP` and `DISCORD_TOKEN` and run `yarn dev` to start the bot in development mode!
+Set the environment variables `DISCORD_APP` and `DISCORD_TOKEN`. Also set `DISCORD_GUILDS` as a list of allowed guild snowflakes. This will enforce ban sync between the guilds and also restrict certain features for the first (primary) guild, such as Stable Diffusion metadata parsing.
 
-Run `yarn start` in production.
+Run `yarn dev` to start the bot in development mode; run `yarn start` in production.

@@ -15,11 +15,11 @@ import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 
+import { parseSDMetadata } from '~/sdMetadata';
 import { handleButton } from '~/button';
 
 import { getHajEmoji } from '~/utils';
 import { green, bold, yellow, cyan } from 'kleur/colors';
-import { parseSDMetadata } from './sdMetadata';
 
 const client = new Client({
   intents: [
