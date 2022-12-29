@@ -16,9 +16,10 @@ import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 
 import { parseSDMetadata } from '~/sdMetadata';
+import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
 
-import { getHajEmoji } from '~/utils';
+import { getGuildEmoji } from '~/utils';
 import { green, bold, yellow, cyan } from 'kleur/colors';
 
 const client = new Client({
@@ -32,7 +33,7 @@ const client = new Client({
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildBans,
   ],
-  partials: [Partials.Channel],
+  partials: [Partials.Channel, Partials.Message, Partials.Reaction],
   sweepers: {
     ...Options.DefaultSweeperSettings,
     messages: {
@@ -101,7 +102,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.error(e);
 
     const errorEmbed = new EmbedBuilder()
-      .setTitle(`${await getHajEmoji(interaction.guild!)} An error occurred!`)
+      .setTitle(
+        `${await getGuildEmoji(interaction.guild!, 'haj')} An error occurred!`
+      )
       .setDescription('Hmm. What happened there?')
       .setColor(0xfa5252);
 
@@ -119,6 +122,18 @@ client.on(Events.MessageCreate, async (e) => {
   if (e.author.bot) return;
   if (e.guildId !== GUILDS[0]) return;
   await parseSDMetadata(e);
+});
+
+client.on(Events.MessageReactionAdd, async (e) => {
+  e = await e.fetch();
+  if (e.message.guildId !== GUILDS[0]) return;
+  await handleCatstareAdd(e);
+});
+
+client.on(Events.MessageReactionRemove, async (e) => {
+  e = await e.fetch();
+  if (e.message.guildId !== GUILDS[0]) return;
+  await handleCatstareRemove(e);
 });
 
 client.on(Events.GuildBanAdd, async (ban) => {

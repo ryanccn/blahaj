@@ -1,9 +1,9 @@
 import { EmbedBuilder, type Guild } from 'discord.js';
 
-export const getHajEmoji = async (guild: Guild) => {
+export const getGuildEmoji = async (guild: Guild, name: string) => {
   const emojis = await guild.emojis.fetch();
-  const haj = emojis.find((k) => k.name === 'haj');
-  return haj ? `<:haj:${haj.id}>` : '[haj]';
+  const foundEmoji = emojis.find((k) => k.name === name);
+  return foundEmoji ? `<:${name}:${foundEmoji.id}>` : `[${name}]`;
 };
 
 export const successEmbed = (title: string, description: string) => {
