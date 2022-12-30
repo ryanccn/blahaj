@@ -14,6 +14,7 @@ import 'dotenv/config';
 import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
+import { bottomCommand } from '~/commands/bottom';
 
 import { parseSDMetadata } from '~/sdMetadata';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
@@ -88,12 +89,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
   try {
     if (interaction.isChatInputCommand()) {
       const { commandName } = interaction;
+
       if (commandName === 'ping') {
         await pingCommand(interaction);
       } else if (commandName === 'say') {
         await sayCommand(interaction);
       } else if (commandName === 'presence') {
         await presenceCommand(interaction);
+      } else if (commandName === 'bottom') {
+        await bottomCommand(interaction);
       }
     } else if (interaction.isButton()) {
       await handleButton(interaction);

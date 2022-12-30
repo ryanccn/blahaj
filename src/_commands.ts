@@ -44,6 +44,33 @@ export const reuploadCommands = async () => {
           )
       )
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    new SlashCommandBuilder()
+      .setName('bottom')
+      .setDescription('🥺')
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName('encode')
+          .setDescription('Encode UTF-8 into the Bottom Encoding Standard 🥺')
+          .addStringOption((option) =>
+            option
+              .setName('content')
+              .setDescription('UTF-8 content')
+              .setRequired(true)
+          )
+      )
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName('decode')
+          .setDescription(
+            'Decode from the Bottom Encoding Standard into UTF-8 🥺'
+          )
+          .addStringOption((option) =>
+            option
+              .setName('content')
+              .setDescription('BES content')
+              .setRequired(true)
+          )
+      ),
   ]
     .map((command) => command.setDMPermission(false))
     .map((command) => command.toJSON());

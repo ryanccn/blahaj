@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.10",
+    "bottomify": "^0.3.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "exifr": "^7.1.3",
