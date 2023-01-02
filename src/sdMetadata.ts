@@ -140,19 +140,19 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
               ? [
                   {
                     name: 'Negative prompt',
-                    value: negativePrompt,
+                    value: negativePrompt.replace('Negative prompt: ', ''),
                   },
                 ]
               : []),
-            {
-              name: 'Extras',
-              value: data['extras'] ?? 'None detected',
-            },
             ...options.map((opt) => ({
               name: opt[0],
               value: opt[1],
               inline: true,
-            }))
+            })),
+            {
+              name: 'Extras',
+              value: data['extras'] ?? 'None detected',
+            }
           )
           .setThumbnail(png.url)
           .setFooter({
