@@ -64,7 +64,9 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
           .setFields(
             {
               name: 'Model',
-              value: `${sdMetadata.model_weights} [${sdMetadata.model_hash}]`,
+              value: `${
+                sdMetadata.model_weights
+              } [${sdMetadata.model_hash.substring(0, 8)}]`,
             },
             {
               name: 'Prompt',
