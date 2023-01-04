@@ -158,7 +158,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
           )
           .setThumbnail(png.url)
           .setFooter({
-            text: `Generated with A1111`,
+            text: `Generated with AUTOMATIC1111/stable-diffusion-webui`,
           })
           .setColor(0x38bdf8),
       ],
