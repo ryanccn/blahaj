@@ -123,37 +123,49 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.on(Events.MessageCreate, async (e) => {
-  if (e.author.bot) return;
-  if (e.guildId !== GUILDS[0]) return;
-  await parseSDMetadata(e);
+  try {
+    if (e.author.bot) return;
+    if (e.guildId !== GUILDS[0]) return;
+    await parseSDMetadata(e);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 client.on(Events.MessageReactionAdd, async (e) => {
-  e = await e.fetch();
-  if (e.message.guildId !== GUILDS[0]) return;
-  if (!e.message.channelId || !e.message.guild) return;
-  if (
-    !e.message.guild.roles.everyone
-      .permissionsIn(e.message.channelId)
-      .has(PermissionFlagsBits.ViewChannel)
-  )
-    return;
+  try {
+    e = await e.fetch();
+    if (e.message.guildId !== GUILDS[0]) return;
+    if (!e.message.channelId || !e.message.guild) return;
+    if (
+      !e.message.guild.roles.everyone
+        .permissionsIn(e.message.channelId)
+        .has(PermissionFlagsBits.ViewChannel)
+    )
+      return;
 
-  await handleCatstareAdd(e);
+    await handleCatstareAdd(e);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 client.on(Events.MessageReactionRemove, async (e) => {
-  e = await e.fetch();
-  if (e.message.guildId !== GUILDS[0]) return;
-  if (!e.message.channel || !e.message.guild) return;
-  if (
-    !e.message.guild.roles.everyone
-      .permissionsIn(e.message.channelId)
-      .has(PermissionFlagsBits.ViewChannel)
-  )
-    return;
+  try {
+    e = await e.fetch();
+    if (e.message.guildId !== GUILDS[0]) return;
+    if (!e.message.channel || !e.message.guild) return;
+    if (
+      !e.message.guild.roles.everyone
+        .permissionsIn(e.message.channelId)
+        .has(PermissionFlagsBits.ViewChannel)
+    )
+      return;
 
-  await handleCatstareRemove(e);
+    await handleCatstareRemove(e);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 client.on(Events.GuildBanAdd, async (ban) => {
