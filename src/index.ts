@@ -131,7 +131,7 @@ client.on(Events.MessageCreate, async (e) => {
 client.on(Events.MessageReactionAdd, async (e) => {
   e = await e.fetch();
   if (e.message.guildId !== GUILDS[0]) return;
-  if (!e.message.channel || !e.message.guild) return;
+  if (!e.message.channelId || !e.message.guild) return;
   if (
     !e.message.guild.roles.everyone
       .permissionsIn(e.message.channelId)
