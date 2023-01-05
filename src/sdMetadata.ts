@@ -38,6 +38,12 @@ interface SDMetadata {
 
 const TEMP_DIR = mkdtemp(join(tmpdir(), 'blahaj-'));
 
+const MAX_PROMPT_LENGTH = 1000;
+const truncateString = (str: string) => {
+  if (str.length <= MAX_PROMPT_LENGTH) return str;
+  return str.substring(0, MAX_PROMPT_LENGTH - 3) + '...';
+};
+
 export const parseSDMetadata = async (e: Message<boolean>) => {
   const png = e.attachments.find((k) => k.contentType === 'image/png');
   if (!png) return;
@@ -70,7 +76,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
             },
             {
               name: 'Prompt',
-              value: sdMetadata.image.prompt![0].prompt,
+              value: truncateString(sdMetadata.image.prompt![0].prompt),
             },
             {
               name: 'Size',
@@ -136,13 +142,15 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
           .setFields(
             {
               name: 'Prompt',
-              value: prompt,
+              value: truncateString(prompt),
             },
             ...(negativePrompt
               ? [
                   {
                     name: 'Negative prompt',
-                    value: negativePrompt.replace('Negative prompt: ', ''),
+                    value: truncateString(
+                      negativePrompt.replace('Negative prompt: ', '')
+                    ),
                   },
                 ]
               : []),
