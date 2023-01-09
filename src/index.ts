@@ -44,12 +44,6 @@ const client = new Client({
   },
 });
 
-if (!process.env.DISCORD_GUILDS) {
-  throw new Error('DISCORD_GUILDS not defined!');
-}
-
-const GUILDS = process.env.DISCORD_GUILDS.split(',');
-
 client.once(Events.ClientReady, async () => {
   console.log(green('Discord bot ready!'));
 
@@ -125,7 +119,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.MessageCreate, async (e) => {
   try {
     if (e.author.bot) return;
-    if (e.guildId !== GUILDS[0]) return;
     await parseSDMetadata(e);
   } catch (e) {
     console.error(e);
@@ -135,7 +128,6 @@ client.on(Events.MessageCreate, async (e) => {
 client.on(Events.MessageReactionAdd, async (e) => {
   try {
     e = await e.fetch();
-    if (e.message.guildId !== GUILDS[0]) return;
     if (!e.message.channelId || !e.message.guild) return;
     if (
       !e.message.guild.roles.everyone
@@ -153,7 +145,6 @@ client.on(Events.MessageReactionAdd, async (e) => {
 client.on(Events.MessageReactionRemove, async (e) => {
   try {
     e = await e.fetch();
-    if (e.message.guildId !== GUILDS[0]) return;
     if (!e.message.channel || !e.message.guild) return;
     if (
       !e.message.guild.roles.everyone
@@ -165,32 +156,6 @@ client.on(Events.MessageReactionRemove, async (e) => {
     await handleCatstareRemove(e);
   } catch (e) {
     console.error(e);
-  }
-});
-
-client.on(Events.GuildBanAdd, async (ban) => {
-  for (const guild of GUILDS) {
-    if (ban.guild.id === guild) continue;
-
-    try {
-      const relayGuild = await client.guilds.fetch(guild);
-      await relayGuild.bans.create(ban.user, { reason: '(synced)' });
-    } catch (e) {
-      console.error(e);
-    }
-  }
-});
-
-client.on(Events.GuildBanRemove, async (ban) => {
-  for (const guild of GUILDS) {
-    if (ban.guild.id === guild) continue;
-
-    try {
-      const relayGuild = await client.guilds.fetch(guild);
-      await relayGuild.bans.remove(ban.user, `(synced)`);
-    } catch (e) {
-      console.error(e);
-    }
   }
 });
 
