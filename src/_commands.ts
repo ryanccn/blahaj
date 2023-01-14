@@ -73,9 +73,7 @@ export const reuploadCommands = async () => {
       ),
     new SlashCommandBuilder()
       .setName('uwurandom')
-      .setDescription(
-        'Generate text from /dev/uwurandom'
-      )
+      .setDescription('Generate text from /dev/uwurandom')
       .addIntegerOption((option) =>
         option
           .setName('length')

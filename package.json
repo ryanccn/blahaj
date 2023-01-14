@@ -19,9 +19,7 @@
     "mongodb": "^4.12.1",
     "redis": "^4.5.1",
     "tsx": "^3.12.1",
-    "typescript": "^4.9.3"
-  },
-  "dependencies": {
+    "typescript": "^4.9.3",
     "uwurandom-node": "https://git.skye.vg/me/uwurandom-node.git"
   }
 }
