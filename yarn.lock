@@ -1584,9 +1584,10 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-"uwurandom-node@https://git.skye.vg/me/uwurandom-node.git":
+uwurandom-node@^0.1.0:
   version "0.1.0"
-  resolved "https://git.skye.vg/me/uwurandom-node.git#a04cf998b3dfcda10b0160a1bee054781f078001"
+  resolved "https://registry.yarnpkg.com/uwurandom-node/-/uwurandom-node-0.1.0.tgz#dc093280afefaf4b7c90478b2043cc0004eb1389"
+  integrity sha512-CoPPYAyDWCwQkSX3ml8+8lTs2A8PrndzbuOX+6qzA9F1G/AC+KN8BalLrwMUABHYXZcYw1SnPe1kp3JFNmYUHw==
 
 webidl-conversions@^7.0.0:
   version "7.0.0"
