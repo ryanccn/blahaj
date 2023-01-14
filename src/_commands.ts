@@ -71,6 +71,15 @@ export const reuploadCommands = async () => {
               .setRequired(true)
           )
       ),
+    new SlashCommandBuilder()
+      .setName('uwurandom')
+      .setDescription('Generate text from /dev/uwurandom')
+      .addIntegerOption((option) =>
+        option
+          .setName('length')
+          .setDescription('Desired length of text')
+          .setRequired(true)
+      ),
   ]
     .map((command) => command.setDMPermission(false))
     .map((command) => command.toJSON());

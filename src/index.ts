@@ -15,6 +15,7 @@ import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 import { bottomCommand } from '~/commands/bottom';
+import { uwurandomCommand } from '~/commands/uwurandom';
 
 import { parseSDMetadata } from '~/sdMetadata';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
@@ -92,6 +93,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await presenceCommand(interaction);
       } else if (commandName === 'bottom') {
         await bottomCommand(interaction);
+      } else if (commandName === 'uwurandom') {
+        await uwurandomCommand(interaction);
       }
     } else if (interaction.isButton()) {
       await handleButton(interaction);
