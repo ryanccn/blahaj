@@ -79,6 +79,7 @@ export const reuploadCommands = async () => {
           .setName('length')
           .setDescription('Desired length of text')
           .setRequired(true)
+          .setMinValue(1)
       ),
   ]
     .map((command) => command.setDMPermission(false))
