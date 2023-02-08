@@ -12,7 +12,7 @@ import { join } from 'path';
 interface SDMetadata {
   model: string;
   model_weights: string;
-  model_hash: string;
+  model_hash?: string;
   app_id: string;
   app_version: string;
   image: {
@@ -72,7 +72,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
               name: 'Model',
               value: `${
                 sdMetadata.model_weights
-              } [${sdMetadata.model_hash.substring(0, 8)}]`,
+              }${sdMetadata.model_hash ? ` [${sdMetadata.model_hash.substring(0, 8)}]` : ''}`,
             },
             {
               name: 'Prompt',
