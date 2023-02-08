@@ -55,7 +55,9 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
   const funnyPath = `${await TEMP_DIR}/${Date.now()}.png`;
   await pipeline(res, createWriteStream(funnyPath));
 
-  const data = await parse(funnyPath);
+  const data = await parse(funnyPath, {
+    xmp: true,
+  });
   await rm(funnyPath);
 
   if (!data) return;
@@ -70,9 +72,11 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
           .setFields(
             {
               name: 'Model',
-              value: `${
-                sdMetadata.model_weights
-              }${sdMetadata.model_hash ? ` [${sdMetadata.model_hash.substring(0, 8)}]` : ''}`,
+              value: `${sdMetadata.model_weights}${
+                sdMetadata.model_hash
+                  ? ` [${sdMetadata.model_hash.substring(0, 8)}]`
+                  : ''
+              }`,
             },
             {
               name: 'Prompt',
@@ -85,22 +89,22 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
             },
             {
               name: 'Seed',
-              value: `${sdMetadata.image.seed}`,
+              value: `${sdMetadata.image.seed ?? 'Unknown'}`,
               inline: true,
             },
             {
               name: 'Sampler',
-              value: `${sdMetadata.image.sampler}`,
+              value: `${sdMetadata.image.sampler ?? 'Unknown'}`,
               inline: true,
             },
             {
               name: 'Steps',
-              value: `${sdMetadata.image.steps}`,
+              value: `${sdMetadata.image.steps ?? 'Unknown'}`,
               inline: true,
             },
             {
               name: 'CFG scale',
-              value: `${sdMetadata.image.cfg_scale}`,
+              value: `${sdMetadata.image.cfg_scale ?? 'Unknown'}`,
               inline: true,
             },
             {
@@ -113,7 +117,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
                         k.scale ? ` ${k.scale}x` : ''
                       }`
                   )
-                  .join('\n') ?? 'None detected',
+                  .join('\n') || 'None detected',
               inline: true,
             }
           )
@@ -167,6 +171,76 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
           .setThumbnail(png.url)
           .setFooter({
             text: `Generated with AUTOMATIC1111/stable-diffusion-webui`,
+          })
+          .setColor(0x38bdf8),
+      ],
+    });
+  } else if (
+    typeof data.description?.value === 'string' &&
+    data.description.value.includes('Mochi Diffusion')
+  ) {
+    const mochiDiffusionData: Record<string, string> = {};
+
+    (data.description.value as string)
+      .split('; ')
+      .map((k) => k.split(': '))
+      .forEach(([a, ...b]) => {
+        mochiDiffusionData[a] = b.join(': ');
+      });
+
+    console.log(mochiDiffusionData);
+
+    await e.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle('Stable Diffusion metadata')
+          .setFields(
+            {
+              name: 'Model',
+              value: mochiDiffusionData['Model'],
+            },
+            {
+              name: 'Prompt',
+              value: mochiDiffusionData['Include in Image'] || '*None*',
+            },
+            {
+              name: 'Negative prompt',
+              value: mochiDiffusionData['Exclude from Image'] || '*None*',
+            },
+            {
+              name: 'Size',
+              value: mochiDiffusionData['Size'],
+              inline: true,
+            },
+            {
+              name: 'Seed',
+              value: mochiDiffusionData['Seed'],
+              inline: true,
+            },
+            {
+              name: 'Scheduler',
+              value: mochiDiffusionData['Scheduler'],
+              inline: true,
+            },
+            {
+              name: 'Steps',
+              value: mochiDiffusionData['Steps'],
+              inline: true,
+            },
+            {
+              name: 'Guidance Scale',
+              value: mochiDiffusionData['Guidance Scale'],
+              inline: true,
+            },
+            {
+              name: 'Upscaler',
+              value: mochiDiffusionData['Upscaler'] || '*None*',
+              inline: true,
+            }
+          )
+          .setThumbnail(png.url)
+          .setFooter({
+            text: `Generated with ${mochiDiffusionData['Generator']}`,
           })
           .setColor(0x38bdf8),
       ],
