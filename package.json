@@ -9,17 +9,18 @@
     "start": "yarn sync-commands && NODE_ENV=production tsx src/index.ts"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.14.0",
     "bottomify": "^0.3.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "exifr": "^7.1.3",
     "got": "^12.5.3",
     "kleur": "^4.1.5",
-    "mongodb": "^4.13.0",
-    "redis": "^4.5.1",
-    "tsx": "^3.12.2",
-    "typescript": "^4.9.4",
-    "uwurandom-node": "^0.1.0"
+    "mongodb": "^5.0.1",
+    "redis": "^4.6.4",
+    "tsx": "^3.12.3",
+    "typescript": "^4.9.5",
+    "uwurandom-node": "^0.1.0",
+    "zod": "^3.20.6"
   }
 }

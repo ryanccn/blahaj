@@ -9,8 +9,6 @@ import {
   PermissionFlagsBits,
 } from 'discord.js';
 
-import 'dotenv/config';
-
 import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
@@ -22,7 +20,10 @@ import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
 
 import { getGuildEmoji } from '~/utils';
+import { validateEnv } from '~/env';
 import { green, bold, yellow, cyan } from 'kleur/colors';
+
+validateEnv();
 
 const client = new Client({
   intents: [
