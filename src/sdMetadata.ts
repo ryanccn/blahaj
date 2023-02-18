@@ -188,8 +188,6 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
         mochiDiffusionData[a] = b.join(': ');
       });
 
-    console.log(mochiDiffusionData);
-
     await e.reply({
       embeds: [
         new EmbedBuilder()
