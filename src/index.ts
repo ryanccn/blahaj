@@ -166,7 +166,7 @@ client.on(Events.MessageReactionRemove, async (e) => {
 });
 
 const startServer = async () => {
-  const hs = hapi({ port: process.env.PORT || 3000, host: 'localhost' });
+  const hs = hapi({ port: process.env.PORT ?? 3000 });
 
   hs.route({
     method: 'GET',
