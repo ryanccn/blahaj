@@ -177,7 +177,7 @@ const startServer = async () => {
   });
 
   await hs.start();
-  console.log(dim('Started health check server'));
+  console.log(dim(`Started health check server at ${hs.info.uri}.`));
 };
 
 client
