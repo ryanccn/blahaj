@@ -19,9 +19,11 @@ import { parseSDMetadata } from '~/sdMetadata';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
 
+import { server as hapi } from '@hapi/hapi';
+
 import { getGuildEmoji } from '~/utils';
 import { validateEnv } from '~/env';
-import { green, bold, yellow, cyan } from 'kleur/colors';
+import { green, bold, yellow, cyan, dim } from 'kleur/colors';
 
 validateEnv();
 
@@ -163,7 +165,25 @@ client.on(Events.MessageReactionRemove, async (e) => {
   }
 });
 
-client.login(process.env.DISCORD_TOKEN).catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+const startServer = async () => {
+  const hs = hapi({ port: process.env.PORT || 3000, host: 'localhost' });
+
+  hs.route({
+    method: 'GET',
+    path: '/health',
+    handler: (_req, _h) => {
+      return { ok: true };
+    },
+  });
+
+  await hs.start();
+  console.log(dim('Started health check server'));
+};
+
+client
+  .login(process.env.DISCORD_TOKEN)
+  .then(startServer)
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });

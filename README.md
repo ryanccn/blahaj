@@ -11,8 +11,9 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 
 - Presence customization
 - Stable Diffusion metadata parsing
-- Ban syncing
 - Starboard (but catstare)
+- Bottom encoding / decoding
+- `/dev/uwurandom`
 
 ## Development
 
