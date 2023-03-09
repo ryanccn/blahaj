@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import {
   Client,
   Options,
@@ -7,6 +9,7 @@ import {
   OAuth2Scopes,
   EmbedBuilder,
   PermissionFlagsBits,
+  ChannelType,
 } from 'discord.js';
 
 import { pingCommand } from '~/commands/ping';
@@ -16,6 +19,7 @@ import { bottomCommand } from '~/commands/bottom';
 import { uwurandomCommand } from '~/commands/uwurandom';
 
 import { parseSDMetadata } from '~/sdMetadata';
+import { handleChat } from '~/chat';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
 
@@ -126,6 +130,18 @@ client.on(Events.MessageCreate, async (e) => {
   try {
     if (e.author.bot) return;
     await parseSDMetadata(e);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+client.on(Events.MessageCreate, async (e) => {
+  try {
+    if (e.author.bot) return;
+    if (e.channel.type !== ChannelType.GuildText) return;
+    if (e.channel.name !== 'chatbot') return;
+
+    await handleChat(e);
   } catch (e) {
     console.error(e);
   }

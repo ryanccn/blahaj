@@ -14,6 +14,7 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 - Starboard (but catstare)
 - Bottom encoding / decoding
 - `/dev/uwurandom`
+- Chatbot powered by OpenAI
 
 ## Development
 

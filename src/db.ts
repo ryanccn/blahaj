@@ -1,7 +1,9 @@
 import { createClient } from 'redis';
 
 const _client = createClient({ url: process.env.REDIS_URL });
-_client.on('error', (err) => console.error(err));
+_client.on('error', (err) => {
+  // console.error(err)
+});
 
 const client = _client.connect().then(() => _client);
 
