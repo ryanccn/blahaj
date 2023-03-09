@@ -23,6 +23,7 @@ if (process.env.OPENAI_TOKEN) {
 
 export const handleChat = async (message: Message) => {
   if (!openai) return;
+  if (message.content.startsWith('\\')) return;
 
   await message.channel.sendTyping();
   const typingTimer = setInterval(() => message.channel.sendTyping(), 5000);
@@ -42,6 +43,7 @@ export const handleChat = async (message: Message) => {
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'system', content: SYSTEM_MESSAGE }, ...context],
+      max_tokens: 75,
     });
 
     const responseMessage = response.data.choices[0].message;
