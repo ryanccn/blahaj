@@ -24,6 +24,7 @@ if (process.env.OPENAI_TOKEN) {
 export const handleChat = async (message: Message) => {
   if (!openai) return;
 
+  await message.channel.sendTyping();
   const typingTimer = setInterval(() => message.channel.sendTyping(), 5000);
 
   try {
@@ -47,6 +48,7 @@ export const handleChat = async (message: Message) => {
     if (!responseMessage) return;
 
     await message.channel.send(responseMessage.content);
+    clearInterval(typingTimer);
   } catch (e) {
     clearInterval(typingTimer);
     throw e;
