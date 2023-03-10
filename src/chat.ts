@@ -1,13 +1,14 @@
 import { Collection, Colors, EmbedBuilder, type Message } from 'discord.js';
-import { yellow } from 'kleur/colors';
 import {
   Configuration,
   OpenAIApi,
   type ChatCompletionRequestMessage,
 } from 'openai';
 
+import { yellow } from 'kleur/colors';
+
 const SYSTEM_MESSAGE =
-  'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, the messages you receive will be in the format of username: message. You can treat the username as the name of the author.';
+  'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. Your developer is Ryan Cao (username RyanCaoDev), the owner of the guild, and you were written in Discord.js. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, messages NOT BY YOU will be prefixed with the username or nickname of the author, folloed by a colon. You can treat the username as the name of the author. However, you should not not prefix the messages you send with any username whatsoever.';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_TOKEN,
@@ -30,7 +31,8 @@ export const handleChat = async (message: Message) => {
 
   try {
     const msgs = (await message.channel.messages.fetch({
-      limit: 10,
+      limit: 15,
+      before: message.id,
     })) as Collection<string, Message<true>>;
 
     const context = [
@@ -61,15 +63,13 @@ export const handleChat = async (message: Message) => {
       .createModeration({ input: responseMessage.content })
       .then(({ data }) => !data.results[0].flagged);
 
-    const lastMessage = msgs.first()!;
-
     if (isAppropriate) {
-      await lastMessage.reply({
+      await message.reply({
         content: responseMessage.content,
         allowedMentions: { parse: ['users'] },
       });
     } else {
-      await lastMessage.reply({
+      await message.reply({
         embeds: [
           new EmbedBuilder()
             .setTitle('Response flagged!')
