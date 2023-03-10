@@ -7,7 +7,7 @@ import {
 } from 'openai';
 
 const SYSTEM_MESSAGE =
-  'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language.';
+  'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, the messages you receive will be in the format of username: message. You can treat the username as the name of the author.';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_TOKEN,
@@ -41,7 +41,9 @@ export const handleChat = async (message: Message) => {
           }
           return {
             role: 'user',
-            content: `${msg.author.tag}: ${msg.content}`,
+            content: `${msg.member?.nickname ?? msg.author.username}: ${
+              msg.content
+            }`,
           };
         })
         .values(),
@@ -59,13 +61,15 @@ export const handleChat = async (message: Message) => {
       .createModeration({ input: responseMessage.content })
       .then(({ data }) => !data.results[0].flagged);
 
+    const lastMessage = msgs.first()!;
+
     if (isAppropriate) {
-      await message.channel.send({
+      await lastMessage.reply({
         content: responseMessage.content,
         allowedMentions: { parse: ['users'] },
       });
     } else {
-      await message.channel.send({
+      await lastMessage.reply({
         embeds: [
           new EmbedBuilder()
             .setTitle('Response flagged!')
