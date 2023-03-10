@@ -32,7 +32,7 @@ export const handleChat = async (message: Message) => {
   try {
     const msgs = (await message.channel.messages.fetch({
       limit: 15,
-      before: message.id,
+      before: message.id + 1,
     })) as Collection<string, Message<true>>;
 
     const context = [
