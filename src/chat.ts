@@ -1,9 +1,9 @@
-import { EmbedBuilder, type Message } from 'discord.js';
+import { Collection, Colors, EmbedBuilder, type Message } from 'discord.js';
 import { yellow } from 'kleur/colors';
 import {
   Configuration,
   OpenAIApi,
-  // type ChatCompletionRequestMessage,
+  type ChatCompletionRequestMessage,
 } from 'openai';
 
 const SYSTEM_MESSAGE =
@@ -29,14 +29,21 @@ export const handleChat = async (message: Message) => {
   const typingTimer = setInterval(() => message.channel.sendTyping(), 5000);
 
   try {
-    const msgs = await message.channel.messages.fetch({ limit: 10 });
+    const msgs = (await message.channel.messages.fetch({
+      limit: 10,
+    })) as Collection<string, Message<true>>;
+
     const context = [
       ...msgs
-        // @ts-expect-error Discord.js has some messed up types
-        .mapValues((msg) => ({
-          role: msg.author === msg.author.client.user ? 'assistant' : 'user',
-          content: msg.content,
-        }))
+        .mapValues<ChatCompletionRequestMessage>((msg) => {
+          if (msg.author === msg.author.client.user) {
+            return { role: 'assistant', content: msg.content };
+          }
+          return {
+            role: 'user',
+            content: `${msg.author.tag}: ${msg.content}`,
+          };
+        })
         .values(),
     ].reverse();
 
