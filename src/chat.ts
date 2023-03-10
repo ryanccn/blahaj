@@ -7,7 +7,7 @@ import {
 } from 'openai';
 
 const SYSTEM_MESSAGE =
-  'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. You mainly chat casually with members of the community and often make jokes (nicely).';
+  'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language.';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_TOKEN,
@@ -43,7 +43,6 @@ export const handleChat = async (message: Message) => {
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'system', content: SYSTEM_MESSAGE }, ...context],
-      max_tokens: 75,
     });
 
     const responseMessage = response.data.choices[0].message;
