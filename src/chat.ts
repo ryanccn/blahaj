@@ -1,4 +1,4 @@
-import { type Message } from 'discord.js';
+import { EmbedBuilder, type Message } from 'discord.js';
 import { yellow } from 'kleur/colors';
 import {
   Configuration,
@@ -49,7 +49,25 @@ export const handleChat = async (message: Message) => {
     const responseMessage = response.data.choices[0].message;
     if (!responseMessage) return;
 
-    await message.channel.send(responseMessage.content);
+    const isAppropriate = await openai
+      .createModeration({ input: responseMessage.content })
+      .then(({ data }) => !data.results[0].flagged);
+
+    if (isAppropriate) {
+      await message.channel.send(responseMessage.content);
+    } else {
+      await message.channel.send({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('Response flagged!')
+            .setDescription(
+              'The generated response may have been inappropriate.'
+            )
+            .setColor('Red'),
+        ],
+      });
+    }
+
     clearInterval(typingTimer);
   } catch (e) {
     clearInterval(typingTimer);
