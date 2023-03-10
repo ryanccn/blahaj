@@ -60,7 +60,10 @@ export const handleChat = async (message: Message) => {
       .then(({ data }) => !data.results[0].flagged);
 
     if (isAppropriate) {
-      await message.channel.send(responseMessage.content);
+      await message.channel.send({
+        content: responseMessage.content,
+        allowedMentions: { parse: ['users'] },
+      });
     } else {
       await message.channel.send({
         embeds: [
@@ -69,7 +72,7 @@ export const handleChat = async (message: Message) => {
             .setDescription(
               'The generated response may have been inappropriate.'
             )
-            .setColor('Red'),
+            .setColor(Colors.Red),
         ],
       });
     }
