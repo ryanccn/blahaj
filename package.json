@@ -21,7 +21,7 @@
     "redis": "^4.6.5",
     "tsx": "^3.12.3",
     "uwurandom-node": "^0.1.0",
-    "zod": "^3.21.0"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",
