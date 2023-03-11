@@ -66,16 +66,20 @@ export const handleChat = async (message: Message) => {
       messages: [{ role: 'system', content: SYSTEM_MESSAGE }, ...context],
     });
 
-    const responseMessage = response.data.choices[0].message;
+    let responseMessage = response.data.choices[0].message?.content;
     if (!responseMessage) return;
 
+    if (responseMessage.startsWith('Blåhaj: ')) {
+      responseMessage = responseMessage.replace('Blåhaj: ', '');
+    }
+
     const isAppropriate = await openai
-      .createModeration({ input: responseMessage.content })
+      .createModeration({ input: responseMessage })
       .then(({ data }) => !data.results[0].flagged);
 
     if (isAppropriate) {
       await message.reply({
-        content: responseMessage.content,
+        content: responseMessage,
         allowedMentions: { parse: ['users'] },
       });
     } else {
