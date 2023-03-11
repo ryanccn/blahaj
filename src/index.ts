@@ -187,7 +187,7 @@ const startServer = async () => {
   hs.route({
     method: 'GET',
     path: '/health',
-    handler: (_req, _h) => {
+    handler: () => {
       return { ok: true };
     },
   });

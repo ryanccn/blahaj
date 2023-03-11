@@ -8,9 +8,8 @@
     "sync-commands": "tsx src/_commands.ts",
     "start": "yarn sync-commands && NODE_ENV=production tsx src/index.ts"
   },
-  "devDependencies": {
+  "dependencies": {
     "@hapi/hapi": "^21.3.0",
-    "@types/node": "^18.14.6",
     "bottomify": "^0.3.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
@@ -21,8 +20,15 @@
     "openai": "^3.2.1",
     "redis": "^4.6.5",
     "tsx": "^3.12.3",
-    "typescript": "^4.9.5",
     "uwurandom-node": "^0.1.0",
     "zod": "^3.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.6",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "^8.36.0",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
   }
 }

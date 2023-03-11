@@ -5,7 +5,7 @@ import { Uwurandom } from 'uwurandom-node';
 export const uwurandomCommand: Command = async (i) => {
   const length = i.options.getInteger('length', true);
 
-  let uwurandom = Uwurandom.new();
+  const uwurandom = Uwurandom.new();
   let result = '';
 
   for (let i = 0; i < length; i++) {
