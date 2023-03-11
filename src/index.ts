@@ -1,4 +1,6 @@
+import { validateEnv } from '~/env';
 import 'dotenv/config';
+validateEnv();
 
 import {
   Client,
@@ -25,11 +27,8 @@ import { handleButton } from '~/button';
 
 import { server as hapi } from '@hapi/hapi';
 
-import { getGuildEmoji, isPluralKit } from '~/utils';
-import { validateEnv } from '~/env';
+import { getGuildEmoji } from '~/utils';
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
-
-validateEnv();
 
 const client = new Client({
   intents: [
@@ -137,9 +136,9 @@ client.on(Events.MessageCreate, async (e) => {
 
 client.on(Events.MessageCreate, async (e) => {
   try {
-    if (e.author.bot && !(await isPluralKit(e))) return;
     if (e.channel.type !== ChannelType.GuildText) return;
     if (e.channel.name !== 'chatbot') return;
+    if (e.author.bot && !e.webhookId) return;
 
     await handleChat(e);
   } catch (e) {

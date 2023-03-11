@@ -1,16 +1,6 @@
-import { EmbedBuilder, type Message, type Guild } from 'discord.js';
+import { EmbedBuilder, type Guild } from 'discord.js';
 import { blue, bold, red, dim } from 'kleur/colors';
 import { type ZodError } from 'zod';
-
-const PLURALKIT_USER_ID = '466378653216014359';
-export const isPluralKit = async (message: Message) => {
-  try {
-    const webhook = await message.fetchWebhook();
-    return webhook.owner?.id === PLURALKIT_USER_ID;
-  } catch {
-    return false;
-  }
-};
 
 export const getGuildEmoji = async (guild: Guild, name: string) => {
   const emojis = await guild.emojis.fetch();
