@@ -1,4 +1,9 @@
-import { Collection, Colors, EmbedBuilder, type Message } from 'discord.js';
+import {
+  Colors,
+  DiscordAPIError,
+  EmbedBuilder,
+  type Message,
+} from 'discord.js';
 import {
   Configuration,
   OpenAIApi,
@@ -30,26 +35,31 @@ export const handleChat = async (message: Message) => {
   const typingTimer = setInterval(() => message.channel.sendTyping(), 5000);
 
   try {
-    const msgs = (await message.channel.messages.fetch({
-      limit: 15,
-      before: message.id + 1,
-    })) as Collection<string, Message<true>>;
+    const msgs: Message<boolean>[] = [
+      ...(
+        await message.channel.messages.fetch({
+          limit: 15,
+          before: message.id,
+        })
+      ).values(),
+    ].reverse();
+
+    msgs.push(message);
 
     const context = [
-      ...msgs
-        .mapValues<ChatCompletionRequestMessage>((msg) => {
-          if (msg.author === msg.author.client.user) {
-            return { role: 'assistant', content: msg.content };
-          }
-          return {
-            role: 'user',
-            content: `${msg.member?.nickname ?? msg.author.username}: ${
-              msg.content
-            }`,
-          };
-        })
-        .values(),
-    ].reverse();
+      ...msgs.map<ChatCompletionRequestMessage>((msg) => {
+        if (msg.author === msg.author.client.user) {
+          return { role: 'assistant', content: msg.content };
+        }
+
+        return {
+          role: 'user',
+          content: `${msg.member?.nickname ?? msg.author.username}: ${
+            msg.content
+          }`,
+        };
+      }),
+    ];
 
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
@@ -84,6 +94,13 @@ export const handleChat = async (message: Message) => {
     clearInterval(typingTimer);
   } catch (e) {
     clearInterval(typingTimer);
-    throw e;
+
+    if (e instanceof DiscordAPIError && e.code === 50035) {
+      console.warn(
+        yellow(`Unable to reply to message, was probably PluralKit's fault.`)
+      );
+    } else {
+      throw e;
+    }
   }
 };

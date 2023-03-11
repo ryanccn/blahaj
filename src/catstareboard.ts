@@ -8,6 +8,7 @@ import {
 
 import { getGuildEmoji } from '~/utils';
 import { decr, del, get, incr, set } from '~/db';
+import { yellow } from 'kleur/colors';
 
 export const handleCatstareAdd = async (e: MessageReaction) => {
   if (!e.emoji.name?.includes('catstare')) return;
@@ -21,7 +22,7 @@ export const handleCatstareAdd = async (e: MessageReaction) => {
   const catstareBoard = channels.find((ch) => ch?.name === 'catstareboard');
 
   if (!catstareBoard || catstareBoard.type !== ChannelType.GuildText) {
-    console.warn('No #catstareboard found!');
+    console.warn(yellow('No #catstareboard found!'));
     return;
   }
 
@@ -92,7 +93,7 @@ export const handleCatstareRemove = async (e: MessageReaction) => {
   const catstareBoard = channels.find((ch) => ch?.name === 'catstareboard');
 
   if (!catstareBoard || catstareBoard.type !== ChannelType.GuildText) {
-    console.warn('No #catstareboard found!');
+    console.warn(yellow('No #catstareboard found!'));
     return;
   }
 
