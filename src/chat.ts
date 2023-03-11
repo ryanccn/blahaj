@@ -2,6 +2,7 @@ import {
   Colors,
   DiscordAPIError,
   EmbedBuilder,
+  SnowflakeUtil,
   type Message,
 } from 'discord.js';
 import {
@@ -38,7 +39,9 @@ export const handleChat = async (message: Message) => {
     const msgs: Message<boolean>[] = [
       ...(
         await message.channel.messages.fetch({
-          limit: 15,
+          after: SnowflakeUtil.generate({
+            timestamp: Date.now() - 60 * 1000,
+          }).toString(),
           before: message.id,
         })
       ).values(),
@@ -47,18 +50,20 @@ export const handleChat = async (message: Message) => {
     msgs.push(message);
 
     const context = [
-      ...msgs.map<ChatCompletionRequestMessage>((msg) => {
-        if (msg.author === msg.author.client.user) {
-          return { role: 'assistant', content: msg.content };
-        }
+      ...msgs
+        .filter((k) => !k.content.startsWith('\\'))
+        .map<ChatCompletionRequestMessage>((msg) => {
+          if (msg.author === msg.author.client.user) {
+            return { role: 'assistant', content: msg.content };
+          }
 
-        return {
-          role: 'user',
-          content: `${msg.member?.nickname ?? msg.author.username}: ${
-            msg.content
-          }`,
-        };
-      }),
+          return {
+            role: 'user',
+            content: `${msg.member?.nickname ?? msg.author.username}: ${
+              msg.content
+            }`,
+          };
+        }),
     ];
 
     const response = await openai.createChatCompletion({
