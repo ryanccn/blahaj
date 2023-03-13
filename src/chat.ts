@@ -28,6 +28,12 @@ if (process.env.OPENAI_TOKEN) {
   console.warn(yellow('No OPENAI_TOKEN defined, not initializing chatbot'));
 }
 
+const unproxiedMessages = new Set<string>();
+
+class UnproxiedMessageError extends Error {
+  name = 'UnproxiedMessageError';
+}
+
 export const handleChat = async (message: Message) => {
   if (!openai) return;
   if (message.content.startsWith('\\')) return;
@@ -40,14 +46,22 @@ export const handleChat = async (message: Message) => {
       ...(
         await message.channel.messages.fetch({
           after: SnowflakeUtil.generate({
-            timestamp: Date.now() - 60 * 1000,
+            timestamp: Date.now() - 2.5 * 60 * 1000,
           }).toString(),
           before: message.id,
         })
       ).values(),
     ].reverse();
 
-    msgs.push(message);
+    if (
+      msgs.length >= 2 &&
+      msgs[msgs.length - 1].webhookId &&
+      !msgs[msgs.length - 2].webhookId &&
+      msgs[msgs.length - 2].content.includes(msgs[msgs.length - 1].content)
+    ) {
+      unproxiedMessages.add(msgs[msgs.length - 2].id);
+      msgs.splice(msgs.length - 2, 1);
+    }
 
     const context = [
       ...msgs
@@ -65,6 +79,11 @@ export const handleChat = async (message: Message) => {
           };
         }),
     ];
+
+    if (unproxiedMessages.has(message.id)) {
+      unproxiedMessages.delete(message.id);
+      throw new UnproxiedMessageError();
+    }
 
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
@@ -106,7 +125,13 @@ export const handleChat = async (message: Message) => {
 
     if (e instanceof DiscordAPIError && e.code === 50035) {
       console.warn(
-        yellow(`Unable to reply to message, was probably PluralKit's fault.`)
+        yellow(`Unable to reply to message, seems to have been deleted.`)
+      );
+    } else if (e instanceof UnproxiedMessageError) {
+      console.warn(
+        yellow(
+          `Not replying to ${message.id} because it has been found to be a duplicate`
+        )
       );
     } else {
       throw e;
