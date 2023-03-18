@@ -16,10 +16,7 @@ interface SDMetadata {
   app_id: string;
   app_version: string;
   image: {
-    prompt?: {
-      prompt: string;
-      weight: number;
-    }[];
+    prompt: string;
     steps?: number;
     cfg_scale?: number;
     threshold?: number;
@@ -80,7 +77,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
             },
             {
               name: 'Prompt',
-              value: truncateString(sdMetadata.image.prompt![0].prompt),
+              value: truncateString(sdMetadata.image.prompt),
             },
             {
               name: 'Size',
@@ -134,7 +131,9 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
     const prompt = parameters[0];
     const negativePrompt = parameters
       .slice(1)
-      .filter((k) => k.startsWith('Negative prompt:'))[0];
+      .filter((k) => k.startsWith('Negative prompt:'))[0]
+      ?.replace('Negative prompt: ', '');
+
     const options = parameters[parameters.length - 1]
       .split(', ')
       .map((k) => k.split(': '));
@@ -152,9 +151,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
               ? [
                   {
                     name: 'Negative prompt',
-                    value: truncateString(
-                      negativePrompt.replace('Negative prompt: ', '')
-                    ),
+                    value: truncateString(negativePrompt),
                   },
                 ]
               : []),
@@ -199,11 +196,15 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
             },
             {
               name: 'Prompt',
-              value: mochiDiffusionData['Include in Image'] || '*None*',
+              value: truncateString(
+                mochiDiffusionData['Include in Image'] || '*None*'
+              ),
             },
             {
               name: 'Negative prompt',
-              value: mochiDiffusionData['Exclude from Image'] || '*None*',
+              value: truncateString(
+                mochiDiffusionData['Exclude from Image'] || '*None*'
+              ),
             },
             {
               name: 'Size',
