@@ -16,7 +16,7 @@ interface SDMetadata {
   app_id: string;
   app_version: string;
   image: {
-    prompt: string;
+    prompt: string | { prompt: string; weight: number }[];
     steps?: number;
     cfg_scale?: number;
     threshold?: number;
@@ -77,7 +77,11 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
             },
             {
               name: 'Prompt',
-              value: truncateString(sdMetadata.image.prompt),
+              value: truncateString(
+                typeof sdMetadata.image.prompt === 'string'
+                  ? sdMetadata.image.prompt
+                  : sdMetadata.image.prompt[0].prompt ?? 'Unknown'
+              ),
             },
             {
               name: 'Size',
