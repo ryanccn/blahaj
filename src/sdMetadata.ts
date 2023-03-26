@@ -42,28 +42,30 @@ const truncateString = (str: string) => {
 };
 
 export const parseSDMetadata = async (e: Message<boolean>) => {
-  const png = e.attachments.find((k) => k.contentType === 'image/png');
-  if (!png) return;
+  const pngs = e.attachments.filter((k) => k.contentType === 'image/png');
+  if (!pngs) return;
 
-  const res = got.stream(png.url);
-  res.on('error', (err) => {
-    throw err;
-  });
-  const funnyPath = `${await TEMP_DIR}/${Date.now()}.png`;
-  await pipeline(res, createWriteStream(funnyPath));
+  const resultEmbeds: EmbedBuilder[] = [];
 
-  const data = await parse(funnyPath, {
-    xmp: true,
-  });
-  await rm(funnyPath);
+  for (const image of pngs.values()) {
+    const res = got.stream(image.url);
+    res.on('error', (err) => {
+      throw err;
+    });
+    const funnyPath = `${await TEMP_DIR}/${Date.now()}.png`;
+    await pipeline(res, createWriteStream(funnyPath));
 
-  if (!data) return;
+    const data = await parse(funnyPath, {
+      xmp: true,
+    });
+    await rm(funnyPath);
 
-  if (data['sd-metadata']) {
-    const sdMetadata = JSON.parse(data['sd-metadata']) as SDMetadata;
+    if (!data) return;
 
-    await e.reply({
-      embeds: [
+    if (data['sd-metadata']) {
+      const sdMetadata = JSON.parse(data['sd-metadata']) as SDMetadata;
+
+      resultEmbeds.push(
         new EmbedBuilder()
           .setTitle('Stable Diffusion metadata')
           .setFields(
@@ -122,28 +124,28 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
               inline: true,
             }
           )
-          .setThumbnail(png.url)
+          .setThumbnail(image.url)
           .setFooter({
             text: `Generated with ${sdMetadata.app_id} ${sdMetadata.app_version}`,
           })
-          .setColor(0x38bdf8),
-      ],
-    });
-  } else if (data['parameters']) {
-    const parameters = (data.parameters as string).split('\n').filter(Boolean);
+          .setColor(0x38bdf8)
+      );
+    } else if (data['parameters']) {
+      const parameters = (data.parameters as string)
+        .split('\n')
+        .filter(Boolean);
 
-    const prompt = parameters[0];
-    const negativePrompt = parameters
-      .slice(1)
-      .filter((k) => k.startsWith('Negative prompt:'))[0]
-      ?.replace('Negative prompt: ', '');
+      const prompt = parameters[0];
+      const negativePrompt = parameters
+        .slice(1)
+        .filter((k) => k.startsWith('Negative prompt:'))[0]
+        ?.replace('Negative prompt: ', '');
 
-    const options = parameters[parameters.length - 1]
-      .split(', ')
-      .map((k) => k.split(': '));
+      const options = parameters[parameters.length - 1]
+        .split(', ')
+        .map((k) => k.split(': '));
 
-    await e.reply({
-      embeds: [
+      resultEmbeds.push(
         new EmbedBuilder()
           .setTitle('Stable Diffusion metadata')
           .setFields(
@@ -169,28 +171,26 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
               value: data['extras'] ?? 'None detected',
             }
           )
-          .setThumbnail(png.url)
+          .setThumbnail(image.url)
           .setFooter({
             text: `Generated with AUTOMATIC1111/stable-diffusion-webui`,
           })
-          .setColor(0x38bdf8),
-      ],
-    });
-  } else if (
-    typeof data.description?.value === 'string' &&
-    data.description.value.includes('Mochi Diffusion')
-  ) {
-    const mochiDiffusionData: Record<string, string> = {};
+          .setColor(0x38bdf8)
+      );
+    } else if (
+      typeof data.description?.value === 'string' &&
+      data.description.value.includes('Mochi Diffusion')
+    ) {
+      const mochiDiffusionData: Record<string, string> = {};
 
-    (data.description.value as string)
-      .split('; ')
-      .map((k) => k.split(': '))
-      .forEach(([a, ...b]) => {
-        mochiDiffusionData[a] = b.join(': ');
-      });
+      (data.description.value as string)
+        .split('; ')
+        .map((k) => k.split(': '))
+        .forEach(([a, ...b]) => {
+          mochiDiffusionData[a] = b.join(': ');
+        });
 
-    await e.reply({
-      embeds: [
+      resultEmbeds.push(
         new EmbedBuilder()
           .setTitle('Stable Diffusion metadata')
           .setFields(
@@ -241,12 +241,14 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
               inline: true,
             }
           )
-          .setThumbnail(png.url)
+          .setThumbnail(image.url)
           .setFooter({
             text: `Generated with ${mochiDiffusionData['Generator']}`,
           })
-          .setColor(0x38bdf8),
-      ],
-    });
+          .setColor(0x38bdf8)
+      );
+    }
   }
+
+  await e.reply({ embeds: resultEmbeds });
 };
