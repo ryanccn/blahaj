@@ -250,5 +250,5 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
     }
   }
 
-  await e.reply({ embeds: resultEmbeds });
+  if (resultEmbeds.length) await e.reply({ embeds: resultEmbeds });
 };
