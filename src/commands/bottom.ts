@@ -1,7 +1,7 @@
 import { encode, decode } from 'bottomify';
-import { Command } from './_types';
+import { SlashCommand } from './_types';
 
-export const bottomCommand: Command = async (i) => {
+export const bottomCommand: SlashCommand = async (i) => {
   const subcmd = i.options.getSubcommand();
   const msg = i.options.getString('content', true);
   await i.reply({

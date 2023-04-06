@@ -1,6 +1,6 @@
-import type { Command } from './_types';
+import type { SlashCommand } from './_types';
 
-export const sayCommand: Command = async (i) => {
+export const sayCommand: SlashCommand = async (i) => {
   if (!i.channel || !i.channel.isTextBased()) return;
 
   await i.deferReply({ ephemeral: true });

@@ -1,4 +1,10 @@
-import { SlashCommandBuilder, Routes, PermissionFlagsBits } from 'discord.js';
+import {
+  SlashCommandBuilder,
+  Routes,
+  PermissionFlagsBits,
+  ContextMenuCommandBuilder,
+  ApplicationCommandType,
+} from 'discord.js';
 import { REST } from '@discordjs/rest';
 
 import 'dotenv/config';
@@ -81,6 +87,9 @@ export const reuploadCommands = async () => {
           .setRequired(true)
           .setMinValue(1)
       ),
+    new ContextMenuCommandBuilder()
+      .setName('Translate')
+      .setType(ApplicationCommandType.Message),
   ]
     .map((command) => command.setDMPermission(false))
     .map((command) => command.toJSON());

@@ -1,5 +1,13 @@
-import type { CacheType, ChatInputCommandInteraction } from 'discord.js';
+import type {
+  CacheType,
+  ChatInputCommandInteraction,
+  ContextMenuCommandInteraction,
+} from 'discord.js';
 
-export type Command = (
+export type SlashCommand = (
   i: ChatInputCommandInteraction<CacheType>
+) => void | Promise<void>;
+
+export type ContextMenuCommand = (
+  i: ContextMenuCommandInteraction<CacheType>
 ) => void | Promise<void>;

@@ -1,8 +1,8 @@
-import type { Command } from './_types';
+import type { SlashCommand } from './_types';
 
 import { Uwurandom } from 'uwurandom-node';
 
-export const uwurandomCommand: Command = async (i) => {
+export const uwurandomCommand: SlashCommand = async (i) => {
   const length = i.options.getInteger('length', true);
 
   const uwurandom = Uwurandom.new();

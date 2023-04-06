@@ -1,9 +1,9 @@
 import { ActivityType } from 'discord.js';
 import { successEmbed } from '~/utils';
 
-import type { Command } from './_types';
+import type { SlashCommand } from './_types';
 
-export const presenceCommand: Command = async (i) => {
+export const presenceCommand: SlashCommand = async (i) => {
   await i.deferReply({ ephemeral: true });
 
   const text = i.options.getString('content', true);

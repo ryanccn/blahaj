@@ -19,15 +19,15 @@ import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
 import { bottomCommand } from '~/commands/bottom';
 import { uwurandomCommand } from '~/commands/uwurandom';
+import { translateCommand } from '~/commands/translate';
 
 import { parseSDMetadata } from '~/sdMetadata';
 import { handleChat } from '~/chat';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
-import { handleButton } from '~/button';
+// import { handleButton } from '~/button';
 
 import { server as hapi } from '@hapi/hapi';
 
-import { getGuildEmoji } from '~/utils';
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
 
 const client = new Client({
@@ -85,33 +85,54 @@ client.once(Events.ClientReady, async () => {
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand() && !interaction.isButton()) return;
+  if (!interaction.isChatInputCommand()) return;
 
   try {
-    if (interaction.isChatInputCommand()) {
-      const { commandName } = interaction;
+    const { commandName } = interaction;
 
-      if (commandName === 'ping') {
-        await pingCommand(interaction);
-      } else if (commandName === 'say') {
-        await sayCommand(interaction);
-      } else if (commandName === 'presence') {
-        await presenceCommand(interaction);
-      } else if (commandName === 'bottom') {
-        await bottomCommand(interaction);
-      } else if (commandName === 'uwurandom') {
-        await uwurandomCommand(interaction);
-      }
-    } else if (interaction.isButton()) {
-      await handleButton(interaction);
+    if (commandName === 'ping') {
+      await pingCommand(interaction);
+    } else if (commandName === 'say') {
+      await sayCommand(interaction);
+    } else if (commandName === 'presence') {
+      await presenceCommand(interaction);
+    } else if (commandName === 'bottom') {
+      await bottomCommand(interaction);
+    } else if (commandName === 'uwurandom') {
+      await uwurandomCommand(interaction);
     }
   } catch (e) {
     console.error(e);
 
     const errorEmbed = new EmbedBuilder()
-      .setTitle(
-        `${await getGuildEmoji(interaction.guild!, 'haj')} An error occurred!`
-      )
+      .setTitle('An error occurred!')
+      .setDescription('Hmm. What happened there?')
+      .setColor(0xfa5252);
+
+    if (interaction.deferred) {
+      await interaction.editReply({
+        embeds: [errorEmbed],
+      });
+    } else if (!interaction.replied) {
+      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+    }
+  }
+});
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isMessageContextMenuCommand()) return;
+
+  try {
+    const { commandName } = interaction;
+
+    if (commandName === 'Translate') {
+      await translateCommand(interaction);
+    }
+  } catch (e) {
+    console.error(e);
+
+    const errorEmbed = new EmbedBuilder()
+      .setTitle('An error occurred!')
       .setDescription('Hmm. What happened there?')
       .setColor(0xfa5252);
 

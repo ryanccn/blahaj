@@ -9,6 +9,10 @@ const env = z.object({
   DISCORD_TOKEN: z.string().min(1),
   REDIS_URL: z.string().url(),
 
+  GOOGLE_CLOUD_PROJECT_ID: z.string().optional(),
+  GOOGLE_CLOUD_CLIENT_EMAIL: z.string().optional(),
+  GOOGLE_CLOUD_PRIVATE_KEY: z.string().optional(),
+
   OPENAI_TOKEN: z.string().optional(),
 });
 
