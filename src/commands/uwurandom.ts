@@ -14,5 +14,6 @@ export const uwurandomCommand: SlashCommand = async (i) => {
 
   await i.reply({
     content: result,
+    allowedMentions: { parse: [] },
   });
 };

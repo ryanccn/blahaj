@@ -1,4 +1,3 @@
-// import { EmbedBuilder } from 'discord.js';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import type { SlashCommand } from './_types';
 
@@ -27,5 +26,8 @@ export const frenAdd: SlashCommand = async (i) => {
   );
   await dm.send({ content: frenAddMessage(user.id), components: [row] });
 
-  await i.editReply(`Fren request sent to <@${user.id}>!`);
+  await i.editReply({
+    content: `Fren request sent to <@${user.id}>!`,
+    allowedMentions: { parse: [] },
+  });
 };

@@ -6,5 +6,6 @@ export const bottomCommand: SlashCommand = async (i) => {
   const msg = i.options.getString('content', true);
   await i.reply({
     content: subcmd === 'encode' ? encode(msg) : decode(msg),
+    allowedMentions: { parse: [] },
   });
 };
