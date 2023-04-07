@@ -1,4 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  CategoryChannel,
+  PermissionsBitField,
+} from 'discord.js';
 import type { SlashCommand } from './_types';
 
 const frenAddMessage = (id: string) =>
@@ -15,10 +21,33 @@ This invite expires in 7 days. You are free to accept or ignore this invitation,
 export const frenAdd: SlashCommand = async (i) => {
   await i.deferReply({ ephemeral: true });
   const user = i.options.getUser('user', true);
+  const channel = await i.guild?.channels.create({
+    name: 'fren-invitation-' + user.username,
+    parent: process.env.FREN_CATEGORY_ID
+      ? ((await i.guild.channels.fetch(
+          process.env.FREN_CATEGORY_ID
+        )) as CategoryChannel)
+      : null,
+    permissionOverwrites: [
+      {
+        id: i.guild.roles.everyone.id,
+        deny: PermissionsBitField.All,
+      },
+      {
+        id: user.id,
+        allow: PermissionsBitField.Default,
+      },
+    ],
+  });
 
-  const dm = await user.createDM();
+  if (channel == undefined) {
+    await i.editReply({
+      content: 'Failed to create a channel!',
+    });
+    return;
+  }
 
-  await dm.send({
+  await channel.send({
     content: frenAddMessage(user.id),
     components: [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
