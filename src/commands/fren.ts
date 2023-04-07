@@ -18,13 +18,17 @@ export const frenAdd: SlashCommand = async (i) => {
 
   const dm = await user.createDM();
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setStyle(ButtonStyle.Success)
-      .setLabel('Accept')
-      .setCustomId(`fren-accept::${user.id}::${Date.now()}`)
-  );
-  await dm.send({ content: frenAddMessage(user.id), components: [row] });
+  await dm.send({
+    content: frenAddMessage(user.id),
+    components: [
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Success)
+          .setLabel('Accept')
+          .setCustomId(`fren-accept::${user.id}::${Date.now()}`)
+      ),
+    ],
+  });
 
   await i.editReply({
     content: `Fren request sent to <@${user.id}>!`,

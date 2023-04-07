@@ -1,14 +1,20 @@
-import type { ButtonInteraction } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+} from 'discord.js';
 
 export const handleButton = async (i: ButtonInteraction) => {
   const buttonId = i.customId;
 
   if (buttonId.startsWith('fren-accept::')) {
-    await i.deferReply();
     const [, userId, date] = buttonId.split('::');
 
     if (Date.now() - parseInt(date) > 7 * 24 * 60 * 60 * 1000) {
-      await i.editReply('The invite has expired! Please ask for a new one :>');
+      await i.channel!.send(
+        'The invite has expired! Please ask for a new one :>'
+      );
       return;
     }
 
@@ -20,6 +26,18 @@ export const handleButton = async (i: ButtonInteraction) => {
     const member = await guild.members.fetch(userId);
 
     await member.roles.add(process.env.FREN_ROLE_ID);
-    await i.editReply('You have been added to `@fren`. Have fun!');
+
+    await i.update({
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Success)
+            .setLabel('Accept')
+            .setCustomId(`fren-disabled-accept`)
+            .setDisabled(true)
+        ),
+      ],
+    });
+    await i.channel!.send('You have been added to `@fren`. Have fun!');
   }
 };
