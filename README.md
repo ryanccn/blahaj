@@ -10,11 +10,14 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 ## Features
 
 - Presence customization
-- Stable Diffusion metadata parsing
-- Starboard (but catstare)
+- ~~Stable Diffusion metadata parsing~~
+- Starboard (but in catstares)
 - Bottom encoding / decoding
-- `/dev/uwurandom`
+- `cat /dev/uwurandom`
 - Chatbot powered by OpenAI
+- Special friend category handling
+- Context menu translation
+- Advanced error handling and logging
 
 ## Development
 

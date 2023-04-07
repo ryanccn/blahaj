@@ -9,7 +9,6 @@ import {
   Partials,
   Events,
   OAuth2Scopes,
-  EmbedBuilder,
   PermissionFlagsBits,
   ChannelType,
 } from 'discord.js';
@@ -20,16 +19,18 @@ import { presenceCommand } from '~/commands/presence';
 import { bottomCommand } from '~/commands/bottom';
 import { uwurandomCommand } from '~/commands/uwurandom';
 import { translateCommand } from '~/commands/translate';
+import { frenAdd } from '~/commands/fren';
 
-import { parseSDMetadata } from '~/sdMetadata';
+// import { parseSDMetadata } from '~/sdMetadata';
 import { handleChat } from '~/chat';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
 
+import { logErrorToDiscord, respondWithError } from '~/errorHandling';
+
 import { server as hapi } from '@hapi/hapi';
 
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
-import { frenAdd } from './commands/fren';
 
 const client = new Client({
   intents: [
@@ -106,21 +107,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
       const sub = interaction.options.getSubcommand();
       if (sub === 'add') await frenAdd(interaction);
     }
-  } catch (e) {
-    console.error(e);
-
-    const errorEmbed = new EmbedBuilder()
-      .setTitle('An error occurred!')
-      .setDescription('Hmm. What happened there?')
-      .setColor(0xfa5252);
-
-    if (interaction.deferred) {
-      await interaction.editReply({
-        embeds: [errorEmbed],
-      });
-    } else if (!interaction.replied) {
-      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-    }
+  } catch (error) {
+    console.error(error);
+    await Promise.all([
+      respondWithError(interaction),
+      logErrorToDiscord({ client, error }),
+    ]);
   }
 });
 
@@ -129,21 +121,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
   try {
     await handleButton(interaction);
-  } catch (e) {
-    console.error(e);
-
-    const errorEmbed = new EmbedBuilder()
-      .setTitle('An error occurred!')
-      .setDescription('Hmm. What happened there?')
-      .setColor(0xfa5252);
-
-    if (interaction.deferred) {
-      await interaction.editReply({
-        embeds: [errorEmbed],
-      });
-    } else if (!interaction.replied) {
-      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-    }
+  } catch (error) {
+    console.error(error);
+    await Promise.all([
+      respondWithError(interaction),
+      logErrorToDiscord({ client, error }),
+    ]);
   }
 });
 
@@ -156,32 +139,24 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (commandName === 'Translate') {
       await translateCommand(interaction);
     }
-  } catch (e) {
-    console.error(e);
-
-    const errorEmbed = new EmbedBuilder()
-      .setTitle('An error occurred!')
-      .setDescription('Hmm. What happened there?')
-      .setColor(0xfa5252);
-
-    if (interaction.deferred) {
-      await interaction.editReply({
-        embeds: [errorEmbed],
-      });
-    } else if (!interaction.replied) {
-      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-    }
+  } catch (error) {
+    console.error(error);
+    await Promise.all([
+      respondWithError(interaction),
+      logErrorToDiscord({ client, error }),
+    ]);
   }
 });
 
-client.on(Events.MessageCreate, async (e) => {
-  try {
-    if (e.author.bot) return;
-    await parseSDMetadata(e);
-  } catch (e) {
-    console.error(e);
-  }
-});
+// client.on(Events.MessageCreate, async (e) => {
+//   try {
+//     if (e.author.bot) return;
+//     await parseSDMetadata(e);
+//   } catch (error) {
+//     console.error(error);
+//     await logErrorToDiscord({ client, error });
+//   }
+// });
 
 client.on(Events.MessageCreate, async (e) => {
   try {
@@ -190,8 +165,9 @@ client.on(Events.MessageCreate, async (e) => {
     if (e.author.bot && !e.webhookId) return;
 
     await handleChat(e);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    await logErrorToDiscord({ client, error });
   }
 });
 
@@ -207,8 +183,9 @@ client.on(Events.MessageReactionAdd, async (e) => {
       return;
 
     await handleCatstareAdd(e);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    await logErrorToDiscord({ client, error });
   }
 });
 
@@ -224,8 +201,9 @@ client.on(Events.MessageReactionRemove, async (e) => {
       return;
 
     await handleCatstareRemove(e);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    await logErrorToDiscord({ client, error });
   }
 });
 
