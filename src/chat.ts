@@ -24,12 +24,6 @@ let openai: OpenAIApi | null = null;
 
 if (process.env.OPENAI_TOKEN) {
   openai = new OpenAIApi(configuration);
-} else {
-  console.warn(
-    yellow(
-      `No ${dim('`')}OPENAI_TOKEN${dim('`')} defined, not initializing chatbot`
-    )
-  );
 }
 
 const unproxiedMessages = new Set<string>();
@@ -39,7 +33,17 @@ class UnproxiedMessageError extends Error {
 }
 
 export const handleChat = async (message: Message) => {
-  if (!openai) return;
+  if (!openai) {
+    console.warn(
+      yellow(
+        `No ${dim('`')}OPENAI_TOKEN${dim(
+          '`'
+        )} defined, not initializing chatbot`
+      )
+    );
+
+    return;
+  }
   if (message.content.startsWith('\\')) return;
 
   await message.channel.sendTyping();
