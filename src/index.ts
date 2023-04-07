@@ -29,7 +29,7 @@ import { handleButton } from '~/button';
 import { server as hapi } from '@hapi/hapi';
 
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
-import { frenAdd, frenRemove } from './commands/fren';
+import { frenAdd } from './commands/fren';
 
 const client = new Client({
   intents: [
@@ -105,7 +105,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
     } else if (commandName === 'fren') {
       const sub = interaction.options.getSubcommand();
       if (sub === 'add') await frenAdd(interaction);
-      else if (sub === 'remove') await frenRemove(interaction);
     }
   } catch (e) {
     console.error(e);
