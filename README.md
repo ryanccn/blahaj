@@ -3,7 +3,7 @@
   Blåhaj
 </h1>
 
-A multipurpose, fun Discord bot for Ryanland and the [Moddermore](https://moddermore.net/?ref=blahaj-readme) Discord.
+A multipurpose, fun Discord bot for Ryanland.
 
 Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Railway](https://railway.app/?referralCode=kmjX82).
 
@@ -18,6 +18,6 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 
 ## Development
 
-Set the environment variables `DISCORD_APP` and `DISCORD_TOKEN`.
+Set environment variables according to the schema defined in `src/env.ts`.
 
 Run `yarn dev` to start the bot in development mode; run `yarn start` in production.
