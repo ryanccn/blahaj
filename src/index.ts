@@ -24,11 +24,12 @@ import { translateCommand } from '~/commands/translate';
 import { parseSDMetadata } from '~/sdMetadata';
 import { handleChat } from '~/chat';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
-// import { handleButton } from '~/button';
+import { handleButton } from '~/button';
 
 import { server as hapi } from '@hapi/hapi';
 
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
+import { frenAdd, frenRemove } from './commands/fren';
 
 const client = new Client({
   intents: [
@@ -101,7 +102,34 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await bottomCommand(interaction);
     } else if (commandName === 'uwurandom') {
       await uwurandomCommand(interaction);
+    } else if (commandName === 'fren') {
+      const sub = interaction.options.getSubcommand();
+      if (sub === 'add') await frenAdd(interaction);
+      else if (sub === 'remove') await frenRemove(interaction);
     }
+  } catch (e) {
+    console.error(e);
+
+    const errorEmbed = new EmbedBuilder()
+      .setTitle('An error occurred!')
+      .setDescription('Hmm. What happened there?')
+      .setColor(0xfa5252);
+
+    if (interaction.deferred) {
+      await interaction.editReply({
+        embeds: [errorEmbed],
+      });
+    } else if (!interaction.replied) {
+      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+    }
+  }
+});
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  try {
+    await handleButton(interaction);
   } catch (e) {
     console.error(e);
 

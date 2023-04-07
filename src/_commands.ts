@@ -87,6 +87,21 @@ export const reuploadCommands = async () => {
           .setRequired(true)
           .setMinValue(1)
       ),
+    new SlashCommandBuilder()
+      .setName('fren')
+      .setDescription('fren management')
+      .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName('add')
+          .setDescription('add a fren')
+          .addUserOption((option) =>
+            option
+              .setName('user')
+              .setDescription('user to add to fren')
+              .setRequired(true)
+          )
+      ),
     new ContextMenuCommandBuilder()
       .setName('Translate')
       .setType(ApplicationCommandType.Message),

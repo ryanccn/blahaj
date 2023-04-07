@@ -13,6 +13,9 @@ const env = z.object({
   GOOGLE_CLOUD_CLIENT_EMAIL: z.string().optional(),
   GOOGLE_CLOUD_PRIVATE_KEY: z.string().optional(),
 
+  GUILD_ID: z.string().regex(/^\d+$/),
+  FREN_ROLE_ID: z.string().regex(/^\d+$/).optional(),
+
   OPENAI_TOKEN: z.string().optional(),
 });
 
