@@ -39,7 +39,8 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildModeration,
+    GatewayIntentBits.GuildEmojisAndStickers,
   ],
   partials: [Partials.Channel, Partials.Message, Partials.Reaction],
   sweepers: {
