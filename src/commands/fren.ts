@@ -55,16 +55,16 @@ export const frenAdd: SlashCommand = async (i) => {
     permissionOverwrites: [
       {
         id: i.guild.roles.everyone.id,
-        deny: PermissionsBitField.All,
+        deny: [PermissionFlagsBits.ViewChannel],
       },
       {
         id: user.id,
-        allow: PermissionsBitField.Default,
+        allow: [PermissionFlagsBits.ViewChannel],
         deny: [PermissionFlagsBits.SendMessages],
       },
       {
         id: i.client.user.id,
-        allow: PermissionsBitField.All,
+        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
       },
     ],
   });
