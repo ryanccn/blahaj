@@ -4,7 +4,6 @@ import {
   ButtonStyle,
   CategoryChannel,
   PermissionFlagsBits,
-  PermissionsBitField,
 } from 'discord.js';
 import { nanoid } from 'nanoid';
 
@@ -64,7 +63,10 @@ export const frenAdd: SlashCommand = async (i) => {
       },
       {
         id: i.client.user.id,
-        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
+        allow: [
+          PermissionFlagsBits.ViewChannel,
+          PermissionFlagsBits.SendMessages,
+        ],
       },
     ],
   });
@@ -83,7 +85,11 @@ export const frenAdd: SlashCommand = async (i) => {
         new ButtonBuilder()
           .setStyle(ButtonStyle.Success)
           .setLabel('Accept')
-          .setCustomId(`fren-accept::${user.id}::${Date.now()}`)
+          .setCustomId(`fren-accept::${user.id}::${Date.now()}`),
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Danger)
+          .setLabel('Decline')
+          .setCustomId(`fren-decline::${user.id}::${Date.now()}`)
       ),
     ],
   });
