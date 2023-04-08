@@ -5,6 +5,7 @@ import {
   type ChatInputCommandInteraction,
   type ContextMenuCommandInteraction,
   type Client,
+  ChannelType,
 } from 'discord.js';
 import { red } from 'kleur/colors';
 
@@ -42,7 +43,7 @@ export const logErrorToDiscord = async ({
   const logsChannel = await client.channels.fetch(
     process.env.ERROR_LOGS_CHANNEL
   );
-  if (!logsChannel || !logsChannel.isTextBased()) {
+  if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
     console.error(
       red(
         `Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`
