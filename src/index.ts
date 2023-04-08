@@ -21,7 +21,6 @@ import { uwurandomCommand } from '~/commands/uwurandom';
 import { translateCommand } from '~/commands/translate';
 import { frenAdd } from '~/commands/fren';
 
-// import { parseSDMetadata } from '~/sdMetadata';
 import { handleChat } from '~/chat';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
@@ -147,16 +146,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
     ]);
   }
 });
-
-// client.on(Events.MessageCreate, async (e) => {
-//   try {
-//     if (e.author.bot) return;
-//     await parseSDMetadata(e);
-//   } catch (error) {
-//     console.error(error);
-//     await logErrorToDiscord({ client, error });
-//   }
-// });
 
 client.on(Events.MessageCreate, async (e) => {
   try {

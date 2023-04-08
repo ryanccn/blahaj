@@ -10,7 +10,6 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 ## Features
 
 - Presence customization
-- ~~Stable Diffusion metadata parsing~~
 - Starboard (but in catstares)
 - Bottom encoding / decoding
 - `cat /dev/uwurandom`
