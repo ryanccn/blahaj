@@ -3,8 +3,11 @@ import {
   ButtonBuilder,
   ButtonStyle,
   CategoryChannel,
+  PermissionFlagsBits,
   PermissionsBitField,
 } from 'discord.js';
+import { nanoid } from 'nanoid';
+
 import type { SlashCommand } from './_types';
 
 const frenAddMessage = (id: string) =>
@@ -21,13 +24,34 @@ This invite expires in 7 days. You are free to accept or ignore this invitation,
 export const frenAdd: SlashCommand = async (i) => {
   await i.deferReply({ ephemeral: true });
   const user = i.options.getUser('user', true);
-  const channel = await i.guild?.channels.create({
-    name: 'fren-invitation-' + user.username,
-    parent: process.env.FREN_CATEGORY_ID
-      ? ((await i.guild.channels.fetch(
-          process.env.FREN_CATEGORY_ID
-        )) as CategoryChannel)
-      : null,
+
+  if (!i.guild) return;
+
+  if (!process.env.TEMPORARY_CATEGORY_ID) {
+    await i.editReply({
+      content: '`TEMPORARY_CATEGORY_ID` not configured properly!',
+    });
+    return;
+  }
+  const temporaryCategory = await i.guild.channels.fetch(
+    process.env.TEMPORARY_CATEGORY_ID
+  );
+  if (!temporaryCategory) {
+    await i.editReply({
+      content: `Could not find category with ID \`${process.env.TEMPORARY_CATEGORY_ID}\``,
+    });
+    return;
+  }
+  if (!(temporaryCategory instanceof CategoryChannel)) {
+    await i.editReply({
+      content: `<#${temporaryCategory.id}> is not a category channel!`,
+    });
+    return;
+  }
+
+  const channel = await i.guild.channels.create({
+    name: 'fren-invitation-' + nanoid(8),
+    parent: temporaryCategory,
     permissionOverwrites: [
       {
         id: i.guild.roles.everyone.id,
@@ -36,11 +60,16 @@ export const frenAdd: SlashCommand = async (i) => {
       {
         id: user.id,
         allow: PermissionsBitField.Default,
+        deny: [PermissionFlagsBits.SendMessages],
+      },
+      {
+        id: i.client.user.id,
+        allow: PermissionsBitField.All,
       },
     ],
   });
 
-  if (channel == undefined) {
+  if (!channel) {
     await i.editReply({
       content: 'Failed to create a channel!',
     });
