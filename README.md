@@ -17,6 +17,7 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 - Special friend category handling
 - Context menu translation
 - Advanced error handling and logging
+- Direct Message logging
 
 ## Development
 

@@ -16,6 +16,7 @@ const env = z.object({
   GUILD_ID: z.string().regex(/^\d+$/),
   FREN_ROLE_ID: z.string().regex(/^\d+$/).optional(),
   TEMPORARY_CATEGORY_ID: z.string().regex(/^\d+$/).optional(),
+  DM_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
   ERROR_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
 
   OPENAI_TOKEN: z.string().optional(),

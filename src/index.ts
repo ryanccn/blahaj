@@ -25,6 +25,7 @@ import { handleChat } from '~/chat';
 import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
 import { handleButton } from '~/button';
 
+import { logDM } from '~/logDM';
 import { logErrorToDiscord, respondWithError } from '~/errorHandling';
 
 import { server as hapi } from '@hapi/hapi';
@@ -154,6 +155,16 @@ client.on(Events.MessageCreate, async (e) => {
     if (e.author.bot && !e.webhookId) return;
 
     await handleChat(e);
+  } catch (error) {
+    console.error(error);
+    await logErrorToDiscord({ client, error });
+  }
+});
+
+client.on(Events.MessageCreate, async (message) => {
+  try {
+    if (message.channel.type !== ChannelType.DM) return;
+    await logDM(message);
   } catch (error) {
     console.error(error);
     await logErrorToDiscord({ client, error });
