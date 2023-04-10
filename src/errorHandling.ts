@@ -57,7 +57,7 @@ export const logErrorToDiscord = async ({
       embeds: [
         new EmbedBuilder()
           .setTitle('An error occurred!')
-          .setDescription('```\n' + error.toString() + '\n```')
+          .setDescription('```\n' + error.trace ?? error.toString() + '\n```')
           .setColor(HEX_RED)
           .setTimestamp(Date.now()),
       ],
