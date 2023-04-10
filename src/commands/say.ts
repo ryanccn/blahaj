@@ -6,7 +6,14 @@ export const sayCommand: SlashCommand = async (i) => {
   await i.deferReply({ ephemeral: true });
 
   const text = i.options.getString('content', true);
-  await i.channel.send(text);
+  const dmUser = i.options.getUser('dm');
+
+  let channel = i.channel;
+  if (dmUser !== null) {
+    channel = await dmUser.createDM();
+  }
+
+  await channel.send(text);
 
   await i.editReply('Message sent!');
 };

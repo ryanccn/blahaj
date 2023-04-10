@@ -17,12 +17,18 @@ export const reuploadCommands = async () => {
       .setDescription('Replies with pong!'),
     new SlashCommandBuilder()
       .setName('say')
-      .setDescription('Say something, yeah')
+      .setDescription('Say something through the bot')
       .addStringOption((opt) =>
         opt
           .setName('content')
           .setDescription('The content to send')
           .setRequired(true)
+      )
+      .addUserOption((opt) =>
+        opt
+          .setName('dm')
+          .setDescription('DM this message to a specific user')
+          .setRequired(false)
       )
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     new SlashCommandBuilder()
