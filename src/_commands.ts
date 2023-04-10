@@ -86,6 +86,7 @@ export const reuploadCommands = async () => {
           .setDescription('Desired length of text')
           .setRequired(true)
           .setMinValue(1)
+          .setMaxValue(1000)
       ),
     new SlashCommandBuilder()
       .setName('fren')
