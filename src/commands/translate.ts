@@ -36,6 +36,20 @@ export const translateCommand: ContextMenuCommand = async (i) => {
     return;
   }
 
+  // Check if there's anything to translate before actually doing anything
+  if (i.targetMessage.content.length < 1) {
+    await i.reply({
+      ephemeral: true,
+      embeds: [
+        new EmbedBuilder()
+          .setTitle('Translation unavailable!')
+          .setDescription('There is nothing to be translated.')
+          .setColor(0xfacc15),
+      ],
+    });
+    return;
+  }
+
   await i.deferReply({ ephemeral: false });
 
   const message = i.targetMessage;
