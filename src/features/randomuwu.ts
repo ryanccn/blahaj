@@ -8,23 +8,26 @@ import { uwurandom } from '~/lib/uwurandom';
 
 const randomlyUwu = async (client: Client) => {
   const guild = await client.guilds.fetch(process.env.GUILD_ID);
-  const publiclyViewableChannels = await guild.channels
-    .fetch()
-    .then((channels) =>
-      channels.filter((channel) => {
-        if (!channel) return false;
-        if (!('permissionsFor' in channel)) return false;
-        if (channel.type !== ChannelType.GuildText) return false;
+  const channelPool = await guild.channels.fetch().then((channels) =>
+    channels.filter((channel) => {
+      if (!channel) return false;
+      if (channel.type !== ChannelType.GuildText) return false;
 
-        const everyonePermissions = channel.permissionsFor(guild.id, false);
-        return (
-          everyonePermissions &&
-          everyonePermissions.has(PermissionFlagsBits.SendMessages)
-        );
-      })
-    );
+      const everyonePermissions = channel.permissionsFor(guild.id, false);
+      const frenPermissions = process.env.FREN_ROLE_ID
+        ? channel.permissionsFor(process.env.FREN_ROLE_ID, false)
+        : null;
+      const requiredPermissions =
+        PermissionFlagsBits.ViewChannel & PermissionFlagsBits.SendMessages;
 
-  const randomChannel = publiclyViewableChannels.random() as
+      return (
+        everyonePermissions?.has(requiredPermissions) ||
+        frenPermissions?.has(requiredPermissions)
+      );
+    })
+  );
+
+  const randomChannel = channelPool.random() as
     | GuildTextBasedChannel
     | null
     | undefined;
