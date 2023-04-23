@@ -18,7 +18,7 @@ const randomlyUwu = async (client: Client) => {
         ? channel.permissionsFor(process.env.FREN_ROLE_ID, false)
         : null;
       const requiredPermissions =
-        PermissionFlagsBits.ViewChannel & PermissionFlagsBits.SendMessages;
+        PermissionFlagsBits.ViewChannel | PermissionFlagsBits.SendMessages;
 
       return (
         everyonePermissions?.has(requiredPermissions) ||
