@@ -33,6 +33,7 @@ import { logErrorToDiscord, respondWithError } from '~/features/errorHandling';
 import { server as hapi } from '@hapi/hapi';
 
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
+import { initRandomUwu } from './features/randomuwu';
 
 const client = new Client({
   intents: [
@@ -87,6 +88,8 @@ client.once(Events.ClientReady, async () => {
   if (process.env.NODE_ENV !== 'development') {
     console.warn(yellow(bold('Running in production mode!')));
   }
+
+  initRandomUwu(client);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
