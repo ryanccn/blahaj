@@ -35,7 +35,7 @@ const randomlyUwu = async (client: Client) => {
 
 export const initRandomUwu = (client: Client) => {
   setInterval(() => {
-    if (Math.random() > 0.2) return;
+    if (Math.random() > 0.05) return;
     randomlyUwu(client);
   }, 5 * 60 * 1000);
 };
