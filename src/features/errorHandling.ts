@@ -43,14 +43,10 @@ export const logErrorToDiscord = async ({
   const logsChannel = await client.channels.fetch(
     process.env.ERROR_LOGS_CHANNEL
   );
-  if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
-    console.error(
-      red(
-        `Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`
-      )
+  if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
+    throw new Error(
+      `Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`
     );
-    return;
-  }
 
   if (error instanceof Error) {
     await logsChannel.send({

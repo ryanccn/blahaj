@@ -21,12 +21,14 @@ import { uwurandomCommand } from '~/commands/uwurandom';
 import { translateCommand } from '~/commands/translate';
 import { frenAdd } from '~/commands/fren';
 
-import { handleChat } from '~/chat';
-import { handleCatstareAdd, handleCatstareRemove } from '~/catstareboard';
-import { handleButton } from '~/button';
-
-import { logDM } from '~/logDM';
-import { logErrorToDiscord, respondWithError } from '~/errorHandling';
+import { handleChat } from '~/features/chat';
+import {
+  handleCatstareAdd,
+  handleCatstareRemove,
+} from '~/features/catstareboard';
+import { handleButton } from '~/features/button';
+import { logDM } from '~/features/logDM';
+import { logErrorToDiscord, respondWithError } from '~/features/errorHandling';
 
 import { server as hapi } from '@hapi/hapi';
 

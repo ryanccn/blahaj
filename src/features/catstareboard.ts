@@ -6,24 +6,33 @@ import {
   type MessageReaction,
 } from 'discord.js';
 
-import { getGuildEmoji } from '~/utils';
-import { decr, del, get, incr, set } from '~/db';
-import { yellow } from 'kleur/colors';
+import { getGuildEmoji } from '~/lib/utils';
+import { decr, del, get, incr, set } from '~/lib/db';
+
+let EMOJI_REACTION_THRESHOLD = 2;
+if (process.env.CATSTAREBOARD_THRESHOLD) {
+  EMOJI_REACTION_THRESHOLD = parseInt(process.env.CATSTAREBOARD_THRESHOLD);
+}
 
 export const handleCatstareAdd = async (e: MessageReaction) => {
   if (!e.emoji.name?.includes('catstare')) return;
-  if (e.count < 1) return;
+  if (e.count < EMOJI_REACTION_THRESHOLD) return;
+
+  if (!process.env.CATSTAREBOARD_CHANNEL)
+    throw new Error('CATSTAREBOARD_CHANNEL not configured!');
 
   await e.message.fetch();
 
   if (!e.message.author || !e.message.guild) return;
 
-  const channels = await e.message.guild.channels.fetch();
-  const catstareBoard = channels.find((ch) => ch?.name === 'catstareboard');
+  const catstareBoard = await e.message.guild.channels.fetch(
+    process.env.CATSTAREBOARD_CHANNEL
+  );
 
   if (!catstareBoard || catstareBoard.type !== ChannelType.GuildText) {
-    console.warn(yellow('No #catstareboard found!'));
-    return;
+    throw new Error(
+      `Configured CATSTAREBOARD_CHANNEL (${process.env.CATSTAREBOARD_CHANNEL}) is invalid!`
+    );
   }
 
   const existingMessageId = await get([
@@ -37,8 +46,10 @@ export const handleCatstareAdd = async (e: MessageReaction) => {
       .then((res) => res.find((k) => k.id === existingMessageId));
 
     if (!existingResolvedMessage) {
-      await del(['catstareboard', e.message.id, 'message']);
-      await del(['catstareboard', e.message.id, 'count']);
+      await Promise.all([
+        del(['catstareboard', e.message.id, 'message']),
+        del(['catstareboard', e.message.id, 'count']),
+      ]);
     } else {
       const newCount = await incr(['catstareboard', e.message.id, 'count']);
 
@@ -78,23 +89,30 @@ export const handleCatstareAdd = async (e: MessageReaction) => {
     components: [row],
   });
 
-  await set(['catstareboard', e.message.id, 'count'], 1);
-  await set(['catstareboard', e.message.id, 'message'], msg.id);
+  await Promise.all([
+    set(['catstareboard', e.message.id, 'count'], 1),
+    set(['catstareboard', e.message.id, 'message'], msg.id),
+  ]);
 };
 
 export const handleCatstareRemove = async (e: MessageReaction) => {
   if (!e.emoji.name?.includes('catstare')) return;
 
+  if (!process.env.CATSTAREBOARD_CHANNEL)
+    throw new Error('CATSTAREBOARD_CHANNEL not configured!');
+
   await e.message.fetch();
 
   if (!e.message.author || !e.message.guild) return;
 
-  const channels = await e.message.guild.channels.fetch();
-  const catstareBoard = channels.find((ch) => ch?.name === 'catstareboard');
+  const catstareBoard = await e.message.guild.channels.fetch(
+    process.env.CATSTAREBOARD_CHANNEL
+  );
 
   if (!catstareBoard || catstareBoard.type !== ChannelType.GuildText) {
-    console.warn(yellow('No #catstareboard found!'));
-    return;
+    throw new Error(
+      `Configured CATSTAREBOARD_CHANNEL (${process.env.CATSTAREBOARD_CHANNEL}) is invalid!`
+    );
   }
 
   const existingMessageId = await get([
@@ -103,8 +121,13 @@ export const handleCatstareRemove = async (e: MessageReaction) => {
     'message',
   ]);
 
+  if (!existingMessageId)
+    throw new Error(
+      `Catstareboard data for ${e.message.id} could not be found!`
+    );
+
   const existingResolvedMessage = await catstareBoard.messages
-    .fetch()
+    .fetch({ around: existingMessageId })
     .then((res) => res.find((k) => k.id === existingMessageId));
 
   if (!existingResolvedMessage) {
@@ -112,8 +135,9 @@ export const handleCatstareRemove = async (e: MessageReaction) => {
   }
 
   const newCount = await decr(['catstareboard', e.message.id, 'count']);
-  if (newCount < 1) await existingResolvedMessage.delete();
-  else {
+  if (newCount < EMOJI_REACTION_THRESHOLD) {
+    await existingResolvedMessage.delete();
+  } else {
     await existingResolvedMessage.edit(
       `**${await getGuildEmoji(
         e.message.guild,

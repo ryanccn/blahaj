@@ -1,5 +1,4 @@
-import { ChannelType, EmbedBuilder, type Message } from 'discord.js';
-import { red } from 'kleur/colors';
+import { EmbedBuilder, ChannelType, type Message } from 'discord.js';
 
 export const logDM = async (message: Message<boolean>) => {
   if (!process.env.DM_LOGS_CHANNEL) return;
@@ -7,14 +6,10 @@ export const logDM = async (message: Message<boolean>) => {
   const logsChannel = await message.client.channels.fetch(
     process.env.DM_LOGS_CHANNEL
   );
-  if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
-    console.error(
-      red(
-        `Specified DM logging channel ${process.env.DM_LOGS_CHANNEL} does not exist or is not a text channel!`
-      )
+  if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
+    throw new Error(
+      `Specified DM logging channel ${process.env.DM_LOGS_CHANNEL} does not exist or is not a text channel!`
     );
-    return;
-  }
 
   const dmEmbed = new EmbedBuilder()
     .setDescription(message.content || '*No content*')

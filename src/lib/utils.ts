@@ -1,5 +1,6 @@
 import { EmbedBuilder, type Guild } from 'discord.js';
 import { blue, bold, red, dim } from 'kleur/colors';
+
 import { type ZodError } from 'zod';
 
 export const getGuildEmoji = async (guild: Guild, name: string) => {

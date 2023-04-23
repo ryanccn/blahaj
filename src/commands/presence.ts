@@ -1,5 +1,5 @@
 import { ActivityType } from 'discord.js';
-import { successEmbed } from '~/utils';
+import { successEmbed } from '~/lib/utils';
 
 import type { SlashCommand } from './_types';
 

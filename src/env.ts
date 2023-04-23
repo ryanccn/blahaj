@@ -1,5 +1,5 @@
 import { z, ZodError } from 'zod';
-import { formatZodError } from './utils';
+import { formatZodError } from './lib/utils';
 
 const env = z.object({
   NODE_ENV: z.string().min(1),
@@ -18,6 +18,9 @@ const env = z.object({
   TEMPORARY_CATEGORY_ID: z.string().regex(/^\d+$/).optional(),
   DM_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
   ERROR_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
+
+  CATSTAREBOARD_THRESHOLD: z.string().regex(/^\d+$/).optional(),
+  CATSTAREBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
 
   OPENAI_TOKEN: z.string().optional(),
 });
