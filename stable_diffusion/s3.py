@@ -9,6 +9,14 @@ S3_ACCESS_KEY_ID = os.getenv("S3_ACCESS_KEY_ID")
 S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY")
 S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
+if (
+    not S3_ENDPOINT_URL
+    or not S3_ACCESS_KEY_ID
+    or not S3_SECRET_ACCESS_KEY
+    or not S3_BUCKET_NAME
+):
+    raise NameError("S3 not configured properly via environment variables!")
+
 
 def get_s3_resource():
     s3 = boto3.resource(
