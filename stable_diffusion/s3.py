@@ -8,12 +8,14 @@ S3_ENDPOINT_URL = os.getenv("S3_ENDPOINT_URL")
 S3_ACCESS_KEY_ID = os.getenv("S3_ACCESS_KEY_ID")
 S3_SECRET_ACCESS_KEY = os.getenv("S3_SECRET_ACCESS_KEY")
 S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+S3_PUBLIC_URL = os.getenv("S3_PUBLIC_URL")
 
 if (
     not S3_ENDPOINT_URL
     or not S3_ACCESS_KEY_ID
     or not S3_SECRET_ACCESS_KEY
     or not S3_BUCKET_NAME
+    or not S3_PUBLIC_URL
 ):
     raise NameError("S3 not configured properly via environment variables!")
 
@@ -35,4 +37,4 @@ def upload_file(content: bytes):
 
     s3.Object(S3_BUCKET_NAME, remote_path).put(Body=content)
 
-    return f"{S3_ENDPOINT_URL}/{S3_BUCKET_NAME}/{remote_path}"
+    return f"{S3_PUBLIC_URL}/{remote_path}"
