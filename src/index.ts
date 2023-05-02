@@ -156,7 +156,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on(Events.MessageCreate, async (e) => {
   try {
     if (e.channel.type !== ChannelType.GuildText) return;
-    if (e.channel.name !== 'chatbot') return;
+    if (e.channel.id !== process.env.CHATBOT_CHANNEL) return;
     if (e.author.bot && !e.webhookId) return;
 
     await handleChat(e);
