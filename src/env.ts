@@ -23,6 +23,7 @@ const env = z.object({
   CATSTAREBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
 
   OPENAI_TOKEN: z.string().optional(),
+  CHATBOT_CHANNEL: z.string().regex(/^\d+$/).optional(),
 });
 
 declare global {
