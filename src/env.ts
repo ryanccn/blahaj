@@ -24,6 +24,9 @@ const env = z.object({
 
   OPENAI_TOKEN: z.string().optional(),
   CHATBOT_CHANNEL: z.string().regex(/^\d+$/).optional(),
+
+  STABLE_DIFFUSION_API_URL: z.string().url().optional(),
+  STABLE_DIFFUSION_API_TOKEN: z.string().optional(),
 });
 
 declare global {

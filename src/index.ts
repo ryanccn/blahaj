@@ -20,12 +20,14 @@ import { bottomCommand } from '~/commands/bottom';
 import { uwurandomCommand } from '~/commands/uwurandom';
 import { translateCommand } from '~/commands/translate';
 import { frenAdd } from '~/commands/fren';
+import { stableDiffusionCommand } from '~/commands/stableDiffusion';
 
 import { handleChat } from '~/features/chat';
 import {
   handleCatstareAdd,
   handleCatstareRemove,
 } from '~/features/catstareboard';
+import { initRandomUwu } from '~/features/randomuwu';
 import { handleButton } from '~/features/button';
 import { logDM } from '~/features/logDM';
 import { logErrorToDiscord, respondWithError } from '~/features/errorHandling';
@@ -33,7 +35,6 @@ import { logErrorToDiscord, respondWithError } from '~/features/errorHandling';
 import { server as hapi } from '@hapi/hapi';
 
 import { green, bold, yellow, cyan, dim } from 'kleur/colors';
-import { initRandomUwu } from './features/randomuwu';
 
 const client = new Client({
   intents: [
@@ -111,6 +112,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     } else if (commandName === 'fren') {
       const sub = interaction.options.getSubcommand();
       if (sub === 'add') await frenAdd(interaction);
+    } else if (commandName === 'stable-diffusion') {
+      await stableDiffusionCommand(interaction);
     }
   } catch (error) {
     console.error(error);

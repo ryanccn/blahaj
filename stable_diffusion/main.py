@@ -165,10 +165,11 @@ async def start_endpoint(
 
     prompt = data.get("prompt")
     negative_prompt = data.get("negative_prompt", None)
+    seed = data.get("seed", None)
     upscale = data.get("upscale", None)
 
     call = generate.spawn(
-        prompt, negative_prompt=negative_prompt, upscale=bool(upscale)
+        prompt, negative_prompt=negative_prompt, seed=seed, upscale=bool(upscale)
     )
     return {"call_id": call.object_id}
 
