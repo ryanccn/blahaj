@@ -95,6 +95,35 @@ export const reuploadCommands = async () => {
           .setMaxValue(1000)
       ),
     new SlashCommandBuilder()
+      .setName('stable-diffusion')
+      .setDescription('Stable Diffusion')
+      .addStringOption((option) =>
+        option
+          .setName('prompt')
+          .setDescription('The prompt')
+          .setRequired(true)
+          .setMaxLength(500)
+      )
+      .addStringOption((option) =>
+        option
+          .setName('negative-prompt')
+          .setDescription('The negative prompt')
+          .setRequired(false)
+          .setMaxLength(500)
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName('seed')
+          .setDescription('The random seed')
+          .setRequired(false)
+      )
+      .addBooleanOption((option) =>
+        option
+          .setName('upscale')
+          .setDescription('Whether to upscale by 2x or not')
+          .setRequired(false)
+      ),
+    new SlashCommandBuilder()
       .setName('fren')
       .setDescription('fren management')
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
