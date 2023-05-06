@@ -19,8 +19,9 @@ const env = z.object({
   DM_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
   ERROR_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
 
-  STARBOARD_THRESHOLD: z.string().regex(/^\d+$/).optional(),
   STARBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
+  STARBOARD_EMOJIS: z.string().optional(),
+  STARBOARD_THRESHOLD: z.string().regex(/^\d+$/).optional(),
 
   OPENAI_TOKEN: z.string().optional(),
   CHATBOT_CHANNEL: z.string().regex(/^\d+$/).optional(),

@@ -3,10 +3,12 @@ import { blue, bold, red, dim } from 'kleur/colors';
 
 import { type ZodError } from 'zod';
 
-export const getGuildEmoji = async (guild: Guild, name: string) => {
-  const emojis = await guild.emojis.fetch();
-  const foundEmoji = emojis.find((k) => k.name === name);
-  return foundEmoji ? `<:${name}:${foundEmoji.id}>` : `[${name}]`;
+export const getGuildEmoji = async (guild: Guild, nameOrId: string) => {
+  const emojis = guild.emojis.cache;
+  const foundEmoji = emojis.find(
+    (k) => k.id === nameOrId || k.name === nameOrId
+  );
+  return foundEmoji ? `<:${nameOrId}:${foundEmoji.id}>` : `:${nameOrId}:`;
 };
 
 export const successEmbed = (title: string, description: string) => {

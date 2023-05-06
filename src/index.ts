@@ -181,7 +181,8 @@ client.on(Events.MessageCreate, async (message) => {
 
 client.on(Events.MessageReactionAdd, async (e) => {
   try {
-    e = await e.fetch();
+    if (e.partial) e = await e.fetch();
+
     if (!e.message.channelId || !e.message.guild) return;
     if (
       !e.message.guild.roles.everyone
@@ -199,7 +200,8 @@ client.on(Events.MessageReactionAdd, async (e) => {
 
 client.on(Events.MessageReactionRemove, async (e) => {
   try {
-    e = await e.fetch();
+    if (e.partial) e = await e.fetch();
+
     if (!e.message.channel || !e.message.guild) return;
     if (
       !e.message.guild.roles.everyone
