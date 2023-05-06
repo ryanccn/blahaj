@@ -16,6 +16,7 @@ import {
 import { pingCommand } from '~/commands/ping';
 import { sayCommand } from '~/commands/say';
 import { presenceCommand } from '~/commands/presence';
+import { statsCommand } from '~/commands/stats';
 import { bottomCommand } from '~/commands/bottom';
 import { uwurandomCommand } from '~/commands/uwurandom';
 import { translateCommand } from '~/commands/translate';
@@ -105,6 +106,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await sayCommand(interaction);
     } else if (commandName === 'presence') {
       await presenceCommand(interaction);
+    } else if (commandName === 'stats') {
+      await statsCommand(interaction);
     } else if (commandName === 'bottom') {
       await bottomCommand(interaction);
     } else if (commandName === 'uwurandom') {

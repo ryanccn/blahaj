@@ -20,6 +20,7 @@
     "nanoid": "^4.0.2",
     "openai": "^3.2.1",
     "redis": "^4.6.5",
+    "systeminformation": "^5.17.12",
     "tsx": "^3.12.6",
     "uwurandom-node": "^0.1.0",
     "zod": "^3.21.4"

@@ -57,6 +57,9 @@ export const reuploadCommands = async () => {
       )
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
     new SlashCommandBuilder()
+      .setName('stats')
+      .setDescription('Get system statistics and information'),
+    new SlashCommandBuilder()
       .setName('bottom')
       .setDescription('🥺')
       .addSubcommand((subcommand) =>
