@@ -16,6 +16,11 @@ import { dim, yellow } from 'kleur/colors';
 const SYSTEM_MESSAGE =
   'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. Your developer is Ryan Cao (username RyanCaoDev), the owner of the guild, and you were written in Discord.js. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, messages NOT BY YOU will be prefixed with the username or nickname of the author, folloed by a colon. You can treat the username as the name of the author. However, you should not not prefix the messages you send with any username whatsoever. You can use the emoji <a:catpat:1102492443523416114> to give members virtual pats when they feel down or ask for pets.';
 
+let CHATBOT_ESCAPE_CHAR = '\\';
+if (process.env.CHATBOT_ESCAPE_CHAR) {
+  CHATBOT_ESCAPE_CHAR = process.env.CHATBOT_ESCAPE_CHAR;
+}
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_TOKEN,
 });
@@ -44,7 +49,7 @@ export const handleChat = async (message: Message) => {
 
     return;
   }
-  if (message.content.startsWith('\\')) return;
+  if (message.content.startsWith(CHATBOT_ESCAPE_CHAR)) return;
 
   await message.channel.sendTyping();
   const typingTimer = setInterval(() => message.channel.sendTyping(), 5000);
@@ -73,7 +78,7 @@ export const handleChat = async (message: Message) => {
 
     const context = [
       ...msgs
-        .filter((k) => !k.content.startsWith('\\'))
+        .filter((k) => !k.content.startsWith(CHATBOT_ESCAPE_CHAR))
         .map<ChatCompletionRequestMessage>((msg) => {
           if (msg.author === msg.author.client.user) {
             return { role: 'assistant', content: msg.content };
