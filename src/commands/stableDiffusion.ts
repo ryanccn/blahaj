@@ -74,7 +74,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
         .setTitle('Working...')
         .setDescription(
           'Your image is being generated!\n' +
-            `Estimated to be done <t:${Math.floor(Date.now() / 1000) + 20}:R>`
+            `Estimated to be done <t:${Math.floor(Date.now() / 1000) + 40}:R>`
         )
         .setColor(0x2dd4bf),
     ],
