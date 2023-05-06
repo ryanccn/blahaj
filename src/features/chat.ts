@@ -78,12 +78,13 @@ export const handleChat = async (message: Message) => {
           if (msg.author === msg.author.client.user) {
             return { role: 'assistant', content: msg.content };
           }
+          const roles = msg.member?.roles.cache.map((role) => role.name);
 
           return {
             role: 'user',
-            content: `${msg.member?.nickname ?? msg.author.username}: ${
-              msg.content
-            }`,
+            content: `${msg.member?.nickname ?? msg.author.username}${
+              roles?.length ? ` (${roles.join(', ')})` : ''
+            }: ${msg.content}`,
           };
         }),
     ];
