@@ -18,6 +18,8 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 - Context menu translation
 - Advanced error handling and logging
 - Direct Message logging
+- Stable Diffusion generation (powered by [Modal](https://modal.com/))
+- System stats command
 
 ## Development
 
