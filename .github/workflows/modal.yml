@@ -2,8 +2,9 @@ name: Deploy to Modal
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - 'stable_diffusion/**'
 
 jobs:
   deploy:
