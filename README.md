@@ -10,7 +10,7 @@ Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Rail
 ## Features
 
 - Presence customization
-- Starboard (but in catstares)
+- Configurable starboard
 - Bottom encoding / decoding
 - `cat /dev/uwurandom`
 - Chatbot powered by OpenAI

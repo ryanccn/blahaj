@@ -24,10 +24,7 @@ import { frenAdd } from '~/commands/fren';
 import { stableDiffusionCommand } from '~/commands/stableDiffusion';
 
 import { handleChat } from '~/features/chat';
-import {
-  handleCatstareAdd,
-  handleCatstareRemove,
-} from '~/features/catstareboard';
+import { handleStarAdd, handleStarRemove } from '~/features/starboard';
 import { initRandomUwu } from '~/features/randomuwu';
 import { handleButton } from '~/features/button';
 import { logDM } from '~/features/logDM';
@@ -193,7 +190,7 @@ client.on(Events.MessageReactionAdd, async (e) => {
     )
       return;
 
-    await handleCatstareAdd(e);
+    await handleStarAdd(e);
   } catch (error) {
     console.error(error);
     await logErrorToDiscord({ client, error });
@@ -211,7 +208,7 @@ client.on(Events.MessageReactionRemove, async (e) => {
     )
       return;
 
-    await handleCatstareRemove(e);
+    await handleStarRemove(e);
   } catch (error) {
     console.error(error);
     await logErrorToDiscord({ client, error });
