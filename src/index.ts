@@ -182,14 +182,7 @@ client.on(Events.MessageCreate, async (message) => {
 client.on(Events.MessageReactionAdd, async (e) => {
   try {
     if (e.partial) e = await e.fetch();
-
     if (!e.message.channelId || !e.message.guild) return;
-    if (
-      !e.message.guild.roles.everyone
-        .permissionsIn(e.message.channelId)
-        .has(PermissionFlagsBits.ViewChannel)
-    )
-      return;
 
     await handleStarAdd(e);
   } catch (error) {
@@ -201,14 +194,7 @@ client.on(Events.MessageReactionAdd, async (e) => {
 client.on(Events.MessageReactionRemove, async (e) => {
   try {
     if (e.partial) e = await e.fetch();
-
     if (!e.message.channel || !e.message.guild) return;
-    if (
-      !e.message.guild.roles.everyone
-        .permissionsIn(e.message.channelId)
-        .has(PermissionFlagsBits.ViewChannel)
-    )
-      return;
 
     await handleStarRemove(e);
   } catch (error) {

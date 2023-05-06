@@ -3,6 +3,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ChannelType,
+  PermissionFlagsBits,
   type GuildBasedChannel,
   type MessageReaction,
 } from 'discord.js';
@@ -20,23 +21,60 @@ if (process.env.STARBOARD_EMOJIS) {
 }
 
 const getStarboardChannel = async (e: MessageReaction) => {
-  if (!process.env.STARBOARD_CHANNEL)
-    throw new Error('STARBOARD_CHANNEL misconfigured!');
+  if (
+    e.message.channel.type !== ChannelType.GuildText &&
+    e.message.channel.type !== ChannelType.PublicThread
+  )
+    return null;
 
-  let starboard: GuildBasedChannel | null | undefined =
-    e.message.guild!.channels.cache.get(process.env.STARBOARD_CHANNEL);
-  if (!starboard) {
-    starboard = await e.message.guild!.channels.fetch(
-      process.env.STARBOARD_CHANNEL
-    );
-  }
-  if (!starboard || starboard.type !== ChannelType.GuildText) {
-    throw new Error(
-      `Configured STARBOARD_CHANNEL (${process.env.STARBOARD_CHANNEL}) is invalid!`
-    );
+  if (
+    e.message.channel.parent &&
+    e.message.channel.parent.id === process.env.FREN_CATEGORY_ID &&
+    process.env.FREN_STARBOARD_CHANNEL
+  ) {
+    let starboard: GuildBasedChannel | null | undefined =
+      e.message.guild!.channels.cache.get(process.env.FREN_STARBOARD_CHANNEL);
+
+    if (!starboard) {
+      starboard = await e.message.guild!.channels.fetch(
+        process.env.FREN_STARBOARD_CHANNEL
+      );
+    }
+
+    if (!starboard || starboard.type !== ChannelType.GuildText) {
+      throw new Error(
+        `Configured FREN_STARBOARD_CHANNEL (${process.env.FREN_STARBOARD_CHANNEL}) is invalid!`
+      );
+    }
+
+    return starboard;
   }
 
-  return starboard;
+  if (
+    e.message
+      .guild!.roles.everyone.permissionsIn(e.message.channelId)
+      .has(PermissionFlagsBits.ViewChannel) &&
+    process.env.STARBOARD_CHANNEL
+  ) {
+    let starboard: GuildBasedChannel | null | undefined =
+      e.message.guild!.channels.cache.get(process.env.STARBOARD_CHANNEL);
+
+    if (!starboard) {
+      starboard = await e.message.guild!.channels.fetch(
+        process.env.STARBOARD_CHANNEL
+      );
+    }
+
+    if (!starboard || starboard.type !== ChannelType.GuildText) {
+      throw new Error(
+        `Configured STARBOARD_CHANNEL (${process.env.STARBOARD_CHANNEL}) is invalid!`
+      );
+    }
+
+    return starboard;
+  }
+
+  return null;
 };
 
 export const handleStarAdd = async (e: MessageReaction) => {
@@ -45,16 +83,13 @@ export const handleStarAdd = async (e: MessageReaction) => {
   if (!emojiIdentifier || !STARBOARD_EMOJIS.includes(emojiIdentifier)) return;
   if (e.count < EMOJI_REACTION_THRESHOLD) return;
 
-  if (!process.env.STARBOARD_CHANNEL) {
-    console.warn('STARBOARD_CHANNEL not configured!');
-    return;
-  }
-
   if (e.message.partial) e.message = await e.message.fetch();
 
   if (!e.message.author || !e.message.guild) return;
 
   const starboard = await getStarboardChannel(e);
+
+  if (!starboard) return;
 
   const existingMessageId = await get([
     'starboard',
@@ -131,6 +166,7 @@ export const handleStarRemove = async (e: MessageReaction) => {
   if (!e.message.author || !e.message.guild) return;
 
   const starboard = await getStarboardChannel(e);
+  if (!starboard) return;
 
   const existingMessageId = await get([
     'starboard',

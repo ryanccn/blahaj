@@ -15,11 +15,13 @@ const env = z.object({
 
   GUILD_ID: z.string().regex(/^\d+$/),
   FREN_ROLE_ID: z.string().regex(/^\d+$/).optional(),
+  FREN_CATEGORY_ID: z.string().regex(/^\d+$/).optional(),
   TEMPORARY_CATEGORY_ID: z.string().regex(/^\d+$/).optional(),
   DM_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
   ERROR_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
 
   STARBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
+  FREN_STARBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
   STARBOARD_EMOJIS: z.string().optional(),
   STARBOARD_THRESHOLD: z.string().regex(/^\d+$/).optional(),
 
