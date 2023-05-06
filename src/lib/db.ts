@@ -15,8 +15,14 @@ export const get = async (k: string | string[]) => {
   return await (await client).get(environmentScopedKey(resolveKey(k)));
 };
 
-export const set = async (k: string | string[], v: string | number) => {
-  await (await client).set(environmentScopedKey(resolveKey(k)), v);
+export const set = async (
+  k: string | string[],
+  v: string | number,
+  ttl?: number
+) => {
+  const key = environmentScopedKey(resolveKey(k));
+  await (await client).set(key, v);
+  if (ttl) await (await client).expire(key, ttl);
 };
 
 export const incr = async (k: string | string[]) => {

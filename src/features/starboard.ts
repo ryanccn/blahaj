@@ -146,9 +146,10 @@ export const handleStarAdd = async (e: MessageReaction) => {
     components: [row],
   });
 
+  const MONTH = 30 * 24 * 60 * 60;
   await Promise.all([
-    set(['starboard', e.message.id, emojiIdentifier, 'count'], 1),
-    set(['starboard', e.message.id, emojiIdentifier, 'message'], msg.id),
+    set(['starboard', e.message.id, emojiIdentifier, 'count'], 1, MONTH),
+    set(['starboard', e.message.id, emojiIdentifier, 'message'], msg.id, MONTH),
   ]);
 };
 
