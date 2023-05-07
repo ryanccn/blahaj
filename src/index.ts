@@ -23,6 +23,7 @@ import { translateCommand } from '~/commands/translate';
 import { frenAdd } from '~/commands/fren';
 import { stableDiffusionCommand } from '~/commands/stableDiffusion';
 
+import { parseSDMetadata } from '~/features/sdMetadata';
 import { handleChat } from '~/features/chat';
 import { handleStarAdd, handleStarRemove } from '~/features/starboard';
 import { initRandomUwu } from '~/features/randomuwu';
@@ -153,6 +154,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
       respondWithError(interaction),
       logErrorToDiscord({ client, error }),
     ]);
+  }
+});
+
+client.on(Events.MessageCreate, async (e) => {
+  try {
+    if (e.author.bot) return;
+    await parseSDMetadata(e);
+  } catch (error) {
+    console.error(error);
+    await logErrorToDiscord({ client, error });
   }
 });
 
