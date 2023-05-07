@@ -4,13 +4,6 @@ import type { SlashCommand } from './_types';
 
 const LOG_PREFIX = magenta('[Stable Diffusion] ');
 
-const startURL = new URL(
-  '/start',
-  process.env.STABLE_DIFFUSION_API_URL
-).toString();
-const getStatusURL = (callId: string) =>
-  new URL(`/status/${callId}`, process.env.STABLE_DIFFUSION_API_URL).toString();
-
 interface StableDiffusionAPIResponse {
   status: 'done';
   data: {
@@ -41,6 +34,16 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
     });
     return;
   }
+
+  const startURL = new URL(
+    '/start',
+    process.env.STABLE_DIFFUSION_API_URL
+  ).toString();
+  const getStatusURL = (callId: string) =>
+    new URL(
+      `/status/${callId}`,
+      process.env.STABLE_DIFFUSION_API_URL
+    ).toString();
 
   const prompt = i.options.getString('prompt', true);
   const negativePrompt = i.options.getString('negative-prompt');
