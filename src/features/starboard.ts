@@ -8,7 +8,7 @@ import {
   type MessageReaction,
 } from 'discord.js';
 
-import { get, incr, set, decr, del } from '~/lib/db';
+import { get, set, del } from '~/lib/db';
 
 let EMOJI_REACTION_THRESHOLD = 2;
 if (process.env.STARBOARD_THRESHOLD) {
@@ -103,22 +103,11 @@ export const handleStarAdd = async (e: MessageReaction) => {
       .then((res) => res.find((k) => k.id === existingMessageId));
 
     if (!existingResolvedMessage) {
-      await Promise.all([
-        del(['starboard', e.message.id, emojiIdentifier, 'message']),
-        del(['starboard', e.message.id, emojiIdentifier, 'count']),
-      ]);
+      await del(['starboard', e.message.id, emojiIdentifier, 'message']);
     } else {
-      const newCount = await incr([
-        'starboard',
-        e.message.id,
-        emojiIdentifier,
-        'count',
-      ]);
-
       await existingResolvedMessage.edit(
-        `**${e.emoji} ${newCount}** in <#${e.message.channel.id}>`
+        `**${e.emoji} ${e.count}** in <#${e.message.channel.id}>`
       );
-
       return;
     }
   }
@@ -147,10 +136,11 @@ export const handleStarAdd = async (e: MessageReaction) => {
   });
 
   const MONTH = 30 * 24 * 60 * 60;
-  await Promise.all([
-    set(['starboard', e.message.id, emojiIdentifier, 'count'], 1, MONTH),
-    set(['starboard', e.message.id, emojiIdentifier, 'message'], msg.id, MONTH),
-  ]);
+  await set(
+    ['starboard', e.message.id, emojiIdentifier, 'message'],
+    msg.id,
+    MONTH
+  );
 };
 
 export const handleStarRemove = async (e: MessageReaction) => {
@@ -185,17 +175,11 @@ export const handleStarRemove = async (e: MessageReaction) => {
 
   if (!existingResolvedMessage) return;
 
-  const newCount = await decr([
-    'starboard',
-    e.message.id,
-    emojiIdentifier,
-    'count',
-  ]);
-  if (newCount < EMOJI_REACTION_THRESHOLD) {
+  if (e.count < EMOJI_REACTION_THRESHOLD) {
     await existingResolvedMessage.delete();
   } else {
     await existingResolvedMessage.edit(
-      `**${e.emoji} ${newCount}** in <#${e.message.channel.id}>`
+      `**${e.emoji} ${e.count}** in <#${e.message.channel.id}>`
     );
   }
 };
