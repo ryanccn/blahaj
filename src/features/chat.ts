@@ -120,7 +120,7 @@ export const handleChat = async (message: Message) => {
     if (isAppropriate) {
       await message.reply({
         content: responseMessage,
-        allowedMentions: { parse: ['users'] },
+        allowedMentions: { parse: ['users'], repliedUser: true },
       });
     } else {
       await message.reply({
