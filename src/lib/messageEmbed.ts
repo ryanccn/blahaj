@@ -4,8 +4,9 @@ export const messageEmbed = async (message: Message) => {
   const embed = new EmbedBuilder()
     .setDescription(message.content || '*No content*')
     .setAuthor({
-      name: message.author.bot ? message.author.username : message.author.tag,
-      iconURL: message.author.avatarURL() ?? undefined,
+      name: message.member?.nickname ?? message.author.username,
+      iconURL:
+        message.member?.avatarURL() ?? message.author.avatarURL() ?? undefined,
     })
     .setTimestamp(message.createdTimestamp);
 
