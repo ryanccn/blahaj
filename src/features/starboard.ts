@@ -8,6 +8,7 @@ import {
   type MessageReaction,
 } from 'discord.js';
 
+import { messageEmbed } from '~/lib/messageEmbed';
 import { get, set, del } from '~/lib/db';
 
 let EMOJI_REACTION_THRESHOLD = 2;
@@ -121,17 +122,7 @@ export const handleStarAdd = async (e: MessageReaction) => {
 
   const msg = await starboard.send({
     content: `**${e.emoji} ${e.count}** in <#${e.message.channel.id}>`,
-    embeds: [
-      {
-        description: e.message.content ?? '*No content*',
-        author: {
-          name: e.message.author.bot
-            ? e.message.author.username
-            : e.message.author.tag,
-          icon_url: e.message.author.avatarURL() ?? undefined,
-        },
-      },
-    ],
+    embeds: [await messageEmbed(e.message)],
     components: [row],
   });
 

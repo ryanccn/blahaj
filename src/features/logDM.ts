@@ -1,4 +1,5 @@
-import { EmbedBuilder, ChannelType, type Message } from 'discord.js';
+import { ChannelType, type Message } from 'discord.js';
+import { messageEmbed } from '~/lib/messageEmbed';
 
 export const logDM = async (message: Message<boolean>) => {
   if (!process.env.DM_LOGS_CHANNEL) return;
@@ -11,24 +12,7 @@ export const logDM = async (message: Message<boolean>) => {
       `Specified DM logging channel ${process.env.DM_LOGS_CHANNEL} does not exist or is not a text channel!`
     );
 
-  const dmEmbed = new EmbedBuilder()
-    .setDescription(message.content || '*No content*')
-    .setAuthor({
-      name: message.author.tag,
-      iconURL: message.author.displayAvatarURL(),
-    })
-    .setTimestamp(message.createdTimestamp);
-
-  if (message.attachments.size > 0) {
-    dmEmbed.addFields({
-      name: 'Attachments',
-      value: [...message.attachments.mapValues((k) => k.url).values()].join(
-        '\n'
-      ),
-    });
-  }
-
   await logsChannel.send({
-    embeds: [dmEmbed],
+    embeds: [await messageEmbed(message)],
   });
 };
