@@ -102,8 +102,10 @@ export const handleChat = async (message: Message) => {
     let responseMessage = response.data.choices[0].message?.content;
     if (!responseMessage) return;
 
-    if (responseMessage.startsWith('Blåhaj: ')) {
-      responseMessage = responseMessage.replace('Blåhaj: ', '');
+    for (const incorrectPrefix of ['Blåhaj: ', 'Blåhaj (Discord Bot): ']) {
+      if (responseMessage.startsWith(incorrectPrefix)) {
+        responseMessage = responseMessage.replace(incorrectPrefix, '');
+      }
     }
 
     const isAppropriate = await openai
