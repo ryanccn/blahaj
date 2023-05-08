@@ -33,7 +33,7 @@ class UnproxiedMessageError extends Error {
 }
 
 export const handleChat = async (message: Message) => {
-  if (message.author === message.client.user) return;
+  if (message.interaction) return;
   
   if (!openai) {
     console.warn(
