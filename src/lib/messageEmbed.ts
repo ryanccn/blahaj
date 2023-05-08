@@ -11,9 +11,20 @@ export const messageEmbed = async (message: Message) => {
     .setTimestamp(message.createdTimestamp);
 
   if (message.attachments.size > 0) {
+    const imageAttachment = message.attachments
+      .filter((att) => att.contentType?.startsWith('image') ?? false)
+      .first();
+    const otherAttachments = message.attachments.filter(
+      (att) => !att.contentType?.startsWith('image') ?? false
+    );
+    if (imageAttachment) {
+      embed.setImage(imageAttachment.url);
+    }
     embed.addFields({
-      name: 'Attachments',
-      value: message.attachments.map((att) => att.url).join('\n'),
+      name: imageAttachment ? 'Other Attachments' : 'Attachments',
+      value: otherAttachments
+        .map((att) => `[${att.name}](${att.url})`)
+        .join('\n'),
     });
   }
 
