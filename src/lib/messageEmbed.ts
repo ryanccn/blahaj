@@ -12,17 +12,17 @@ export const messageEmbed = async (message: Message) => {
 
   if (message.attachments.size > 0) {
     const imageAttachment = message.attachments
-      .filter((att) => att.contentType?.startsWith('image') ?? false)
+      .filter((att) => att.contentType?.startsWith('image/'))
       .first();
-    const otherAttachments = message.attachments.filter(
-      (att) => !att.contentType?.startsWith('image') ?? false
-    );
+
     if (imageAttachment) {
       embed.setImage(imageAttachment.url);
     }
+
     embed.addFields({
       name: imageAttachment ? 'Other Attachments' : 'Attachments',
-      value: otherAttachments
+      value: message.attachments
+        .filter((att) => att.id !== imageAttachment?.id)
         .map((att) => `[${att.name}](${att.url})`)
         .join('\n'),
     });
