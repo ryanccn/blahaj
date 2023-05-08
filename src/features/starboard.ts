@@ -6,12 +6,13 @@ import {
   PermissionFlagsBits,
   type GuildBasedChannel,
   type MessageReaction,
+  type Message,
 } from 'discord.js';
 
 import { messageEmbed } from '~/lib/messageEmbed';
 import { get, set, del } from '~/lib/db';
 
-let EMOJI_REACTION_THRESHOLD = 2;
+let EMOJI_REACTION_THRESHOLD = 3;
 if (process.env.STARBOARD_THRESHOLD) {
   EMOJI_REACTION_THRESHOLD = parseInt(process.env.STARBOARD_THRESHOLD);
 }
@@ -21,23 +22,23 @@ if (process.env.STARBOARD_EMOJIS) {
   STARBOARD_EMOJIS = process.env.STARBOARD_EMOJIS.split(',');
 }
 
-const getStarboardChannel = async (e: MessageReaction) => {
+const getStarboardChannel = async (message: Message) => {
   if (
-    e.message.channel.type !== ChannelType.GuildText &&
-    e.message.channel.type !== ChannelType.PublicThread
+    message.channel.type !== ChannelType.GuildText &&
+    message.channel.type !== ChannelType.PublicThread
   )
     return null;
 
   if (
-    e.message.channel.parent &&
-    e.message.channel.parent.id === process.env.FREN_CATEGORY_ID &&
+    message.channel.parent &&
+    message.channel.parent.id === process.env.FREN_CATEGORY_ID &&
     process.env.FREN_STARBOARD_CHANNEL
   ) {
     let starboard: GuildBasedChannel | null | undefined =
-      e.message.guild!.channels.cache.get(process.env.FREN_STARBOARD_CHANNEL);
+      message.guild!.channels.cache.get(process.env.FREN_STARBOARD_CHANNEL);
 
     if (!starboard) {
-      starboard = await e.message.guild!.channels.fetch(
+      starboard = await message.guild!.channels.fetch(
         process.env.FREN_STARBOARD_CHANNEL
       );
     }
@@ -52,16 +53,16 @@ const getStarboardChannel = async (e: MessageReaction) => {
   }
 
   if (
-    e.message
-      .guild!.roles.everyone.permissionsIn(e.message.channelId)
+    message
+      .guild!.roles.everyone.permissionsIn(message.channelId)
       .has(PermissionFlagsBits.ViewChannel) &&
     process.env.STARBOARD_CHANNEL
   ) {
     let starboard: GuildBasedChannel | null | undefined =
-      e.message.guild!.channels.cache.get(process.env.STARBOARD_CHANNEL);
+      message.guild!.channels.cache.get(process.env.STARBOARD_CHANNEL);
 
     if (!starboard) {
-      starboard = await e.message.guild!.channels.fetch(
+      starboard = await message.guild!.channels.fetch(
         process.env.STARBOARD_CHANNEL
       );
     }
@@ -78,36 +79,37 @@ const getStarboardChannel = async (e: MessageReaction) => {
   return null;
 };
 
-export const handleStarAdd = async (e: MessageReaction) => {
-  const emojiIdentifier = e.emoji.id ?? e.emoji.name;
-
-  if (!emojiIdentifier || !STARBOARD_EMOJIS.includes(emojiIdentifier)) return;
-  if (e.count < EMOJI_REACTION_THRESHOLD) return;
-
-  if (e.message.partial) e.message = await e.message.fetch();
-
-  if (!e.message.author || !e.message.guild) return;
-
-  const starboard = await getStarboardChannel(e);
-
+const updateStarboard = async (message: Message) => {
+  const starboard = await getStarboardChannel(message);
   if (!starboard) return;
 
-  const existingMessageId = await get([
-    'starboard',
-    e.message.id,
-    emojiIdentifier,
-    'message',
-  ]);
+  const reactions = message.reactions.cache.filter(
+    (reaction) =>
+      STARBOARD_EMOJIS.includes(
+        reaction.emoji.id ?? reaction.emoji.name ?? ''
+      ) && reaction.count >= EMOJI_REACTION_THRESHOLD
+  );
+
+  const reactionString = reactions
+    .map((reaction) => `${reaction.emoji} ${reaction.count}`)
+    .join(' ');
+
+  if (reactions.size === 0) return;
+
+  const existingMessageId = await get(['starboard', message.id, 'message']);
   if (existingMessageId) {
     const existingResolvedMessage = await starboard.messages
-      .fetch()
+      .fetch({ around: existingMessageId, limit: 3 })
       .then((res) => res.find((k) => k.id === existingMessageId));
 
     if (!existingResolvedMessage) {
-      await del(['starboard', e.message.id, emojiIdentifier, 'message']);
+      await del(['starboard', message.id, 'message']);
+    } else if (reactions.size === 0) {
+      await existingResolvedMessage.delete();
+      return;
     } else {
       await existingResolvedMessage.edit(
-        `**${e.emoji} ${e.count}** in <#${e.message.channel.id}>`
+        `**${reactionString}** in <#${message.channel.id}>`
       );
       return;
     }
@@ -116,61 +118,26 @@ export const handleStarAdd = async (e: MessageReaction) => {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setLabel('Jump to message')
-      .setURL(e.message.url)
+      .setURL(message.url)
       .setStyle(ButtonStyle.Link)
   );
 
   const msg = await starboard.send({
-    content: `**${e.emoji} ${e.count}** in <#${e.message.channel.id}>`,
-    embeds: [await messageEmbed(e.message)],
+    content: `**${reactionString}** in <#${message.channel.id}>`,
+    embeds: [await messageEmbed(message)],
     components: [row],
   });
 
   const MONTH = 30 * 24 * 60 * 60;
-  await set(
-    ['starboard', e.message.id, emojiIdentifier, 'message'],
-    msg.id,
-    MONTH
-  );
+  await set(['starboard', message.id, 'message'], msg.id, MONTH);
+};
+
+export const handleStarAdd = async (e: MessageReaction) => {
+  if (e.message.partial) e.message = await e.message.fetch();
+  await updateStarboard(e.message);
 };
 
 export const handleStarRemove = async (e: MessageReaction) => {
-  const emojiIdentifier = e.emoji.id ?? e.emoji.name;
-  if (!emojiIdentifier || !STARBOARD_EMOJIS.includes(emojiIdentifier)) return;
-
-  if (!process.env.STARBOARD_CHANNEL) {
-    console.warn('STARBOARD_CHANNEL not configured!');
-    return;
-  }
-
   if (e.message.partial) e.message = await e.message.fetch();
-
-  if (!e.message.author || !e.message.guild) return;
-
-  const starboard = await getStarboardChannel(e);
-  if (!starboard) return;
-
-  const existingMessageId = await get([
-    'starboard',
-    e.message.id,
-    emojiIdentifier,
-    'message',
-  ]);
-
-  if (!existingMessageId)
-    throw new Error(`Starboard data for ${e.message.id} could not be found!`);
-
-  const existingResolvedMessage = await starboard.messages
-    .fetch({ around: existingMessageId, limit: 3 })
-    .then((res) => res.find((k) => k.id === existingMessageId));
-
-  if (!existingResolvedMessage) return;
-
-  if (e.count < EMOJI_REACTION_THRESHOLD) {
-    await existingResolvedMessage.delete();
-  } else {
-    await existingResolvedMessage.edit(
-      `**${e.emoji} ${e.count}** in <#${e.message.channel.id}>`
-    );
-  }
+  await updateStarboard(e.message);
 };
