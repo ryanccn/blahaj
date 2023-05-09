@@ -94,8 +94,6 @@ const updateStarboard = async (message: Message) => {
     .map((reaction) => `${reaction.emoji} ${reaction.count}`)
     .join(' ');
 
-  if (reactions.size === 0) return;
-
   const existingMessageId = await get(['starboard', message.id, 'message']);
   if (existingMessageId) {
     const existingResolvedMessage = await starboard.messages
@@ -114,6 +112,8 @@ const updateStarboard = async (message: Message) => {
       return;
     }
   }
+
+  if (reactions.size === 0) return;
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
