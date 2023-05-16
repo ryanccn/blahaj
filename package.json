@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/index.ts",
     "sync-commands": "tsx src/_commands.ts",
-    "start": "yarn sync-commands && NODE_ENV=production tsx src/index.ts"
+    "start": "pnpm run sync-commands && NODE_ENV=production tsx src/index.ts"
   },
   "dependencies": {
     "@google-cloud/translate": "^7.2.1",
