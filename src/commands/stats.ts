@@ -62,27 +62,27 @@ export const statsCommand: SlashCommand = async (i) => {
         .setTitle('System stats')
         .addFields({
           name: 'CPU',
-          value: await getCPUInfo(),
+          value: (await getCPUInfo()) || '*Unknown*',
         })
         .addFields({
           name: 'CPU load',
-          value: await getCPULoadInfo(),
+          value: (await getCPULoadInfo()) || '*Unknown*',
         })
         .addFields({
           name: 'Memory',
-          value: await getMemoryInfo(),
+          value: (await getMemoryInfo()) || '*Unknown*',
         })
         .addFields({
           name: 'Device',
-          value: await getHardwareInfo(),
+          value: (await getHardwareInfo()) || '*Unknown*',
         })
         .addFields({
           name: 'Operating system',
-          value: await getOSInfo(),
+          value: (await getOSInfo()) || '*Unknown*',
         })
         .addFields({
           name: 'Disks',
-          value: await getDiskInfo(),
+          value: (await getDiskInfo()) || '*Unknown*',
         })
         .setColor(0xa78bfa),
     ],
