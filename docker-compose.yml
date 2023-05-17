@@ -7,6 +7,14 @@ services:
       - '3000:4131'
     env_file:
       - .env
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.blahaj.rule=Host(`blahaj.ryanccn.dev`)'
+      - 'traefik.http.routers.blahaj.tls=true'
+    networks:
+      - traefik
+      - default
+
   redis:
     image: 'redis:alpine'
     command: redis-server --save 60 1
@@ -15,3 +23,8 @@ services:
 
 volumes:
   redis-data:
+
+networks:
+  traefik:
+    external:
+      name: traefik
