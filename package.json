@@ -9,6 +9,7 @@
     "start": "pnpm run sync-commands && NODE_ENV=production tsx src/index.ts"
   },
   "dependencies": {
+    "@discordjs/rest": "^1.7.1",
     "@google-cloud/translate": "^7.2.1",
     "@hapi/hapi": "^21.3.2",
     "bottomify": "^0.3.0",

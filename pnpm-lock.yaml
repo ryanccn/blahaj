@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@discordjs/rest':
+    specifier: ^1.7.1
+    version: 1.7.1
   '@google-cloud/translate':
     specifier: ^7.2.1
     version: 7.2.1

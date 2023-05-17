@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  bot:
+    build: .
+    ports:
+      - '3000:4131'
+    env_file:
+      - .env
+  redis:
+    image: 'redis:alpine'
+    command: redis-server --save 60 1
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
