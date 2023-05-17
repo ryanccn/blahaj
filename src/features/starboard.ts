@@ -28,6 +28,7 @@ const getStarboardChannel = async (message: Message) => {
     message.channel.type !== ChannelType.PublicThread
   )
     return null;
+  if (!message.guild) return null;
 
   if (
     message.channel.parent &&
@@ -53,9 +54,12 @@ const getStarboardChannel = async (message: Message) => {
   }
 
   if (
-    message
-      .guild!.roles.everyone.permissionsIn(message.channelId)
-      .has(PermissionFlagsBits.ViewChannel) &&
+    (message.channel
+      ?.permissionsFor(message.guild.id)
+      ?.has(PermissionFlagsBits.ViewChannel) ||
+      message.channel.parent
+        ?.permissionsFor(message.guild.id)
+        ?.has(PermissionFlagsBits.ViewChannel)) &&
     process.env.STARBOARD_CHANNEL
   ) {
     let starboard: GuildBasedChannel | null | undefined =

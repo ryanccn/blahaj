@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  bot:
+    build: .
+    env_file:
+      - .env
+
+  redis:
+    image: 'redis:alpine'
