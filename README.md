@@ -5,7 +5,9 @@
 
 A multipurpose, fun Discord bot for Ryanland.
 
-Made with [discord.js](https://discordjs.guide/) and TypeScript. Hosted on [Railway](https://railway.app/?referralCode=kmjX82).
+Made with [discord.js](https://discordjs.guide/) and TypeScript.
+
+The bot is hosted on an [AWS EC2](https://aws.amazon.com/ec2/) instance; the Stable Diffusion API is hosted on [Modal](https://modal.com/).
 
 ## Features
 
