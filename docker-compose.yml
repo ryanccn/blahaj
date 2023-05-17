@@ -3,16 +3,16 @@ version: '3.9'
 services:
   bot:
     build: .
-    ports:
-      - '3000:4131'
     env_file:
       - .env
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.blahaj.rule=Host(`blahaj.ryanccn.dev`)'
-      - 'traefik.http.routers.blahaj.tls=true'
+      - 'traefik.http.routers.blahaj.tls=false'
+      - 'traefik.http.routers.blahaj.service=blahaj-svc'
+      - 'traefik.http.services.blahaj-svc.loadbalancer.server.port=3000'
     networks:
-      - traefik
+      - traefik_traefik
       - default
 
   redis:
@@ -25,6 +25,5 @@ volumes:
   redis-data:
 
 networks:
-  traefik:
-    external:
-      name: traefik
+  traefik_traefik:
+    external: true
