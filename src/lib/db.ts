@@ -29,7 +29,9 @@ export const incr = async (k: string | string[], delta?: number) => {
   const key = environmentScopedKey(resolveKey(k));
   let oldValue = await storage.getItem(key);
 
-  if (typeof oldValue === 'string') oldValue = parseInt(oldValue);
+  if (oldValue === null) oldValue = 0;
+  else if (typeof oldValue === 'string') oldValue = parseInt(oldValue);
+
   if (typeof oldValue !== 'number' || isNaN(oldValue))
     throw new Error(`${key} is not a number, cannot increment!`);
 
