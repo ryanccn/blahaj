@@ -1,18 +1,19 @@
-import { createClient } from 'redis';
+import { createStorage } from 'unstorage';
+import MemoryDriver from 'unstorage/drivers/memory';
+import RedisDriver from 'unstorage/drivers/redis';
 
-const _client = createClient({ url: process.env.REDIS_URL });
-_client.on('error', (err) => {
-  console.error(err);
+const storage = createStorage({
+  driver: process.env.REDIS_URL
+    ? RedisDriver({ url: process.env.REDIS_URL })
+    : MemoryDriver(),
 });
-
-const client = _client.connect().then(() => _client);
 
 const resolveKey = (k: string | string[]) =>
   typeof k === 'string' ? k : k.join(':');
 const environmentScopedKey = (k: string) => `${process.env.NODE_ENV}:${k}`;
 
 export const get = async (k: string | string[]) => {
-  return await (await client).get(environmentScopedKey(resolveKey(k)));
+  return storage.getItem(environmentScopedKey(resolveKey(k)));
 };
 
 export const set = async (
@@ -21,18 +22,24 @@ export const set = async (
   ttl?: number
 ) => {
   const key = environmentScopedKey(resolveKey(k));
-  await (await client).set(key, v);
-  if (ttl) await (await client).expire(key, ttl);
+  await storage.setItem(key, v, { ttl });
 };
 
-export const incr = async (k: string | string[]) => {
-  return await (await client).incr(environmentScopedKey(resolveKey(k)));
+export const incr = async (k: string | string[], delta?: number) => {
+  const key = environmentScopedKey(resolveKey(k));
+  let oldValue = await storage.getItem(key);
+
+  if (typeof oldValue === 'string') oldValue = parseInt(oldValue);
+  if (typeof oldValue !== 'number' || isNaN(oldValue))
+    throw new Error(`${key} is not a number, cannot increment!`);
+
+  await storage.setItem(key, oldValue + (delta ?? 1));
 };
 
 export const decr = async (k: string | string[]) => {
-  return await (await client).decr(environmentScopedKey(resolveKey(k)));
+  await incr(k, -1);
 };
 
 export const del = async (k: string | string[]) => {
-  await (await client).del(environmentScopedKey(resolveKey(k)));
+  await storage.removeItem(environmentScopedKey(resolveKey(k)));
 };

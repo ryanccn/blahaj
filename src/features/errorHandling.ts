@@ -7,7 +7,6 @@ import {
   type Client,
   ChannelType,
 } from 'discord.js';
-import { red } from 'kleur/colors';
 
 const HEX_RED = 0xfa5252;
 
