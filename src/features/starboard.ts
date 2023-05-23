@@ -100,13 +100,12 @@ const updateStarboard = async (message: Message) => {
 
   let existingMessageId = await get(['starboard', message.id, 'message']);
 
-  if (typeof existingMessageId !== 'string') {
-    throw new Error(`Message ID found for ${message.id} is not a string!`);
-  }
-
-  existingMessageId = existingMessageId.slice(1);
-
   if (existingMessageId) {
+    if (typeof existingMessageId !== 'string') {
+      throw new Error(`Message ID found for ${message.id} is not a string!`);
+    }
+    existingMessageId = existingMessageId.slice(1);
+
     const existingResolvedMessage = await starboard.messages
       .fetch({ around: existingMessageId, limit: 3 })
       .then((res) => res.find((k) => k.id === existingMessageId));
