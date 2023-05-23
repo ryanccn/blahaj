@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/index.ts",
     "sync-commands": "tsx src/_commands.ts",
-    "start": "pnpm run sync-commands && NODE_ENV=production tsx src/index.ts"
+    "start": "pnpm run sync-commands && NODE_ENV=production tsx src/index.ts",
+    "lint": "tsc && eslint src"
   },
   "dependencies": {
     "@discordjs/rest": "^1.7.1",
@@ -36,7 +37,7 @@
     "typescript": "^5.0.4"
   },
   "engines": {
-    "node": "18"
+    "node": ">=18"
   },
   "packageManager": "pnpm@8.5.0"
 }

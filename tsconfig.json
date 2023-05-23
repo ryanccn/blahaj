@@ -3,16 +3,17 @@
     "strict": true,
     "downlevelIteration": true,
     "module": "esnext",
-    "target": "ES2018",
+    "target": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "noEmit": true,
     "baseUrl": "src",
-    "incremental": true,
     "paths": {
       "~/*": ["*"]
     }
   },
+  "include": ["**/*.ts"],
   "exclude": ["node_modules", "**/node_modules/*"]
 }
