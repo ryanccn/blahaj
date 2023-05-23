@@ -5,6 +5,7 @@ module.exports = {
 	root: true,
 	env: { node: true },
 	rules: {
-		"@typescript-eslint/no-non-null-assertion": 0,
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"no-mixed-spaces-and-tabs": "off",
 	},
 };
