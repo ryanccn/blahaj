@@ -1,19 +1,19 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "downlevelIteration": true,
-    "module": "esnext",
-    "target": "esnext",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "noEmit": true,
-    "baseUrl": "src",
-    "paths": {
-      "~/*": ["*"]
-    }
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "**/node_modules/*"]
+	"compilerOptions": {
+		"strict": true,
+		"downlevelIteration": true,
+		"module": "esnext",
+		"target": "esnext",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"noEmit": true,
+		"baseUrl": "src",
+		"paths": {
+			"~/*": ["*"]
+		}
+	},
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules", "**/node_modules/*"]
 }
