@@ -98,11 +98,13 @@ const updateStarboard = async (message: Message) => {
     .map((reaction) => `${reaction.emoji} ${reaction.count}`)
     .join(' ');
 
-  const existingMessageId = await get(['starboard', message.id, 'message']);
+  let existingMessageId = await get(['starboard', message.id, 'message']);
 
   if (typeof existingMessageId !== 'string') {
     throw new Error(`Message ID found for ${message.id} is not a string!`);
   }
+
+  existingMessageId = existingMessageId.slice(1);
 
   if (existingMessageId) {
     const existingResolvedMessage = await starboard.messages
@@ -138,7 +140,7 @@ const updateStarboard = async (message: Message) => {
   });
 
   const MONTH = 30 * 24 * 60 * 60;
-  await set(['starboard', message.id, 'message'], msg.id, MONTH);
+  await set(['starboard', message.id, 'message'], `c${msg.id}`, MONTH);
 };
 
 export const handleStarAdd = async (e: MessageReaction) => {
