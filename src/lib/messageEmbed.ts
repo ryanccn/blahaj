@@ -33,7 +33,7 @@ export const messageEmbed = async (message: Message) => {
 		}
 	}
 
-	if (message.reference) {
+	if (message.reference && message.reference.guildId === message.guildId) {
 		const repliedToMessage = await message.fetchReference();
 
 		embed.addFields({
