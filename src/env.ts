@@ -1,5 +1,7 @@
 import { z, ZodError } from "zod";
-import { formatZodError } from "./lib/utils";
+import { formatZodError } from "~/lib/utils";
+
+const snowflake = z.string().regex(/^\d+$/);
 
 const env = z.object({
 	NODE_ENV: z.string().min(1),
@@ -13,20 +15,20 @@ const env = z.object({
 	GOOGLE_CLOUD_CLIENT_EMAIL: z.string().optional(),
 	GOOGLE_CLOUD_PRIVATE_KEY: z.string().optional(),
 
-	GUILD_ID: z.string().regex(/^\d+$/),
-	FREN_ROLE_ID: z.string().regex(/^\d+$/).optional(),
-	FREN_CATEGORY_ID: z.string().regex(/^\d+$/).optional(),
-	TEMPORARY_CATEGORY_ID: z.string().regex(/^\d+$/).optional(),
-	DM_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
-	ERROR_LOGS_CHANNEL: z.string().regex(/^\d+$/).optional(),
+	GUILD_ID: snowflake,
+	FREN_ROLE_ID: snowflake.optional(),
+	FREN_CATEGORY_ID: snowflake.optional(),
+	TEMPORARY_CATEGORY_ID: snowflake.optional(),
+	DM_LOGS_CHANNEL: snowflake.optional(),
+	ERROR_LOGS_CHANNEL: snowflake.optional(),
 
-	STARBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
-	FREN_STARBOARD_CHANNEL: z.string().regex(/^\d+$/).optional(),
+	STARBOARD_CHANNEL: snowflake.optional(),
+	FREN_STARBOARD_CHANNEL: snowflake.optional(),
 	STARBOARD_EMOJIS: z.string().optional(),
-	STARBOARD_THRESHOLD: z.string().regex(/^\d+$/).optional(),
+	STARBOARD_THRESHOLD: snowflake.optional(),
 
 	OPENAI_TOKEN: z.string().optional(),
-	CHATBOT_CHANNEL: z.string().regex(/^\d+$/).optional(),
+	CHATBOT_CHANNEL: snowflake.optional(),
 	CHATBOT_ESCAPE_CHAR: z.string().optional(),
 
 	STABLE_DIFFUSION_API_URL: z.string().url().optional(),
