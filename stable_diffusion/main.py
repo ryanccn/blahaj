@@ -60,7 +60,7 @@ sd_image = (
 
 @stub.function(
     image=sd_image,
-    gpu="T4",
+    gpu="A10G",
     shared_volumes={
         "/root/cache/diffusers": diffusers_cache_volume,
         "/root/cache/embeddings": embeddings_cache_volume,
