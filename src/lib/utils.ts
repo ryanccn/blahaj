@@ -21,14 +21,23 @@ export const successEmbed = (title: string, description: string) => {
 export const formatZodError = (err: ZodError) => {
 	const issues = err.issues;
 	let ret = red(
-		bold(`${issues.length} validation error${issues.length > 1 ? "s" : ""}!\n`)
+		bold(
+			`${issues.length} validation error${issues.length !== 1 ? "s" : ""}!\n`
+		)
 	);
 
 	for (const issue of issues) {
-		ret += `${blue(issue.path.join(" > "))} ${dim("::")} ${issue.message}\n`;
+		ret +=
+			`${blue(issue.path.join(" > "))} ` +
+			`${dim("::")} ` +
+			issue.code +
+			" " +
+			`${dim("::")} ` +
+			issue.message +
+			"\n";
 	}
 
-	return ret;
+	return ret.trim();
 };
 
 /** https://stackoverflow.com/a/14919494 */
