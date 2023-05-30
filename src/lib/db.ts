@@ -10,23 +10,19 @@ const storage = createStorage({
 
 const resolveKey = (k: string | string[]) =>
 	typeof k === "string" ? k : k.join(":");
-const environmentScopedKey = (k: string) => `${process.env.NODE_ENV}:${k}`;
+const scopeToEnv = (k: string[]) => [process.env.NODE_ENV, ...k];
 
-export const get = async (k: string | string[]) => {
-	return storage.getItem(environmentScopedKey(resolveKey(k)));
+export const get = async (k: string[]) => {
+	return storage.getItem(resolveKey(scopeToEnv(k)));
 };
 
-export const set = async (
-	k: string | string[],
-	v: string | number,
-	ttl?: number
-) => {
-	const key = environmentScopedKey(resolveKey(k));
+export const set = async (k: string[], v: string | number, ttl?: number) => {
+	const key = resolveKey(scopeToEnv(k));
 	await storage.setItem(key, v, { ttl });
 };
 
-export const incr = async (k: string | string[], delta?: number) => {
-	const key = environmentScopedKey(resolveKey(k));
+export const incr = async (k: string[], delta?: number) => {
+	const key = resolveKey(scopeToEnv(k));
 	let oldValue = await storage.getItem(key);
 
 	if (oldValue === null) oldValue = 0;
@@ -38,10 +34,10 @@ export const incr = async (k: string | string[], delta?: number) => {
 	await storage.setItem(key, oldValue + (delta ?? 1));
 };
 
-export const decr = async (k: string | string[]) => {
+export const decr = async (k: string[]) => {
 	await incr(k, -1);
 };
 
-export const del = async (k: string | string[]) => {
-	await storage.removeItem(environmentScopedKey(resolveKey(k)));
+export const del = async (k: string[]) => {
+	await storage.removeItem(resolveKey(scopeToEnv(k)));
 };
