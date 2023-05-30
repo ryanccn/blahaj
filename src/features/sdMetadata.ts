@@ -1,10 +1,12 @@
 import { EmbedBuilder, type Message } from "discord.js";
 import { parse } from "exifr";
-import got from "got";
 
 import { createWriteStream } from "fs";
-import { pipeline } from "stream/promises";
 import { mkdtemp, rm } from "fs/promises";
+
+import { Readable } from "stream";
+import { pipeline } from "stream/promises";
+import type { ReadableStream } from "stream/web";
 
 import { tmpdir } from "os";
 import { join } from "path";
@@ -48,12 +50,16 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 	const resultEmbeds: EmbedBuilder[] = [];
 
 	for (const image of pngs.values()) {
-		const res = got.stream(image.url);
-		res.on("error", (err) => {
-			throw err;
-		});
+		const { body } = await fetch(image.url);
+		if (!body) {
+			throw new Error(`Failed to fetch image ${image.url}`);
+		}
+
 		const funnyPath = `${await TEMP_DIR}/${Date.now()}.png`;
-		await pipeline(res, createWriteStream(funnyPath));
+		await pipeline(
+			Readable.fromWeb(body as ReadableStream),
+			createWriteStream(funnyPath)
+		);
 
 		const data = await parse(funnyPath, {
 			xmp: true,
