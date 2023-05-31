@@ -218,7 +218,10 @@ client.on(Events.MessageReactionRemove, async (e) => {
 	}
 });
 
-await Promise.all([
+Promise.all([
 	startServer(),
 	reuploadCommands().then(() => client.login(process.env.DISCORD_TOKEN)),
-]);
+]).catch((e) => {
+	defaultLogger.error(e);
+	process.exit(1);
+});
