@@ -11,7 +11,6 @@ const env = z.object({
 	NODE_ENV: z.string().min(1),
 	PORT: z.string().regex(/^\d+$/).optional(),
 
-	DISCORD_APP: z.string().min(1),
 	DISCORD_TOKEN: z.string().min(1),
 	REDIS_URL: z.string().url().optional(),
 
