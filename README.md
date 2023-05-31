@@ -28,4 +28,4 @@ The bot is hosted on an [AWS EC2](https://aws.amazon.com/ec2/) instance; the Sta
 
 Set environment variables according to the schema defined in `src/env.ts`.
 
-Run `yarn dev` to start the bot in development mode; run `yarn start` in production.
+Run `pnpm dev` to start the bot in development mode; run `pnpm start` in production.
