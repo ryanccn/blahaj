@@ -7,10 +7,11 @@ export const logDM = async (message: Message<boolean>) => {
 	const logsChannel = await message.client.channels.fetch(
 		process.env.DM_LOGS_CHANNEL
 	);
-	if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
+	if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
 		throw new Error(
 			`Specified DM logging channel ${process.env.DM_LOGS_CHANNEL} does not exist or is not a text channel!`
 		);
+	}
 
 	await logsChannel.send({
 		embeds: [await messageEmbed(message)],

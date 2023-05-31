@@ -1,8 +1,8 @@
 import { EmbedBuilder } from "discord.js";
-import { magenta } from "kleur/colors";
 import type { SlashCommand } from "./_types";
+import { Logger } from "~/lib/logger";
 
-const LOG_PREFIX = magenta("[Stable Diffusion] ");
+const logger = new Logger("stable-diffusion");
 
 interface StableDiffusionAPIResponse {
 	status: "done";
@@ -69,7 +69,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		return res.json() as Promise<{ call_id: string }>;
 	});
 
-	console.log(LOG_PREFIX + `Dispatched ${callId}`);
+	logger.info(`Dispatched ${callId}`);
 
 	await i.editReply({
 		embeds: [
@@ -88,7 +88,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 	});
 
 	for (let _ = 1; _ <= 60; _++) {
-		console.log(LOG_PREFIX + `Polling ${callId} (try ${_}/60)`);
+		logger.info(`Polling ${callId} (try ${_}/60)`);
 		const statusResp = await fetch(getStatusURL(callId), {
 			headers: {
 				Authorization: `Bearer ${process.env.STABLE_DIFFUSION_API_TOKEN}`,
@@ -101,7 +101,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		} else if (statusResp.status === 200) {
 			const { data } = (await statusResp.json()) as StableDiffusionAPIResponse;
 
-			console.log(LOG_PREFIX + `Received success response from ${callId}`);
+			logger.info(`Received success response from ${callId}`);
 
 			await i.editReply({
 				embeds: [

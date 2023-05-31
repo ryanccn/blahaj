@@ -5,10 +5,13 @@ import {
 	ContextMenuCommandBuilder,
 	ApplicationCommandType,
 } from "discord.js";
+
 import { REST } from "@discordjs/rest";
+import type { RESTGetAPIOAuth2CurrentApplicationResult } from "discord-api-types/v10";
+
+import { defaultLogger } from "~/lib/logger";
 
 import "dotenv/config";
-import { green } from "kleur/colors";
 
 export const reuploadCommands = async () => {
 	const commands = [
@@ -148,16 +151,19 @@ export const reuploadCommands = async () => {
 		.map((command) => command.setDMPermission(false))
 		.map((command) => command.toJSON());
 
-	const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN!);
+	const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
-	await rest.put(Routes.applicationCommands(process.env.DISCORD_APP!), {
+	const { id: appId } = (await rest.get(
+		Routes.oauth2CurrentApplication()
+	)) as RESTGetAPIOAuth2CurrentApplicationResult;
+
+	await rest.put(Routes.applicationCommands(appId), {
 		body: commands,
 	});
 
-	console.log(green("Successfully registered application commands."));
+	defaultLogger.success(
+		`Successfully registered ${commands.length} application command${
+			commands.length !== 1 ? "s" : ""
+		}`
+	);
 };
-
-reuploadCommands().catch((e) => {
-	console.error(e);
-	process.exit(1);
-});

@@ -2,11 +2,11 @@
 	"name": "blahaj",
 	"version": "0.0.1",
 	"license": "AGPL-3.0-only",
+	"type": "module",
 	"private": true,
 	"scripts": {
 		"dev": "NODE_ENV=development tsx watch src/index.ts",
-		"sync-commands": "tsx src/_commands.ts",
-		"start": "pnpm run sync-commands && NODE_ENV=production tsx src/index.ts",
+		"start": "NODE_ENV=production tsx src/index.ts",
 		"lint": "tsc && eslint src"
 	},
 	"dependencies": {
@@ -30,6 +30,7 @@
 		"@types/node": "^20.2.5",
 		"@typescript-eslint/eslint-plugin": "^5.59.8",
 		"@typescript-eslint/parser": "^5.59.8",
+		"discord-api-types": "^0.37.43",
 		"eslint": "^8.41.0",
 		"prettier": "^2.8.8",
 		"typescript": "^5.0.4"

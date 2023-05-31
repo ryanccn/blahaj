@@ -11,7 +11,7 @@ import {
 	type ChatCompletionRequestMessage,
 } from "openai";
 
-import { dim, yellow } from "kleur/colors";
+import { Logger } from "~/lib/logger";
 
 const SYSTEM_MESSAGE =
 	"You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. Your developer is Ryan Cao (username RyanCaoDev), the owner of the guild, and you were written in Discord.js. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, messages NOT BY YOU will be prefixed with the username or nickname of the author, folloed by a colon. You can treat the username as the name of the author. However, you should not not prefix the messages you send with any username whatsoever. You can use the emoji <a:catpat:1102492443523416114> to give members virtual pats when they feel down or ask for pets.";
@@ -31,6 +31,8 @@ if (process.env.OPENAI_TOKEN) {
 	openai = new OpenAIApi(configuration);
 }
 
+const logger = new Logger("chat");
+
 const unproxiedMessages = new Set<string>();
 
 class UnproxiedMessageError extends Error {
@@ -41,16 +43,10 @@ export const handleChat = async (message: Message) => {
 	if (message.interaction) return;
 
 	if (!openai) {
-		console.warn(
-			yellow(
-				`No ${dim("`")}OPENAI_TOKEN${dim(
-					"`"
-				)} defined, not initializing chatbot`
-			)
-		);
-
+		logger.warn("No OPENAI_TOKEN defined, not initializing chatbot");
 		return;
 	}
+
 	if (message.content.startsWith(CHATBOT_ESCAPE_CHAR)) return;
 
 	await message.channel.sendTyping();
@@ -142,14 +138,10 @@ export const handleChat = async (message: Message) => {
 		clearInterval(typingTimer);
 
 		if (e instanceof DiscordAPIError && e.code === 50035) {
-			console.warn(
-				yellow(`Unable to reply to message, seems to have been deleted.`)
-			);
+			logger.warn("Unable to reply to message, seems to have been deleted.");
 		} else if (e instanceof UnproxiedMessageError) {
-			console.warn(
-				yellow(
-					`Not replying to ${message.id} because it has been found to be a duplicate`
-				)
+			logger.warn(
+				"Not replying to ${message.id} because it has been found to be a duplicate"
 			);
 		} else {
 			throw e;

@@ -1,4 +1,6 @@
 import { z, ZodError } from "zod";
+
+import { defaultLogger } from "~/lib/logger";
 import { formatZodError } from "~/lib/utils";
 
 const snowflake = z
@@ -11,7 +13,7 @@ const env = z.object({
 
 	DISCORD_APP: z.string().min(1),
 	DISCORD_TOKEN: z.string().min(1),
-	REDIS_URL: z.string().url(),
+	REDIS_URL: z.string().url().optional(),
 
 	GOOGLE_CLOUD_PROJECT_ID: z.string().optional(),
 	GOOGLE_CLOUD_CLIENT_EMAIL: z.string().optional(),
@@ -50,7 +52,7 @@ export const validateEnv = () => {
 		env.parse(process.env);
 	} catch (e: unknown) {
 		if (e instanceof ZodError) {
-			console.error(formatZodError(e));
+			defaultLogger.error(formatZodError(e));
 			process.exit(1);
 		} else {
 			throw e;

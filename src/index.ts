@@ -13,6 +13,9 @@ import {
 	ChannelType,
 } from "discord.js";
 
+import { reuploadCommands } from "~/commands";
+import { startServer } from "~/server";
+
 import { pingCommand } from "~/commands/ping";
 import { sayCommand } from "~/commands/say";
 import { presenceCommand } from "~/commands/presence";
@@ -31,9 +34,9 @@ import { handleButton } from "~/features/button";
 import { logDM } from "~/features/logDM";
 import { logErrorToDiscord, respondWithError } from "~/features/errorHandling";
 
-import { server as hapi } from "@hapi/hapi";
+import { defaultLogger } from "~/lib/logger";
 
-import { green, bold, yellow, cyan, dim } from "kleur/colors";
+import { cyan } from "kleur/colors";
 
 const client = new Client({
 	intents: [
@@ -58,9 +61,10 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, async () => {
-	console.log(green("Discord bot ready!"));
+	defaultLogger.success("Connected to Discord gateway!");
 
-	console.log(
+	defaultLogger.info(
+		"Invite link:",
 		cyan(
 			client.generateInvite({
 				scopes: [OAuth2Scopes.Bot],
@@ -86,7 +90,7 @@ client.once(Events.ClientReady, async () => {
 	);
 
 	if (process.env.NODE_ENV !== "development") {
-		console.warn(yellow(bold("Running in production mode!")));
+		defaultLogger.warn("Running in production mode!");
 	}
 
 	initRandomUwu(client);
@@ -117,7 +121,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			await stableDiffusionCommand(interaction);
 		}
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await Promise.all([
 			respondWithError(interaction),
 			logErrorToDiscord({ client, error }),
@@ -131,7 +135,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	try {
 		await handleButton(interaction);
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await Promise.all([
 			respondWithError(interaction),
 			logErrorToDiscord({ client, error }),
@@ -149,7 +153,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			await translateCommand(interaction);
 		}
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await Promise.all([
 			respondWithError(interaction),
 			logErrorToDiscord({ client, error }),
@@ -162,7 +166,7 @@ client.on(Events.MessageCreate, async (e) => {
 		if (e.author.bot) return;
 		await parseSDMetadata(e);
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error });
 	}
 });
@@ -175,7 +179,7 @@ client.on(Events.MessageCreate, async (e) => {
 
 		await handleChat(e);
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error });
 	}
 });
@@ -185,7 +189,7 @@ client.on(Events.MessageCreate, async (message) => {
 		if (message.channel.type !== ChannelType.DM) return;
 		await logDM(message);
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error });
 	}
 });
@@ -197,7 +201,7 @@ client.on(Events.MessageReactionAdd, async (e) => {
 
 		await handleStarAdd(e);
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error });
 	}
 });
@@ -209,30 +213,12 @@ client.on(Events.MessageReactionRemove, async (e) => {
 
 		await handleStarRemove(e);
 	} catch (error) {
-		console.error(error);
+		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error });
 	}
 });
 
-const startServer = async () => {
-	const hs = hapi({ port: process.env.PORT ?? 3000 });
-
-	hs.route({
-		method: "GET",
-		path: "/health",
-		handler: () => {
-			return { ok: true };
-		},
-	});
-
-	await hs.start();
-	console.log(dim(`Started health check server at ${hs.info.uri}.`));
-};
-
-client
-	.login(process.env.DISCORD_TOKEN)
-	.then(startServer)
-	.catch((e) => {
-		console.error(e);
-		process.exit(1);
-	});
+await Promise.all([
+	startServer(),
+	reuploadCommands().then(() => client.login(process.env.DISCORD_TOKEN)),
+]);

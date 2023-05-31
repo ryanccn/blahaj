@@ -22,7 +22,7 @@ export const presenceCommand: SlashCommand = async (i) => {
 			? ActivityType.Competing
 			: ActivityType.Playing;
 
-	i.client.user!.setPresence({
+	i.client.user.setPresence({
 		activities: [{ type: parsedType, name: text }],
 	});
 
