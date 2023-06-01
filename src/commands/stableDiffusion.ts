@@ -46,9 +46,10 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		).toString();
 
 	const prompt = i.options.getString("prompt", true);
-	const negativePrompt = i.options.getString("negative-prompt");
+	const negativePrompt =
+		i.options.getString("negative-prompt") ?? "<EasyNegative>";
 	const seed = i.options.getInteger("seed");
-	const upscale = i.options.getBoolean("upscale") ?? false;
+	const upscale = i.options.getBoolean("upscale") ?? true;
 
 	await i.deferReply();
 
