@@ -1,6 +1,6 @@
 import {
-	CategoryChannel,
 	PermissionFlagsBits,
+	ChannelType,
 	type Client,
 	type UserResolvable,
 	type TextChannel,
@@ -27,14 +27,16 @@ export const createTemporaryChannel = async ({
 		process.env.TEMPORARY_CATEGORY_ID
 	);
 
-	if (!temporaryCategory)
+	if (!temporaryCategory) {
 		throw new Error(
 			`Could not find (temporary) category with ID \`${process.env.TEMPORARY_CATEGORY_ID}\``
 		);
-	if (!(temporaryCategory instanceof CategoryChannel))
+	}
+	if (temporaryCategory.type !== ChannelType.GuildCategory) {
 		throw new Error(
-			`#${temporaryCategory.id} is not a (temporary) category channel!`
+			`#${temporaryCategory.name} (${temporaryCategory.id}) is not a (temporary) category channel!`
 		);
+	}
 
 	const channel = await guild.channels.create({
 		name: prefix + nanoid(8),
