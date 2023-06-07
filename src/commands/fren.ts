@@ -3,11 +3,11 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { createTemporaryChannel } from "~/lib/tmpChannel";
 import type { SlashCommand } from "./_types";
 
-const frenAddMessage = (id: string) =>
+const frenAddMessage = ({ id, fren }: { id: string; fren: string }) =>
 	`
 Hello there <@${id}>!
 
-Ryan, the owner of Ryanland, has invited you to **the private friends category** of the server! You will get the \`@fren\` role and gain access to a few new private channels.
+Ryan, the owner of Ryanland, has invited you to **the private friends category** of the server! You will get the <@&${fren}> role and gain access to a few new private channels.
 
 You received this invitation because Ryan has deemed you to be a fun and nice person in general.
 
@@ -18,6 +18,10 @@ export const frenAdd: SlashCommand = async (i) => {
 	await i.deferReply({ ephemeral: true });
 	const user = i.options.getUser("user", true);
 
+	if (!process.env.FREN_ROLE_ID) {
+		throw new Error("No FREN_ROLE_ID configured!");
+	}
+
 	const channel = await createTemporaryChannel({
 		client: i.client,
 		viewableUser: user,
@@ -25,7 +29,7 @@ export const frenAdd: SlashCommand = async (i) => {
 	});
 
 	await channel.send({
-		content: frenAddMessage(user.id),
+		content: frenAddMessage({ id: user.id, fren: process.env.FREN_ROLE_ID }),
 		components: [
 			new ActionRowBuilder<ButtonBuilder>().addComponents(
 				new ButtonBuilder()
@@ -38,6 +42,7 @@ export const frenAdd: SlashCommand = async (i) => {
 					.setCustomId(`fren-decline::${user.id}::${Date.now()}`)
 			),
 		],
+		allowedMentions: { users: [user.id], roles: [] },
 	});
 
 	await i.editReply({

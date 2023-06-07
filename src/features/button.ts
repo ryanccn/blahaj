@@ -53,7 +53,11 @@ export const handleButton = async (i: ButtonInteraction) => {
 			],
 		});
 
-		await i.channel.send("You have been added to `@fren`. Have fun!");
+		await i.channel.send({
+			content: `<@${userId}> You have been added to <@&${process.env.FREN_ROLE_ID}>. Have fun!`,
+			allowedMentions: { roles: [], users: [userId] },
+		});
+
 		setTimeout(() => {
 			if (!i.channel) return;
 			i.channel.delete();
