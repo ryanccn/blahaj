@@ -1,8 +1,8 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import * as exifr from "exifr";
+import { parse } from "exifr";
 
 import { createWriteStream } from "fs";
-import { mkdtemp, rm } from "fs/promises";
+import { mkdir, rm } from "fs/promises";
 
 import { Readable } from "stream";
 import { pipeline } from "stream/promises";
@@ -35,7 +35,10 @@ interface SDMetadata {
 	};
 }
 
-const TEMP_DIR = mkdtemp(join(tmpdir(), "blahaj-"));
+const TEMP_DIR = join(tmpdir(), "blahaj-sdmetadata");
+const ensureTempDir = async () => {
+	await mkdir(TEMP_DIR, { recursive: true });
+};
 
 const MAX_PROMPT_LENGTH = 1000;
 const truncateString = (str: string) => {
@@ -44,27 +47,29 @@ const truncateString = (str: string) => {
 };
 
 export const parseSDMetadata = async (e: Message<boolean>) => {
+	await ensureTempDir();
+
 	const pngs = e.attachments.filter((k) => k.contentType === "image/png");
 	if (!pngs) return;
 
 	const resultEmbeds: EmbedBuilder[] = [];
 
 	for (const image of pngs.values()) {
-		const { body } = await fetch(image.url);
-		if (!body) {
+		const { body, ok } = await fetch(image.url);
+		if (!ok || !body) {
 			throw new Error(`Failed to fetch image ${image.url}`);
 		}
 
-		const funnyPath = `${await TEMP_DIR}/${Date.now()}.png`;
+		const tempPath = join(TEMP_DIR, `${crypto.randomUUID()}.png`);
 		await pipeline(
 			Readable.fromWeb(body as ReadableStream),
-			createWriteStream(funnyPath)
+			createWriteStream(tempPath)
 		);
 
-		const data = await exifr.parse(funnyPath, {
+		const data = await parse(tempPath, {
 			xmp: true,
 		});
-		await rm(funnyPath);
+		await rm(tempPath);
 
 		if (!data) return;
 
@@ -256,5 +261,5 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 		}
 	}
 
-	if (resultEmbeds.length) await e.reply({ embeds: resultEmbeds });
+	if (resultEmbeds.length > 0) await e.reply({ embeds: resultEmbeds });
 };
