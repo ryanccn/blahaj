@@ -1,10 +1,10 @@
 import { blue, dim, green, red, yellow } from "kleur/colors";
 
 export class Logger {
-	prefixSuffix?: string;
+	private prefixSuffix?: string;
 
 	constructor(prefix?: string) {
-		this.prefixSuffix = prefix ? dim(`:${prefix}`) : "";
+		this.prefixSuffix = prefix ? dim(`[${prefix}]`) : "";
 	}
 
 	info(...a: unknown[]) {
@@ -21,6 +21,11 @@ export class Logger {
 
 	error(...a: unknown[]) {
 		console.error(`${red("error")}${this.prefixSuffix} ${dim("·")}`, ...a);
+	}
+
+	fatal(...a: unknown[]) {
+		console.error(`${red("fatal")}${this.prefixSuffix} ${dim("·")}`, ...a);
+		process.exit(1);
 	}
 }
 
