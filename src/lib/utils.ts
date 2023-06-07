@@ -22,7 +22,7 @@ export const formatZodError = (err: ZodError) => {
 	const issues = err.issues;
 	let ret = red(
 		bold(
-			`${issues.length} validation error${issues.length !== 1 ? "s" : ""}!\n`
+			`${issues.length} validation error${issues.length === 1 ? "" : "s"}!\n`
 		)
 	);
 

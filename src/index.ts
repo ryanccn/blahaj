@@ -100,25 +100,45 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
 
 	try {
-		const { commandName } = interaction;
+		const { commandName, options } = interaction;
 
-		if (commandName === "ping") {
-			await pingCommand(interaction);
-		} else if (commandName === "say") {
-			await sayCommand(interaction);
-		} else if (commandName === "presence") {
-			await presenceCommand(interaction);
-		} else if (commandName === "stats") {
-			await statsCommand(interaction);
-		} else if (commandName === "bottom") {
-			await bottomCommand(interaction);
-		} else if (commandName === "uwurandom") {
-			await uwurandomCommand(interaction);
-		} else if (commandName === "fren") {
-			const sub = interaction.options.getSubcommand();
-			if (sub === "add") await frenAdd(interaction);
-		} else if (commandName === "stable-diffusion") {
-			await stableDiffusionCommand(interaction);
+		switch (commandName) {
+			case "ping": {
+				await pingCommand(interaction);
+				break;
+			}
+			case "say": {
+				await sayCommand(interaction);
+				break;
+			}
+			case "presence": {
+				await presenceCommand(interaction);
+				break;
+			}
+			case "stats": {
+				await statsCommand(interaction);
+				break;
+			}
+			case "bottom": {
+				await bottomCommand(interaction);
+				break;
+			}
+			case "uwurandom": {
+				await uwurandomCommand(interaction);
+				break;
+			}
+			case "fren": {
+				const sub = options.getSubcommand();
+				if (sub === "add") await frenAdd(interaction);
+				break;
+			}
+			case "stable-diffusion": {
+				await stableDiffusionCommand(interaction);
+				break;
+			}
+			default: {
+				defaultLogger.warn(`Received unknown command ${commandName}`);
+			}
 		}
 	} catch (error) {
 		defaultLogger.error(error);
@@ -218,10 +238,10 @@ client.on(Events.MessageReactionRemove, async (e) => {
 	}
 });
 
-Promise.all([
-	startServer(),
-	reuploadCommands().then(() => client.login(process.env.DISCORD_TOKEN)),
-]).catch((e) => {
-	defaultLogger.error(e);
+try {
+	await Promise.all([startServer(), reuploadCommands()]);
+	await client.login(process.env.DISCORD_TOKEN);
+} catch (error) {
+	defaultLogger.error(error);
 	process.exit(1);
-});
+}

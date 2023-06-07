@@ -1,8 +1,9 @@
 {
 	"name": "blahaj",
 	"version": "0.0.1",
-	"license": "AGPL-3.0-only",
+	"type": "module",
 	"private": true,
+	"license": "AGPL-3.0-only",
 	"scripts": {
 		"dev": "NODE_ENV=development tsx watch src/index.ts",
 		"start": "NODE_ENV=production tsx src/index.ts",
@@ -31,6 +32,7 @@
 		"@typescript-eslint/parser": "^5.59.8",
 		"discord-api-types": "^0.37.43",
 		"eslint": "^8.41.0",
+		"eslint-plugin-unicorn": "^47.0.0",
 		"prettier": "^2.8.8",
 		"typescript": "^5.0.4"
 	},

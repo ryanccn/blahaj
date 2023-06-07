@@ -163,7 +163,7 @@ export const reuploadCommands = async () => {
 
 	defaultLogger.success(
 		`Successfully registered ${commands.length} application command${
-			commands.length !== 1 ? "s" : ""
+			commands.length === 1 ? "" : "s"
 		}`
 	);
 };

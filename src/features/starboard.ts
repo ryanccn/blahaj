@@ -14,7 +14,7 @@ import { get, set, del } from "~/lib/db";
 
 let EMOJI_REACTION_THRESHOLD = 3;
 if (process.env.STARBOARD_THRESHOLD) {
-	EMOJI_REACTION_THRESHOLD = parseInt(process.env.STARBOARD_THRESHOLD);
+	EMOJI_REACTION_THRESHOLD = Number.parseInt(process.env.STARBOARD_THRESHOLD);
 }
 
 let STARBOARD_EMOJIS = ["⭐"];
@@ -102,7 +102,9 @@ const updateStarboard = async (message: Message) => {
 
 	if (existingMessageId) {
 		if (typeof existingMessageId !== "string") {
-			throw new Error(`Message ID found for ${message.id} is not a string!`);
+			throw new TypeError(
+				`Message ID found for ${message.id} is not a string!`
+			);
 		}
 		existingMessageId = existingMessageId.slice(1);
 

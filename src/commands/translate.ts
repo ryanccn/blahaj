@@ -37,7 +37,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 	}
 
 	// Check if there's anything to translate before actually doing anything
-	if (i.targetMessage.content.length < 1) {
+	if (i.targetMessage.content.length === 0) {
 		await i.reply({
 			ephemeral: true,
 			embeds: [

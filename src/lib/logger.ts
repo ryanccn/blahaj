@@ -4,7 +4,7 @@ export class Logger {
 	private prefixSuffix?: string;
 
 	constructor(prefix?: string) {
-		this.prefixSuffix = prefix ? dim(`[${prefix}]`) : "";
+		this.prefixSuffix = prefix ? dim(`:${prefix}`) : "";
 	}
 
 	info(...a: unknown[]) {

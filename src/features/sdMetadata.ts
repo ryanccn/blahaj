@@ -1,15 +1,15 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import { parse } from "exifr";
+import * as exifr from "exifr";
 
-import { createWriteStream } from "fs";
-import { mkdir, rm } from "fs/promises";
+import { createWriteStream } from "node:fs";
+import { mkdir, rm } from "node:fs/promises";
 
-import { Readable } from "stream";
-import { pipeline } from "stream/promises";
-import type { ReadableStream } from "stream/web";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
+import type { ReadableStream } from "node:stream/web";
 
-import { tmpdir } from "os";
-import { join } from "path";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 interface SDMetadata {
 	model: string;
@@ -43,7 +43,7 @@ const ensureTempDir = async () => {
 const MAX_PROMPT_LENGTH = 1000;
 const truncateString = (str: string) => {
 	if (str.length <= MAX_PROMPT_LENGTH) return str;
-	return str.substring(0, MAX_PROMPT_LENGTH - 3) + "...";
+	return str.slice(0, Math.max(0, MAX_PROMPT_LENGTH - 3)) + "...";
 };
 
 export const parseSDMetadata = async (e: Message<boolean>) => {
@@ -66,7 +66,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 			createWriteStream(tempPath)
 		);
 
-		const data = await parse(tempPath, {
+		const data = await exifr.parse(tempPath, {
 			xmp: true,
 		});
 		await rm(tempPath);
@@ -84,7 +84,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 							name: "Model",
 							value: `${sdMetadata.model_weights}${
 								sdMetadata.model_hash
-									? ` [${sdMetadata.model_hash.substring(0, 8)}]`
+									? ` [${sdMetadata.model_hash.slice(0, 8)}]`
 									: ""
 							}`,
 						},
@@ -149,12 +149,14 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 			const prompt = parameters[0];
 			const negativePrompt = parameters
 				.slice(1)
-				.filter((k) => k.startsWith("Negative prompt:"))[0]
+				.find((k) => k.startsWith("Negative prompt:"))
 				?.replace("Negative prompt: ", "");
 
-			const options = parameters[parameters.length - 1]
-				.split(", ")
-				.map((k) => k.split(": "));
+			const options =
+				parameters
+					.at(-1)
+					?.split(", ")
+					.map((k) => k.split(": ")) ?? [];
 
 			resultEmbeds.push(
 				new EmbedBuilder()
@@ -194,12 +196,13 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 		) {
 			const mochiDiffusionData: Record<string, string> = {};
 
-			(data.description.value as string)
+			const dataFragments = (data.description.value as string)
 				.split("; ")
-				.map((k) => k.split(": "))
-				.forEach(([a, ...b]) => {
-					mochiDiffusionData[a] = b.join(": ");
-				});
+				.map((k) => k.split(": "));
+
+			for (const [a, ...b] of dataFragments) {
+				mochiDiffusionData[a] = b.join(": ");
+			}
 
 			resultEmbeds.push(
 				new EmbedBuilder()

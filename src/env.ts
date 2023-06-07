@@ -49,12 +49,12 @@ declare global {
 export const validateEnv = () => {
 	try {
 		env.parse(process.env);
-	} catch (e: unknown) {
-		if (e instanceof ZodError) {
-			defaultLogger.error(formatZodError(e));
+	} catch (error) {
+		if (error instanceof ZodError) {
+			defaultLogger.error(formatZodError(error));
 			process.exit(1);
 		} else {
-			throw e;
+			throw error;
 		}
 	}
 };

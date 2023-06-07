@@ -54,44 +54,41 @@ export const handleChat = async (message: Message) => {
 
 	try {
 		const msgs: Message<boolean>[] = [
-			...(
-				await message.channel.messages.fetch({
+			...(await message.channel.messages
+				.fetch({
 					after: SnowflakeUtil.generate({
 						timestamp: Date.now() - 2.5 * 60 * 1000,
 					}).toString(),
 					before: message.id,
 				})
-			).values(),
+				.then((res) => res.values())),
 		].reverse();
 
 		if (
 			msgs.length >= 2 &&
-			msgs[msgs.length - 1].webhookId &&
-			!msgs[msgs.length - 2].webhookId &&
-			msgs[msgs.length - 2].content.includes(msgs[msgs.length - 1].content)
+			msgs.at(-1)!.webhookId &&
+			!msgs.at(-2)!.webhookId &&
+			msgs.at(-2)!.content.includes(msgs.at(-1)!.content)
 		) {
-			unproxiedMessages.add(msgs[msgs.length - 2].id);
-			msgs.splice(msgs.length - 2, 1);
+			unproxiedMessages.add(msgs.at(-2)!.id);
+			msgs.splice(-2, 1);
 		}
 
-		const context = [
-			...msgs
-				.filter((k) => !k.content.startsWith(CHATBOT_ESCAPE_CHAR))
-				.map<ChatCompletionRequestMessage>((msg) => {
-					if (msg.author === msg.author.client.user) {
-						return { role: "assistant", content: msg.content };
-					}
-					const roles = msg.member?.roles.cache.map((role) => role.name);
+		const context = msgs
+			.filter((k) => !k.content.startsWith(CHATBOT_ESCAPE_CHAR))
+			.map<ChatCompletionRequestMessage>((msg) => {
+				if (msg.author === msg.author.client.user) {
+					return { role: "assistant", content: msg.content };
+				}
+				const roles = msg.member?.roles.cache.map((role) => role.name);
 
-					return {
-						role: "user",
-						content: `${msg.member?.nickname ?? msg.author.username}${
-							roles?.length ? ` (${roles.join(", ")})` : ""
-						}: ${msg.content}`,
-					};
-				}),
-		];
-
+				return {
+					role: "user",
+					content: `${msg.member?.nickname ?? msg.author.username}${
+						roles?.length ? ` (${roles.join(", ")})` : ""
+					}: ${msg.content}`,
+				};
+			});
 		if (unproxiedMessages.has(message.id)) {
 			unproxiedMessages.delete(message.id);
 			throw new UnproxiedMessageError();
@@ -115,6 +112,7 @@ export const handleChat = async (message: Message) => {
 			.createModeration({ input: responseMessage })
 			.then(({ data }) => !data.results[0].flagged);
 
+		// eslint-disable-next-line unicorn/prefer-ternary
 		if (isAppropriate) {
 			await message.reply({
 				content: responseMessage,
@@ -134,17 +132,17 @@ export const handleChat = async (message: Message) => {
 		}
 
 		clearInterval(typingTimer);
-	} catch (e) {
+	} catch (error) {
 		clearInterval(typingTimer);
 
-		if (e instanceof DiscordAPIError && e.code === 50035) {
+		if (error instanceof DiscordAPIError && error.code === 50035) {
 			logger.warn("Unable to reply to message, seems to have been deleted.");
-		} else if (e instanceof UnproxiedMessageError) {
+		} else if (error instanceof UnproxiedMessageError) {
 			logger.warn(
 				"Not replying to ${message.id} because it has been found to be a duplicate"
 			);
 		} else {
-			throw e;
+			throw error;
 		}
 	}
 };

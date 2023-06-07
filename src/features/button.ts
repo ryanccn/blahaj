@@ -15,7 +15,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 		if (!i.channel) return;
 		if (i.user.id !== userId) return;
 
-		if (Date.now() - parseInt(date) > 7 * 24 * 60 * 60 * 1000) {
+		if (Date.now() - Number.parseInt(date) > 7 * 24 * 60 * 60 * 1000) {
 			await i.channel.send(
 				"The invite has expired! Please ask for a new one :>"
 			);
