@@ -1,10 +1,4 @@
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonInteraction,
-	ButtonStyle,
-	ChannelType,
-} from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType } from "discord.js";
 
 export const handleButton = async (i: ButtonInteraction) => {
 	const buttonId = i.customId;
@@ -16,9 +10,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 		if (i.user.id !== userId) return;
 
 		if (Date.now() - Number.parseInt(date) > 7 * 24 * 60 * 60 * 1000) {
-			await i.channel.send(
-				"The invite has expired! Please ask for a new one :>"
-			);
+			await i.channel.send("The invite has expired! Please ask for a new one :>");
 
 			setTimeout(() => {
 				if (!i.channel) return;
@@ -65,11 +57,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 	} else if (buttonId.startsWith("fren-decline::")) {
 		if (!i.channel) return;
 
-		if (
-			i.channel &&
-			i.channel.type === ChannelType.GuildText &&
-			i.channel.name.startsWith("fren-invitation-")
-		) {
+		if (i.channel && i.channel.type === ChannelType.GuildText && i.channel.name.startsWith("fren-invitation-")) {
 			await i.channel.delete();
 		}
 	}

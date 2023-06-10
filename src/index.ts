@@ -147,10 +147,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 	} catch (error) {
 		defaultLogger.error(error);
-		await Promise.all([
-			respondWithError(interaction),
-			logErrorToDiscord({ client, error }),
-		]);
+		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error })]);
 	}
 });
 
@@ -161,10 +158,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		await handleButton(interaction);
 	} catch (error) {
 		defaultLogger.error(error);
-		await Promise.all([
-			respondWithError(interaction),
-			logErrorToDiscord({ client, error }),
-		]);
+		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error })]);
 	}
 });
 
@@ -179,10 +173,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 	} catch (error) {
 		defaultLogger.error(error);
-		await Promise.all([
-			respondWithError(interaction),
-			logErrorToDiscord({ client, error }),
-		]);
+		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error })]);
 	}
 });
 

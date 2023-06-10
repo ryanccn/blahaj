@@ -27,8 +27,6 @@ export const presenceCommand: SlashCommand = async (i) => {
 	});
 
 	await i.editReply({
-		embeds: [
-			successEmbed("Presence updated!", `${type ?? "Playing"} **${text}**`),
-		],
+		embeds: [successEmbed("Presence updated!", `${type ?? "Playing"} **${text}**`)],
 	});
 };

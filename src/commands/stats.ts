@@ -1,14 +1,7 @@
 import { EmbedBuilder } from "discord.js";
 import type { SlashCommand } from "./_types";
 
-import {
-	system,
-	cpu,
-	mem,
-	osInfo,
-	currentLoad,
-	diskLayout,
-} from "systeminformation";
+import { system, cpu, mem, osInfo, currentLoad, diskLayout } from "systeminformation";
 import { formatSize } from "~/lib/utils";
 
 const getCPUInfo = async () => {
@@ -28,17 +21,12 @@ const getCPULoadInfo = async () => {
 const getMemoryInfo = async () => {
 	const { active, total } = await mem();
 
-	return `${formatSize(active)}/${formatSize(total)} (${(
-		(active / total) *
-		100
-	).toFixed(2)}%)`;
+	return `${formatSize(active)}/${formatSize(total)} (${((active / total) * 100).toFixed(2)}%)`;
 };
 
 const getHardwareInfo = async () => {
 	const data = await system();
-	return `${data.manufacturer} **${data.model}**${
-		data.virtual ? " (virtual)" : ""
-	}`;
+	return `${data.manufacturer} **${data.model}**${data.virtual ? " (virtual)" : ""}`;
 };
 
 const getOSInfo = async () => {
@@ -48,9 +36,7 @@ const getOSInfo = async () => {
 
 const getDiskInfo = async () => {
 	const data = await diskLayout();
-	return data
-		.map((disk) => `**${disk.name}** ${disk.type}/${disk.interfaceType}`)
-		.join("\n");
+	return data.map((disk) => `**${disk.name}** ${disk.type}/${disk.interfaceType}`).join("\n");
 };
 
 export const statsCommand: SlashCommand = async (i) => {

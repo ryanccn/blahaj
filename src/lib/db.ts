@@ -3,13 +3,10 @@ import MemoryDriver from "unstorage/drivers/memory";
 import RedisDriver from "unstorage/drivers/redis";
 
 const storage = createStorage({
-	driver: process.env.REDIS_URL
-		? RedisDriver({ url: process.env.REDIS_URL })
-		: MemoryDriver(),
+	driver: process.env.REDIS_URL ? RedisDriver({ url: process.env.REDIS_URL }) : MemoryDriver(),
 });
 
-const resolveKey = (k: string | string[]) =>
-	typeof k === "string" ? k : k.join(":");
+const resolveKey = (k: string | string[]) => (typeof k === "string" ? k : k.join(":"));
 const scopeToEnv = (k: string[]) => [process.env.NODE_ENV, ...k];
 
 export const get = async (k: string[]) => {

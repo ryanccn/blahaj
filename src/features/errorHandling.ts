@@ -30,18 +30,10 @@ export const respondWithError = async (interaction: HandleableInteractions) => {
 	}
 };
 
-export const logErrorToDiscord = async ({
-	client,
-	error,
-}: {
-	client: Client;
-	error: unknown;
-}) => {
+export const logErrorToDiscord = async ({ client, error }: { client: Client; error: unknown }) => {
 	if (!process.env.ERROR_LOGS_CHANNEL) return;
 
-	const logsChannel = await client.channels.fetch(
-		process.env.ERROR_LOGS_CHANNEL
-	);
+	const logsChannel = await client.channels.fetch(process.env.ERROR_LOGS_CHANNEL);
 	if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
 		throw new Error(
 			`Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`

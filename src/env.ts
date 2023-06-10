@@ -3,9 +3,7 @@ import { z, ZodError } from "zod";
 import { defaultLogger } from "~/lib/logger";
 import { formatZodError } from "~/lib/utils";
 
-const snowflake = z
-	.string()
-	.regex(/^\d+$/, "Should be a snowflake, not a generic string");
+const snowflake = z.string().regex(/^\d+$/, "Should be a snowflake, not a generic string");
 
 const env = z.object({
 	NODE_ENV: z.string().min(1),

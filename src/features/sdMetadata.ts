@@ -1,5 +1,5 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import { parse } from "exifr";
+import * as exifr from "exifr";
 
 import { createWriteStream } from "node:fs";
 import { mkdir, rm } from "node:fs/promises";
@@ -61,12 +61,9 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 		}
 
 		const tempPath = join(TEMP_DIR, `${crypto.randomUUID()}.png`);
-		await pipeline(
-			Readable.fromWeb(body as ReadableStream),
-			createWriteStream(tempPath)
-		);
+		await pipeline(Readable.fromWeb(body as ReadableStream), createWriteStream(tempPath));
 
-		const data = await parse(tempPath, {
+		const data = await exifr.parse(tempPath, {
 			xmp: true,
 		});
 		await rm(tempPath);
@@ -83,9 +80,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 						{
 							name: "Model",
 							value: `${sdMetadata.model_weights}${
-								sdMetadata.model_hash
-									? ` [${sdMetadata.model_hash.slice(0, 8)}]`
-									: ""
+								sdMetadata.model_hash ? ` [${sdMetadata.model_hash.slice(0, 8)}]` : ""
 							}`,
 						},
 						{
@@ -125,12 +120,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 							name: "Postprocessing",
 							value:
 								sdMetadata.image.postprocessing
-									?.map(
-										(k) =>
-											`${k.type}${k.strength ? ` ${k.strength}` : ""}${
-												k.scale ? ` ${k.scale}x` : ""
-											}`
-									)
+									?.map((k) => `${k.type}${k.strength ? ` ${k.strength}` : ""}${k.scale ? ` ${k.scale}x` : ""}`)
 									.join("\n") || "None detected",
 							inline: true,
 						}
@@ -142,9 +132,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 					.setColor(0x38bdf8)
 			);
 		} else if (data["parameters"]) {
-			const parameters = (data.parameters as string)
-				.split("\n")
-				.filter(Boolean);
+			const parameters = (data.parameters as string).split("\n").filter(Boolean);
 
 			const prompt = parameters[0];
 			const negativePrompt = parameters
@@ -190,15 +178,10 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 					})
 					.setColor(0x38bdf8)
 			);
-		} else if (
-			typeof data.description?.value === "string" &&
-			data.description.value.includes("Mochi Diffusion")
-		) {
+		} else if (typeof data.description?.value === "string" && data.description.value.includes("Mochi Diffusion")) {
 			const mochiDiffusionData: Record<string, string> = {};
 
-			const dataFragments = (data.description.value as string)
-				.split("; ")
-				.map((k) => k.split(": "));
+			const dataFragments = (data.description.value as string).split("; ").map((k) => k.split(": "));
 
 			for (const [a, ...b] of dataFragments) {
 				mochiDiffusionData[a] = b.join(": ");
@@ -214,15 +197,11 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 						},
 						{
 							name: "Prompt",
-							value: truncateString(
-								mochiDiffusionData["Include in Image"] || "*None*"
-							),
+							value: truncateString(mochiDiffusionData["Include in Image"] || "*None*"),
 						},
 						{
 							name: "Negative prompt",
-							value: truncateString(
-								mochiDiffusionData["Exclude from Image"] || "*None*"
-							),
+							value: truncateString(mochiDiffusionData["Exclude from Image"] || "*None*"),
 						},
 						{
 							name: "Size",

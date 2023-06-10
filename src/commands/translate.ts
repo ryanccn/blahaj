@@ -1,9 +1,4 @@
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	EmbedBuilder,
-} from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
 import type { ContextMenuCommand } from "./_types";
 
 import { v2 } from "@google-cloud/translate";
@@ -27,9 +22,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 			embeds: [
 				new EmbedBuilder()
 					.setTitle("Translation unavailable!")
-					.setDescription(
-						"Google Cloud Translation API is not configured properly."
-					)
+					.setDescription("Google Cloud Translation API is not configured properly.")
 					.setColor(0xfacc15),
 			],
 		});
@@ -70,10 +63,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 		],
 		components: [
 			new ActionRowBuilder<ButtonBuilder>().addComponents(
-				new ButtonBuilder()
-					.setStyle(ButtonStyle.Link)
-					.setLabel("Original message")
-					.setURL(message.url)
+				new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Original message").setURL(message.url)
 			),
 		],
 	});

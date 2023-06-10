@@ -5,36 +5,21 @@ import { type ZodError } from "zod";
 
 export const getGuildEmoji = async (guild: Guild, nameOrId: string) => {
 	const emojis = guild.emojis.cache;
-	const foundEmoji = emojis.find(
-		(k) => k.id === nameOrId || k.name === nameOrId
-	);
+	const foundEmoji = emojis.find((k) => k.id === nameOrId || k.name === nameOrId);
 	return foundEmoji ? `<:${nameOrId}:${foundEmoji.id}>` : `:${nameOrId}:`;
 };
 
 export const successEmbed = (title: string, description: string) => {
-	return new EmbedBuilder()
-		.setTitle(title)
-		.setDescription(description)
-		.setColor(0x51cf66);
+	return new EmbedBuilder().setTitle(title).setDescription(description).setColor(0x51cf66);
 };
 
 export const formatZodError = (err: ZodError) => {
 	const issues = err.issues;
-	let ret = red(
-		bold(
-			`${issues.length} validation error${issues.length === 1 ? "" : "s"}!\n`
-		)
-	);
+	let ret = red(bold(`${issues.length} validation error${issues.length === 1 ? "" : "s"}!\n`));
 
 	for (const issue of issues) {
 		ret +=
-			`${blue(issue.path.join(" > "))} ` +
-			`${dim("::")} ` +
-			issue.code +
-			" " +
-			`${dim("::")} ` +
-			issue.message +
-			"\n";
+			`${blue(issue.path.join(" > "))} ` + `${dim("::")} ` + issue.code + " " + `${dim("::")} ` + issue.message + "\n";
 	}
 
 	return ret.trim();
@@ -57,10 +42,7 @@ export const formatSize = (bytes: number, si = false, dp = 1) => {
 	do {
 		bytes /= thresh;
 		++u;
-	} while (
-		Math.round(Math.abs(bytes) * r) / r >= thresh &&
-		u < units.length - 1
-	);
+	} while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
 
 	return bytes.toFixed(dp) + " " + units[u];
 };

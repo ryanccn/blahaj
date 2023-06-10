@@ -23,11 +23,7 @@ if (process.env.STARBOARD_EMOJIS) {
 }
 
 const getStarboardChannel = async (message: Message) => {
-	if (
-		message.channel.type !== ChannelType.GuildText &&
-		message.channel.type !== ChannelType.PublicThread
-	)
-		return null;
+	if (message.channel.type !== ChannelType.GuildText && message.channel.type !== ChannelType.PublicThread) return null;
 	if (!message.guild) return null;
 
 	if (
@@ -35,46 +31,36 @@ const getStarboardChannel = async (message: Message) => {
 		message.channel.parent.id === process.env.FREN_CATEGORY_ID &&
 		process.env.FREN_STARBOARD_CHANNEL
 	) {
-		let starboard: GuildBasedChannel | null | undefined =
-			message.guild!.channels.cache.get(process.env.FREN_STARBOARD_CHANNEL);
+		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
+			process.env.FREN_STARBOARD_CHANNEL
+		);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(
-				process.env.FREN_STARBOARD_CHANNEL
-			);
+			starboard = await message.guild!.channels.fetch(process.env.FREN_STARBOARD_CHANNEL);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
-			throw new Error(
-				`Configured FREN_STARBOARD_CHANNEL (${process.env.FREN_STARBOARD_CHANNEL}) is invalid!`
-			);
+			throw new Error(`Configured FREN_STARBOARD_CHANNEL (${process.env.FREN_STARBOARD_CHANNEL}) is invalid!`);
 		}
 
 		return starboard;
 	}
 
 	if (
-		(message.channel
-			?.permissionsFor(message.guild.id)
-			?.has(PermissionFlagsBits.ViewChannel) ||
-			message.channel.parent
-				?.permissionsFor(message.guild.id)
-				?.has(PermissionFlagsBits.ViewChannel)) &&
+		(message.channel?.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel) ||
+			message.channel.parent?.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel)) &&
 		process.env.STARBOARD_CHANNEL
 	) {
-		let starboard: GuildBasedChannel | null | undefined =
-			message.guild!.channels.cache.get(process.env.STARBOARD_CHANNEL);
+		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
+			process.env.STARBOARD_CHANNEL
+		);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(
-				process.env.STARBOARD_CHANNEL
-			);
+			starboard = await message.guild!.channels.fetch(process.env.STARBOARD_CHANNEL);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
-			throw new Error(
-				`Configured STARBOARD_CHANNEL (${process.env.STARBOARD_CHANNEL}) is invalid!`
-			);
+			throw new Error(`Configured STARBOARD_CHANNEL (${process.env.STARBOARD_CHANNEL}) is invalid!`);
 		}
 
 		return starboard;
@@ -89,22 +75,17 @@ const updateStarboard = async (message: Message) => {
 
 	const reactions = message.reactions.cache.filter(
 		(reaction) =>
-			STARBOARD_EMOJIS.includes(
-				reaction.emoji.id ?? reaction.emoji.name ?? ""
-			) && reaction.count >= EMOJI_REACTION_THRESHOLD
+			STARBOARD_EMOJIS.includes(reaction.emoji.id ?? reaction.emoji.name ?? "") &&
+			reaction.count >= EMOJI_REACTION_THRESHOLD
 	);
 
-	const reactionString = reactions
-		.map((reaction) => `${reaction.emoji} ${reaction.count}`)
-		.join(" ");
+	const reactionString = reactions.map((reaction) => `${reaction.emoji} ${reaction.count}`).join(" ");
 
 	let existingMessageId = await get(["starboard", message.id, "message"]);
 
 	if (existingMessageId) {
 		if (typeof existingMessageId !== "string") {
-			throw new TypeError(
-				`Message ID found for ${message.id} is not a string!`
-			);
+			throw new TypeError(`Message ID found for ${message.id} is not a string!`);
 		}
 		existingMessageId = existingMessageId.slice(1);
 
@@ -118,9 +99,7 @@ const updateStarboard = async (message: Message) => {
 			await existingResolvedMessage.delete();
 			return;
 		} else {
-			await existingResolvedMessage.edit(
-				`**${reactionString}** in <#${message.channel.id}>`
-			);
+			await existingResolvedMessage.edit(`**${reactionString}** in <#${message.channel.id}>`);
 			return;
 		}
 	}
@@ -128,10 +107,7 @@ const updateStarboard = async (message: Message) => {
 	if (reactions.size === 0) return;
 
 	const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-		new ButtonBuilder()
-			.setLabel("Jump to message")
-			.setURL(message.url)
-			.setStyle(ButtonStyle.Link)
+		new ButtonBuilder().setLabel("Jump to message").setURL(message.url).setStyle(ButtonStyle.Link)
 	);
 
 	const msg = await starboard.send({

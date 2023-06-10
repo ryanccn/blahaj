@@ -18,36 +18,24 @@ interface StableDiffusionAPIResponse {
 }
 
 export const stableDiffusionCommand: SlashCommand = async (i) => {
-	if (
-		!process.env.STABLE_DIFFUSION_API_URL ||
-		!process.env.STABLE_DIFFUSION_API_TOKEN
-	) {
+	if (!process.env.STABLE_DIFFUSION_API_URL || !process.env.STABLE_DIFFUSION_API_TOKEN) {
 		await i.reply({
 			embeds: [
 				new EmbedBuilder()
 					.setTitle("Stable Diffusion not configured!")
-					.setDescription(
-						"The environment variable `STABLE_DIFFUSION_API_URL` is not set."
-					)
+					.setDescription("The environment variable `STABLE_DIFFUSION_API_URL` is not set.")
 					.setColor(0xfacc15),
 			],
 		});
 		return;
 	}
 
-	const startURL = new URL(
-		"/start",
-		process.env.STABLE_DIFFUSION_API_URL
-	).toString();
+	const startURL = new URL("/start", process.env.STABLE_DIFFUSION_API_URL).toString();
 	const getStatusURL = (callId: string) =>
-		new URL(
-			`/status/${callId}`,
-			process.env.STABLE_DIFFUSION_API_URL
-		).toString();
+		new URL(`/status/${callId}`, process.env.STABLE_DIFFUSION_API_URL).toString();
 
 	const prompt = i.options.getString("prompt", true);
-	const negativePrompt =
-		i.options.getString("negative-prompt") ?? "<EasyNegative>";
+	const negativePrompt = i.options.getString("negative-prompt") ?? "<EasyNegative>";
 	const seed = i.options.getInteger("seed");
 	const upscale = i.options.getBoolean("upscale") ?? true;
 
@@ -78,11 +66,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 				.setTitle("Working...")
 				.setDescription(
 					"Your image is being generated!\n" +
-						`Estimated to be done <t:${
-							Math.floor(Date.now() / 1000) +
-							30 +
-							Math.floor(Math.random() * 21)
-						}:R>`
+						`Estimated to be done <t:${Math.floor(Date.now() / 1000) + 30 + Math.floor(Math.random() * 21)}:R>`
 				)
 				.setColor(0x2dd4bf),
 		],

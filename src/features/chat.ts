@@ -1,15 +1,5 @@
-import {
-	Colors,
-	DiscordAPIError,
-	EmbedBuilder,
-	SnowflakeUtil,
-	type Message,
-} from "discord.js";
-import {
-	Configuration,
-	OpenAIApi,
-	type ChatCompletionRequestMessage,
-} from "openai";
+import { Colors, DiscordAPIError, EmbedBuilder, SnowflakeUtil, type Message } from "discord.js";
+import { Configuration, OpenAIApi, type ChatCompletionRequestMessage } from "openai";
 
 import { Logger } from "~/lib/logger";
 
@@ -84,9 +74,9 @@ export const handleChat = async (message: Message) => {
 
 				return {
 					role: "user",
-					content: `${msg.member?.nickname ?? msg.author.username}${
-						roles?.length ? ` (${roles.join(", ")})` : ""
-					}: ${msg.content}`,
+					content: `${msg.member?.nickname ?? msg.author.username}${roles?.length ? ` (${roles.join(", ")})` : ""}: ${
+						msg.content
+					}`,
 				};
 			});
 		if (unproxiedMessages.has(message.id)) {
@@ -123,9 +113,7 @@ export const handleChat = async (message: Message) => {
 				embeds: [
 					new EmbedBuilder()
 						.setTitle("Response flagged!")
-						.setDescription(
-							"The generated response may have been inappropriate."
-						)
+						.setDescription("The generated response may have been inappropriate.")
 						.setColor(Colors.Red),
 				],
 			});
@@ -138,9 +126,7 @@ export const handleChat = async (message: Message) => {
 		if (error instanceof DiscordAPIError && error.code === 50035) {
 			logger.warn("Unable to reply to message, seems to have been deleted.");
 		} else if (error instanceof UnproxiedMessageError) {
-			logger.warn(
-				"Not replying to ${message.id} because it has been found to be a duplicate"
-			);
+			logger.warn("Not replying to ${message.id} because it has been found to be a duplicate");
 		} else {
 			throw error;
 		}
