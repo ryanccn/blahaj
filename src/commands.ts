@@ -130,6 +130,9 @@ export const reuploadCommands = async () => {
 					.setRequired(false)
 			),
 		new SlashCommandBuilder()
+			.setName("pomelo")
+			.setDescription("Statistics on the username migration in this guild"),
+		new SlashCommandBuilder()
 			.setName("fren")
 			.setDescription("fren management")
 			.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)

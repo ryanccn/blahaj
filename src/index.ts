@@ -25,6 +25,7 @@ import { uwurandomCommand } from "~/commands/uwurandom";
 import { translateCommand } from "~/commands/translate";
 import { frenAdd } from "~/commands/fren";
 import { stableDiffusionCommand } from "~/commands/stableDiffusion";
+import { pomeloCommand } from "~/commands/pomelo";
 
 import { parseSDMetadata } from "~/features/sdMetadata";
 import { handleChat } from "~/features/chat";
@@ -134,6 +135,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			}
 			case "stable-diffusion": {
 				await stableDiffusionCommand(interaction);
+				break;
+			}
+			case "pomelo": {
+				await pomeloCommand(interaction);
 				break;
 			}
 			default: {
