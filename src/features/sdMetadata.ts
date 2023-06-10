@@ -1,5 +1,5 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import * as exifr from "exifr";
+import { parse } from "exifr";
 
 import { createWriteStream } from "node:fs";
 import { mkdir, rm } from "node:fs/promises";
@@ -66,7 +66,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 			createWriteStream(tempPath)
 		);
 
-		const data = await exifr.parse(tempPath, {
+		const data = await parse(tempPath, {
 			xmp: true,
 		});
 		await rm(tempPath);
