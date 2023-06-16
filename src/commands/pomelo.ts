@@ -8,7 +8,7 @@ export const pomeloCommand: SlashCommand = async (i) => {
 
 	await i.deferReply();
 
-	const members = await i.guild.members.fetch();
+	const members = await i.guild.members.fetch().then((ms) => ms.filter((m) => !m.user.bot));
 	const pomeloed = members.filter((v) => v.user.discriminator === "0");
 
 	await i.editReply({
@@ -16,10 +16,9 @@ export const pomeloCommand: SlashCommand = async (i) => {
 			new EmbedBuilder()
 				.setTitle("Username migration / Pomelo")
 				.setDescription(
-					`**${pomeloed.size}** out of ${members.size} members (${(
-						(pomeloed.size / members.size) *
-						100
-					).toFixed(1)}%) of **${
+					`**${pomeloed.size}** out of ${members.size} members (${((pomeloed.size / members.size) * 100).toFixed(
+						1
+					)}%) of **${
 						i.guild.name
 					}** have had their usernames migrated to [the new format](https://discord.com/blog/usernames).`
 				)
