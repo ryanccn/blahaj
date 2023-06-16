@@ -1,5 +1,5 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import * as exifr from "exifr";
+import { parse } from "@ryanccn/exifr";
 
 import { createWriteStream } from "node:fs";
 import { mkdir, rm } from "node:fs/promises";
@@ -63,7 +63,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 		const tempPath = join(TEMP_DIR, `${crypto.randomUUID()}.png`);
 		await pipeline(Readable.fromWeb(body as ReadableStream), createWriteStream(tempPath));
 
-		const data = await exifr.parse(tempPath, {
+		const data = await parse(tempPath, {
 			xmp: true,
 		});
 		await rm(tempPath);
