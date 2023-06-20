@@ -24,6 +24,7 @@ The bot is hosted on an [AWS EC2](https://aws.amazon.com/ec2/) instance; the Sta
 - Stable Diffusion generation (powered by [Modal](https://modal.com/))
 - System stats command
 - Username migration statistics
+- GitHub code block link expansion
 
 ## Development
 

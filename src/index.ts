@@ -29,6 +29,7 @@ import { pomeloCommand } from "~/commands/pomelo";
 
 import { parseSDMetadata } from "~/features/sdMetadata";
 import { handleChat } from "~/features/chat";
+import { handleGitHubExpansion } from "~/features/githubExpansion";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { initRandomUwu } from "~/features/randomuwu";
 import { handleButton } from "~/features/button";
@@ -181,6 +182,16 @@ client.on(Events.MessageCreate, async (e) => {
 	try {
 		if (e.author.bot) return;
 		await parseSDMetadata(e);
+	} catch (error) {
+		defaultLogger.error(error);
+		await logErrorToDiscord({ client, error });
+	}
+});
+
+client.on(Events.MessageCreate, async (e) => {
+	try {
+		if (e.author === e.client.user) return;
+		await handleGitHubExpansion(e);
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error });
