@@ -10,6 +10,7 @@ export const pomeloCommand: SlashCommand = async (i) => {
 
 	const members = await i.guild.members.fetch().then((ms) => ms.filter((m) => !m.user.bot));
 	const pomeloed = members.filter((v) => v.user.discriminator === "0");
+	const unpomeloed = members.difference(pomeloed);
 
 	await i.editReply({
 		embeds: [
@@ -23,8 +24,8 @@ export const pomeloCommand: SlashCommand = async (i) => {
 					}** have had their usernames migrated to [the new format](https://discord.com/blog/usernames).`
 				)
 				.addFields({
-					name: "Migrated users",
-					value: pomeloed.map((m) => `${m}`).join(" "),
+					name: "Unmigrated users",
+					value: unpomeloed.map((m) => `${m}`).join(" ") || "*None*",
 				})
 				.setTimestamp(new Date())
 				.setColor(0x2dd4bf),
