@@ -159,7 +159,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 	} catch (error) {
 		defaultLogger.error(error);
-		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error })]);
+		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error, interaction })]);
 	}
 });
 
@@ -170,7 +170,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		await handleButton(interaction);
 	} catch (error) {
 		defaultLogger.error(error);
-		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error })]);
+		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error, interaction })]);
 	}
 });
 
@@ -185,40 +185,40 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 	} catch (error) {
 		defaultLogger.error(error);
-		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error })]);
+		await Promise.all([respondWithError(interaction), logErrorToDiscord({ client, error, interaction })]);
 	}
 });
 
-client.on(Events.MessageCreate, async (e) => {
+client.on(Events.MessageCreate, async (message) => {
 	try {
-		if (e.author.bot) return;
-		await parseSDMetadata(e);
+		if (message.author.bot) return;
+		await parseSDMetadata(message);
 	} catch (error) {
 		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error });
+		await logErrorToDiscord({ client, error, message });
 	}
 });
 
-client.on(Events.MessageCreate, async (e) => {
+client.on(Events.MessageCreate, async (message) => {
 	try {
-		if (e.author === e.client.user) return;
-		await handleGitHubExpansion(e);
+		if (message.author === message.client.user) return;
+		await handleGitHubExpansion(message);
 	} catch (error) {
 		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error });
+		await logErrorToDiscord({ client, error, message });
 	}
 });
 
-client.on(Events.MessageCreate, async (e) => {
+client.on(Events.MessageCreate, async (message) => {
 	try {
-		if (e.channel.type !== ChannelType.GuildText) return;
-		if (e.channel.id !== process.env.CHATBOT_CHANNEL) return;
-		if (e.author.bot && !e.webhookId) return;
+		if (message.channel.type !== ChannelType.GuildText) return;
+		if (message.channel.id !== process.env.CHATBOT_CHANNEL) return;
+		if (message.author.bot && !message.webhookId) return;
 
-		await handleChat(e);
+		await handleChat(message);
 	} catch (error) {
 		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error });
+		await logErrorToDiscord({ client, error, message });
 	}
 });
 
@@ -228,7 +228,7 @@ client.on(Events.MessageCreate, async (message) => {
 		await logDM(message);
 	} catch (error) {
 		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error });
+		await logErrorToDiscord({ client, error, message });
 	}
 });
 
@@ -240,7 +240,7 @@ client.on(Events.MessageReactionAdd, async (e) => {
 		await handleStarAdd(e);
 	} catch (error) {
 		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error });
+		await logErrorToDiscord({ client, error, message: await e.message.fetch() });
 	}
 });
 
@@ -252,7 +252,7 @@ client.on(Events.MessageReactionRemove, async (e) => {
 		await handleStarRemove(e);
 	} catch (error) {
 		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error });
+		await logErrorToDiscord({ client, error, message: await e.message.fetch() });
 	}
 });
 
