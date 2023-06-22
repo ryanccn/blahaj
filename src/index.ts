@@ -18,7 +18,7 @@ import { startServer } from "~/server";
 
 import { pingCommand } from "~/commands/ping";
 import { sayCommand } from "~/commands/say";
-import { presenceCommand } from "~/commands/presence";
+import { presenceCommand, restorePresence } from "~/commands/presence";
 import { statsCommand } from "~/commands/stats";
 import { bottomCommand } from "~/commands/bottom";
 import { uwurandomCommand } from "~/commands/uwurandom";
@@ -94,8 +94,19 @@ client.once(Events.ClientReady, async () => {
 	if (process.env.NODE_ENV !== "development") {
 		defaultLogger.warn("Running in production mode!");
 	}
+});
 
+client.once(Events.ClientReady, () => {
 	initRandomUwu(client);
+});
+
+client.once(Events.ClientReady, async () => {
+	try {
+		await restorePresence(client);
+	} catch (error) {
+		defaultLogger.error(error);
+		await logErrorToDiscord({ client, error });
+	}
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {

@@ -32,7 +32,10 @@ export const reuploadCommands = async () => {
 					.setDescription("The type of the presence")
 					.setRequired(false)
 					.addChoices(
-						...["Playing", "Streaming", "Listening", "Watching", "Competing"].map((k) => ({ name: k, value: k }))
+						...["Playing", "Streaming", "Listening", "Watching", "Competing"].map((k) => ({
+							name: k,
+							value: k.toLowerCase(),
+						}))
 					)
 			)
 			.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
