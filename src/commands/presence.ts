@@ -1,10 +1,11 @@
-import { ActivityType, type Client } from "discord.js";
+import { ActivityType, EmbedBuilder, type Client } from "discord.js";
 
 import { del, get, set } from "~/lib/db";
-import { successEmbed } from "~/lib/utils";
+
+import capitalize from "just-capitalize";
+import { z } from "zod";
 
 import type { SlashCommand } from "./_types";
-import { z } from "zod";
 
 const setPresence = ({ content, type, client }: { content: string; type: string; client: Client }) => {
 	if (!client.user) return;
@@ -37,7 +38,13 @@ export const presenceCommand: SlashCommand = async (i) => {
 	await set(["presence", "v1"], JSON.stringify({ type, content }));
 
 	await i.editReply({
-		embeds: [successEmbed("Presence updated!", `${type ?? "Playing"} **${content}**`)],
+		embeds: [
+			new EmbedBuilder()
+				.setTitle("Presence updated!")
+				.addFields({ name: "Type", value: capitalize(type) })
+				.addFields({ name: "Content", value: content })
+				.setTimestamp(new Date()),
+		],
 	});
 };
 

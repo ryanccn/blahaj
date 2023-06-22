@@ -17,6 +17,7 @@
 		"bottomify": "^0.3.0",
 		"discord.js": "^14.11.0",
 		"dotenv": "^16.1.4",
+		"just-capitalize": "^3.2.0",
 		"kleur": "^4.1.5",
 		"nanoid": "^4.0.2",
 		"openai": "^3.2.1",
