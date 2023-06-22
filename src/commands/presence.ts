@@ -1,9 +1,10 @@
 import { ActivityType, type Client } from "discord.js";
 
-import { get, set } from "~/lib/db";
+import { del, get, set } from "~/lib/db";
 import { successEmbed } from "~/lib/utils";
 
 import type { SlashCommand } from "./_types";
+import { z } from "zod";
 
 const setPresence = ({ content, type, client }: { content: string; type: string; client: Client }) => {
 	if (!client.user) return;
@@ -40,11 +41,14 @@ export const presenceCommand: SlashCommand = async (i) => {
 	});
 };
 
-export const restorePresence = async (client: Client) => {
-	const storedValue = await get(["presence", "v1"]);
-	if (storedValue === null) return;
-	if (typeof storedValue !== "string") throw new Error("Stored presence data is malformed!");
+const PresenceData = z.object({ type: z.string(), content: z.string() });
 
-	const storedData = JSON.parse(storedValue) as { type: string; content: string };
-	setPresence({ ...storedData, client });
+export const restorePresence = async (client: Client) => {
+	const storedData = PresenceData.safeParse(await get(["presence", "v1"]));
+	if (!storedData.success) {
+		await del(["presence", "v1"]);
+		return;
+	}
+
+	setPresence({ ...storedData.data, client });
 };
