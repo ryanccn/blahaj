@@ -2,13 +2,12 @@ name: Deploy to Modal
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
     paths:
       - "stable_diffusion/**"
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
     env:
       MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
