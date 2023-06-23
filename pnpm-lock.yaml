@@ -38,6 +38,9 @@ dependencies:
   openai:
     specifier: ^3.2.1
     version: 3.2.1
+  parse-duration:
+    specifier: ^1.1.0
+    version: 1.1.0
   systeminformation:
     specifier: ^5.18.3
     version: 5.18.3
@@ -2625,6 +2628,10 @@ packages:
     dependencies:
       callsites: 3.1.0
     dev: true
+
+  /parse-duration@1.1.0:
+    resolution: {integrity: sha512-z6t9dvSJYaPoQq7quMzdEagSFtpGu+utzHqqxmpVWNNZRIXnvqyCvn9XsTdh7c/w0Bqmdz3RB3YnRaKtpRtEXQ==}
+    dev: false
 
   /parse-json@5.2.0:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}

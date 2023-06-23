@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType, EmbedBuilder } from "discord.js";
 
 export const handleButton = async (i: ButtonInteraction) => {
 	const buttonId = i.customId;
@@ -60,5 +60,37 @@ export const handleButton = async (i: ButtonInteraction) => {
 		if (i.channel && i.channel.type === ChannelType.GuildText && i.channel.name.startsWith("fren-invitation-")) {
 			await i.channel.delete();
 		}
+	} else if (buttonId.startsWith("self-timeout-cancel::")) {
+		const [, userId] = buttonId.split("::");
+		if (i.user.id !== userId) return;
+
+		await i.update({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("Self-timeout cancelled")
+					.setDescription("Your self-timeout has been successfully cancelled!")
+					.setColor(0x4ade80),
+			],
+			components: [],
+		});
+	} else if (buttonId.startsWith("self-timeout-proceed::")) {
+		const [, userId, durationString] = buttonId.split("::");
+		if (!i.guild || i.user.id !== userId) return;
+
+		const durationMs = Number.parseInt(durationString);
+		await i.guild.members.cache.get(userId)?.timeout(durationMs, "Requested self-timeout");
+		const now = Math.floor(Date.now() / 1000);
+		const durationS = Math.floor(durationMs / 1000);
+
+		await i.update({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("Self-timeout in effect")
+					.addFields({ name: "Start", value: `<t:${now}:F> ` })
+					.addFields({ name: "End", value: `<t:${now + durationS}:F> (<t:${now + durationS}:R>)` })
+					.setColor(0x4ade80),
+			],
+			components: [],
+		});
 	}
 };

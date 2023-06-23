@@ -90,6 +90,12 @@ export const reuploadCommands = async () => {
 					.setDescription("add a fren")
 					.addUserOption((option) => option.setName("user").setDescription("user to add to fren").setRequired(true))
 			),
+		new SlashCommandBuilder()
+			.setName("self-timeout")
+			.setDescription("Time yourself out")
+			.addStringOption((option) =>
+				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
+			),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))

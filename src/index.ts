@@ -25,6 +25,7 @@ import { presenceCommand, restorePresence } from "~/commands/utils/presence";
 import { statsCommand } from "~/commands/utils/stats";
 import { translateCommand } from "~/commands/utils/translate";
 import { pomeloCommand } from "~/commands/utils/pomelo";
+import { selfTimeoutCommand } from "~/commands/utils/selfTimeout";
 
 import { frenAdd } from "~/commands/fren";
 import { stableDiffusionCommand } from "~/commands/stableDiffusion";
@@ -153,6 +154,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			}
 			case "pomelo": {
 				await pomeloCommand(interaction);
+				break;
+			}
+			case "self-timeout": {
+				await selfTimeoutCommand(interaction);
 				break;
 			}
 			default: {
