@@ -37,6 +37,7 @@ export const handleGitHubExpansion = async (message: Message) => {
 	codeBlocks = codeBlocks.filter((block) => !!block.content.trim());
 
 	if (codeBlocks.length > 0) {
+		await message.suppressEmbeds(true);
 		await message.reply({
 			embeds: codeBlocks.map((block) =>
 				new EmbedBuilder()
