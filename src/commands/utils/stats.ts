@@ -1,7 +1,9 @@
 import { EmbedBuilder } from "discord.js";
-import type { SlashCommand } from "./_types";
+import type { SlashCommand } from "../_types";
 
-import { system, cpu, mem, osInfo, currentLoad, diskLayout } from "systeminformation";
+import { system, cpu, mem, osInfo, currentLoad } from "systeminformation";
+import { keys } from "~/lib/db";
+
 import { formatSize } from "~/lib/utils";
 
 const getCPUInfo = async () => {
@@ -31,12 +33,7 @@ const getHardwareInfo = async () => {
 
 const getOSInfo = async () => {
 	const data = await osInfo();
-	return `**${data.distro} ${data.kernel}** (${data.build}) ${data.arch}`;
-};
-
-const getDiskInfo = async () => {
-	const data = await diskLayout();
-	return data.map((disk) => `**${disk.name}** ${disk.type}/${disk.interfaceType}`).join("\n");
+	return `**${data.distro} ${data.kernel}** (${data.arch})`;
 };
 
 export const statsCommand: SlashCommand = async (i) => {
@@ -67,8 +64,8 @@ export const statsCommand: SlashCommand = async (i) => {
 					value: (await getOSInfo()) || "*Unknown*",
 				})
 				.addFields({
-					name: "Disks",
-					value: (await getDiskInfo()) || "*Unknown*",
+					name: "KV keys",
+					value: (await keys().then((v) => v.toString())) || "*Unknown*",
 				})
 				.setColor(0xa78bfa),
 		],

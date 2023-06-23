@@ -38,3 +38,8 @@ export const decr = async (k: string[]) => {
 export const del = async (k: string[]) => {
 	await storage.removeItem(resolveKey(scopeToEnv(k)));
 };
+
+export const keys = async () => {
+	const dbKeys = await storage.getKeys(process.env.NODE_ENV);
+	return dbKeys.length;
+};

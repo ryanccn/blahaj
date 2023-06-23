@@ -5,7 +5,7 @@ import { del, get, set } from "~/lib/db";
 import capitalize from "just-capitalize";
 import { z } from "zod";
 
-import type { SlashCommand } from "./_types";
+import type { SlashCommand } from "../_types";
 
 const setPresence = ({ content, type, client }: { content: string; type: string; client: Client }) => {
 	if (!client.user) return;

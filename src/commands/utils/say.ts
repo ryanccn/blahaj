@@ -1,4 +1,4 @@
-import type { SlashCommand } from "./_types";
+import type { SlashCommand } from "../_types";
 
 export const sayCommand: SlashCommand = async (i) => {
 	if (!i.channel || !i.channel.isTextBased()) return;

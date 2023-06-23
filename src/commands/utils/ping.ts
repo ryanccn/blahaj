@@ -1,4 +1,4 @@
-import type { SlashCommand } from "./_types";
+import type { SlashCommand } from "../_types";
 
 export const pingCommand: SlashCommand = async (i) => {
 	await i.reply({

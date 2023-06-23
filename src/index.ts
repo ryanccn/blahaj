@@ -16,16 +16,18 @@ import {
 import { reuploadCommands } from "~/commands";
 import { startServer } from "~/server";
 
-import { pingCommand } from "~/commands/ping";
-import { sayCommand } from "~/commands/say";
-import { presenceCommand, restorePresence } from "~/commands/presence";
-import { statsCommand } from "~/commands/stats";
-import { bottomCommand } from "~/commands/bottom";
-import { uwurandomCommand } from "~/commands/uwurandom";
-import { translateCommand } from "~/commands/translate";
+import { bottomCommand } from "~/commands/fun/bottom";
+import { uwurandomCommand } from "~/commands/fun/uwurandom";
+
+import { pingCommand } from "~/commands/utils/ping";
+import { sayCommand } from "~/commands/utils/say";
+import { presenceCommand, restorePresence } from "~/commands/utils/presence";
+import { statsCommand } from "~/commands/utils/stats";
+import { translateCommand } from "~/commands/utils/translate";
+import { pomeloCommand } from "~/commands/utils/pomelo";
+
 import { frenAdd } from "~/commands/fren";
 import { stableDiffusionCommand } from "~/commands/stableDiffusion";
-import { pomeloCommand } from "~/commands/pomelo";
 
 import { parseSDMetadata } from "~/features/sdMetadata";
 import { handleChat } from "~/features/chat";

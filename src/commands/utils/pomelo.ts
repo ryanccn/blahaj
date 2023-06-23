@@ -1,5 +1,5 @@
 import { EmbedBuilder } from "discord.js";
-import type { SlashCommand } from "./_types";
+import type { SlashCommand } from "../_types";
 
 export const pomeloCommand: SlashCommand = async (i) => {
 	if (!i.guild) {

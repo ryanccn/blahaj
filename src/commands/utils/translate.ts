@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
-import type { ContextMenuCommand } from "./_types";
+import type { ContextMenuCommand } from "../_types";
 
 import { v2 } from "@google-cloud/translate";
 
@@ -29,7 +29,6 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 		return;
 	}
 
-	// Check if there's anything to translate before actually doing anything
 	if (i.targetMessage.content.length === 0) {
 		await i.reply({
 			ephemeral: true,
