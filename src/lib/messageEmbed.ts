@@ -1,13 +1,20 @@
-import { EmbedBuilder, type Message } from "discord.js";
+import { EmbedBuilder, type User, type Message } from "discord.js";
+
+const getUsername = (user: User) => (user.discriminator === "0" ? user.username : user.tag);
 
 export const messageEmbed = async (message: Message) => {
 	const embed = new EmbedBuilder()
 		.setDescription(message.content || "*No content*")
 		.setAuthor({
 			name:
-				(message.member?.nickname ?? message.author.username) +
-				(message.channel.isDMBased() ? ` → ${message.channel.recipient?.username ?? "Unknown user"}` : ""),
-			iconURL: message.member?.avatarURL() ?? message.author.avatarURL() ?? undefined,
+				getUsername(message.author) +
+				(message.channel.isDMBased()
+					? message.author === message.client.user
+						? ` → ${message.channel.recipient ? getUsername(message.channel.recipient) : "unknown"}`
+						: ` ← ${getUsername(message.client.user)}`
+					: ""),
+
+			iconURL: message.author.avatarURL() ?? undefined,
 		})
 		.setTimestamp(message.createdTimestamp);
 
