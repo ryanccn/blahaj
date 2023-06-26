@@ -63,7 +63,7 @@ export const logErrorToDiscord = async ({
 		if (interaction instanceof ChatInputCommandInteraction) {
 			embed.addFields({ name: "Command", value: `${interaction.commandName}` });
 		} else if (interaction instanceof ButtonInteraction) {
-			embed.addFields({ name: "Button ID", value: `${interaction.customId}` });
+			embed.addFields({ name: "Button ID", value: `\`${interaction.customId}\`` });
 			embed.addFields({ name: "Message", value: interaction.message.url });
 		} else if (interaction instanceof ContextMenuCommandInteraction) {
 			if (interaction.isMessageContextMenuCommand())
