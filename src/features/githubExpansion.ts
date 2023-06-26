@@ -15,23 +15,23 @@ export const handleGitHubExpansion = async (message: Message) => {
 	for (const match of content.matchAll(regex)) {
 		const [fullURL, repo, ref, file, startStr, endStr] = match;
 
+		const start = Number.parseInt(startStr);
+		const end = endStr ? Number.parseInt(endStr) : null;
+		const name = `${repo}@${ref.length === 40 ? ref.slice(0, 8) : ref} ${file} L${start}${end ? `-${end}` : ""}`;
+		const language = new URL(fullURL).pathname.split(".").at(-1) || "";
+
 		const text = await fetch(`https://raw.githubusercontent.com/${repo}/${ref}/${file}`).then((res) => {
 			if (!res.ok) throw new Error(`Failed to fetch ${fullURL} contents`);
 			return res.text();
 		});
-
-		const start = Number.parseInt(startStr);
-		const end = endStr ? Number.parseInt(endStr) : null;
 		if (Number.isNaN(start) || Number.isNaN(end)) continue;
 
-		codeBlocks.push({
-			language: file.split(".").at(-1) || "",
-			content: text
-				.split("\n")
-				.slice(start - 1, end === null ? start : end)
-				.join("\n"),
-			name: `${repo}@${ref.length === 40 ? ref.slice(0, 8) : ref} ${file} L${start}${end ? `-${end}` : ""}`,
-		});
+		const content = text
+			.split("\n")
+			.slice(start - 1, end === null ? start : end)
+			.join("\n");
+
+		codeBlocks.push({ name, language, content });
 	}
 
 	codeBlocks = codeBlocks.filter((block) => !!block.content.trim());
