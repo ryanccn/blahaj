@@ -28,7 +28,8 @@ const getStarboardChannel = async (message: Message) => {
 
 	if (
 		message.channel.parent &&
-		message.channel.parent.id === process.env.FREN_CATEGORY_ID &&
+		(message.channel.parent.id === process.env.FREN_CATEGORY_ID ||
+			(message.channel.parent.parent && message.channel.parent.parent.id === process.env.FREN_CATEGORY_ID)) &&
 		process.env.FREN_STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
@@ -50,7 +51,9 @@ const getStarboardChannel = async (message: Message) => {
 		message.channel &&
 		(message.channel.type === ChannelType.GuildText
 			? message.channel.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel)
-			: message.channel.type === ChannelType.PublicThread) &&
+			: message.channel.type === ChannelType.PublicThread
+			? message.channel.parent!.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel)
+			: false) &&
 		process.env.STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
