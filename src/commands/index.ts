@@ -99,7 +99,6 @@ export const reuploadCommands = async () => {
 					)
 					.addStringOption((option) => option.setName("value").setDescription("value").setRequired(true))
 			),
-		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))
 		.map((command) => command.toJSON());
@@ -128,6 +127,7 @@ export const reuploadCommands = async () => {
 			.addBooleanOption((option) =>
 				option.setName("upscale").setDescription("Whether to upscale by 2x or not").setRequired(false)
 			),
+		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))
 		.map((command) => command.toJSON());
