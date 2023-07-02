@@ -1,9 +1,14 @@
 import { EmbedBuilder, type Message } from "discord.js";
+import { getGuildConfig } from "~/lib/db";
 // import { defaultLogger } from "~/lib/logger";
 
 const regex = /https?:\/\/github\.com\/([\w-]+\/[\w.-]+)\/blob\/(.+?)\/(.+?)#L(\d+)[~-]?L?(\d*)/g;
 
 export const handleGitHubExpansion = async (message: Message) => {
+	if (!message.guildId) return;
+	const { features_github_expansion } = await getGuildConfig(message.guildId);
+	if (!features_github_expansion) return;
+
 	const { content } = message;
 	if (!regex.test(content)) return;
 

@@ -37,7 +37,6 @@ import { handleChat } from "~/features/chat";
 import { handleGitHubExpansion } from "~/features/githubExpansion";
 import { handleAutoreply } from "~/features/autoreply";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
-import { initRandomUwu } from "~/features/randomuwu";
 import { handleThreadCreate } from "~/features/threadCreate";
 import { handleColors } from "~/features/colors";
 import { handleButton } from "~/features/button";
@@ -102,10 +101,6 @@ client.once(Events.ClientReady, async () => {
 	if (process.env.NODE_ENV !== "development") {
 		defaultLogger.warn("Running in production mode!");
 	}
-});
-
-client.once(Events.ClientReady, () => {
-	initRandomUwu(client);
 });
 
 client.once(Events.ClientReady, async () => {
@@ -240,7 +235,6 @@ client.on(Events.MessageCreate, async (message) => {
 client.on(Events.MessageCreate, async (message) => {
 	try {
 		if (message.channel.type !== ChannelType.GuildText) return;
-		if (message.channel.id !== process.env.CHATBOT_CHANNEL) return;
 		if (message.author.bot && !message.webhookId) return;
 
 		await handleChat(message);

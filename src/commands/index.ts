@@ -107,7 +107,17 @@ export const reuploadCommands = async () => {
 						option
 							.setName("key")
 							.setDescription("key")
-							.addChoices(...["starboard_emojis", "starboard_threshold"].map((v) => ({ name: v, value: v })))
+							.addChoices(
+								...[
+									"starboard_emojis",
+									"starboard_threshold",
+									"starboard_channel",
+									"fren_starboard_channel",
+									"chatbot_channel",
+									"chatbot_escape_character",
+									"chatbot_token",
+								].map((v) => ({ name: v, value: v }))
+							)
 							.setRequired(true)
 					)
 					.addStringOption((option) => option.setName("value").setDescription("value").setRequired(true))

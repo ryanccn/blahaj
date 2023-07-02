@@ -2,15 +2,9 @@ import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import type { Database, GuildConfig } from "./types";
 
-import { defaultLogger } from "../logger";
-
 const pool = new Pool({
 	connectionString: process.env.POSTGRES_URL,
 });
-pool.on("connect", () => {
-	defaultLogger.success("Connected to Postgres database");
-});
-
 const dialect = new PostgresDialect({ pool });
 
 export const db = new Kysely<Database>({ dialect });
@@ -25,6 +19,7 @@ export const getGuildConfig = async (guildId: string): Promise<GuildConfig> => {
 				guild: guildId,
 				features_randomuwu: false,
 				features_starboard: false,
+				features_github_expansion: false,
 				starboard_emojis: JSON.stringify(["⭐"]),
 				starboard_threshold: 5,
 				chatbot_escape_character: "\\",
