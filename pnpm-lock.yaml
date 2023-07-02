@@ -29,6 +29,9 @@ dependencies:
   just-capitalize:
     specifier: ^3.2.0
     version: 3.2.0
+  just-random:
+    specifier: ^3.2.0
+    version: 3.2.0
   kleur:
     specifier: ^4.1.5
     version: 4.1.5
@@ -2252,6 +2255,10 @@ packages:
 
   /just-capitalize@3.2.0:
     resolution: {integrity: sha512-FK8U9A5AHCIGxlEXg3RFJkb9Nz/fS9luJlrfRf0bFBZU6xnIQ6tbwl+HitMJLwCFszZqVaXQcyeoy8/PYABS6A==}
+    dev: false
+
+  /just-random@3.2.0:
+    resolution: {integrity: sha512-RMf8vbtCfLIbAEHvIPu2FwMkpB/JudGyk/VPfqPItcRgt7k8QnV+Aa7s7kRFPo+bavQkUi8Yg1x/ooW6Ttyb9A==}
     dev: false
 
   /jwa@2.0.0:

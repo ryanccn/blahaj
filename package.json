@@ -18,6 +18,7 @@
 		"discord.js": "^14.11.0",
 		"dotenv": "^16.3.1",
 		"just-capitalize": "^3.2.0",
+		"just-random": "^3.2.0",
 		"kleur": "^4.1.5",
 		"nanoid": "^4.0.2",
 		"openai": "^3.3.0",

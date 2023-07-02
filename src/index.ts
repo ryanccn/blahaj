@@ -33,6 +33,7 @@ import { stableDiffusionCommand } from "~/commands/stableDiffusion";
 import { parseSDMetadata } from "~/features/sdMetadata";
 import { handleChat } from "~/features/chat";
 import { handleGitHubExpansion } from "~/features/githubExpansion";
+import { handleAutoreply } from "~/features/autoreply";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { initRandomUwu } from "~/features/randomuwu";
 import { handleButton } from "~/features/button";
@@ -244,9 +245,7 @@ client.on(Events.MessageCreate, async (message) => {
 		if (message.guildId !== process.env.GUILD_ID) return;
 		if (message.author.bot) return;
 
-		if (message.content.includes("hetzner")) {
-			await message.reply({ content: "hetzner bad", allowedMentions: { repliedUser: false } });
-		}
+		await handleAutoreply(message);
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message });
