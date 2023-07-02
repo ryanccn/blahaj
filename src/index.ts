@@ -13,6 +13,7 @@ import {
 	ChannelType,
 } from "discord.js";
 
+import { migrateToLatest } from "~/lib/db/migrate";
 import { reuploadCommands } from "~/commands";
 import { startServer } from "~/server";
 
@@ -26,6 +27,7 @@ import { statsCommand } from "~/commands/utils/stats";
 import { translateCommand } from "~/commands/utils/translate";
 import { pomeloCommand } from "~/commands/utils/pomelo";
 import { selfTimeoutCommand } from "~/commands/utils/selfTimeout";
+import { configCommand } from "~/commands/utils/config";
 
 import { frenAdd } from "~/commands/fren";
 import { stableDiffusionCommand } from "~/commands/stableDiffusion";
@@ -161,6 +163,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			}
 			case "self-timeout": {
 				await selfTimeoutCommand(interaction);
+				break;
+			}
+			case "config": {
+				await configCommand(interaction);
 				break;
 			}
 			default: {
@@ -301,10 +307,17 @@ client.on(Events.MessageReactionRemove, async (e) => {
 	}
 });
 
-try {
-	await Promise.all([startServer(), reuploadCommands()]);
-	await client.login(process.env.DISCORD_TOKEN);
-} catch (error) {
-	defaultLogger.error(error);
-	process.exit(1);
-}
+const main = async () => {
+	try {
+		await migrateToLatest();
+		await startServer();
+		await reuploadCommands();
+
+		await client.login(process.env.DISCORD_TOKEN);
+	} catch (error) {
+		defaultLogger.error(error);
+		process.exit(1);
+	}
+};
+
+main();

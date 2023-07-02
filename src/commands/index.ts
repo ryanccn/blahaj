@@ -96,6 +96,22 @@ export const reuploadCommands = async () => {
 			.addStringOption((option) =>
 				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
 			),
+		new SlashCommandBuilder()
+			.setName("config")
+			.setDescription("Configure the bot")
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName("set")
+					.setDescription("Set a configruation value")
+					.addStringOption((option) =>
+						option
+							.setName("key")
+							.setDescription("key")
+							.addChoices(...["starboard_emojis", "starboard_threshold"].map((v) => ({ name: v, value: v })))
+							.setRequired(true)
+					)
+					.addStringOption((option) => option.setName("value").setDescription("value").setRequired(true))
+			),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))

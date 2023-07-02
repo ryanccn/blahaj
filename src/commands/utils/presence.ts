@@ -1,6 +1,6 @@
 import { ActivityType, EmbedBuilder, type Client } from "discord.js";
 
-import { del, get, set } from "~/lib/db";
+import { del, get, set } from "~/lib/db/redis";
 
 import capitalize from "just-capitalize";
 import { z } from "zod";

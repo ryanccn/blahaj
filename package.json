@@ -1,7 +1,6 @@
 {
 	"name": "blahaj",
 	"version": "0.0.1",
-	"type": "module",
 	"private": true,
 	"license": "AGPL-3.0-only",
 	"scripts": {
@@ -20,10 +19,12 @@
 		"just-capitalize": "^3.2.0",
 		"just-random": "^3.2.0",
 		"kleur": "^4.1.5",
+		"kysely": "^0.25.0",
 		"nanoid": "^4.0.2",
 		"openai": "^3.3.0",
 		"parse-duration": "^1.1.0",
 		"sharp": "^0.32.1",
+		"pg": "^8.11.1",
 		"systeminformation": "^5.18.5",
 		"tsx": "^3.12.7",
 		"unstorage": "^1.7.0",
@@ -33,6 +34,7 @@
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"@types/node": "^20.3.2",
+		"@types/pg": "^8.10.2",
 		"@typescript-eslint/eslint-plugin": "^5.60.1",
 		"@typescript-eslint/parser": "^5.60.1",
 		"discord-api-types": "^0.37.46",

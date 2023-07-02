@@ -2,7 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import type { SlashCommand } from "../_types";
 
 import { system, cpu, mem, osInfo, currentLoad } from "systeminformation";
-import { keys } from "~/lib/db";
+import { keys } from "~/lib/db/redis";
 
 import { formatSize } from "~/lib/utils";
 
