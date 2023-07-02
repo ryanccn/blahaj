@@ -239,6 +239,18 @@ client.on(Events.MessageCreate, async (message) => {
 	}
 });
 
+client.on(Events.MessageCreate, async (message) => {
+	try {
+		if (message.guildId !== process.env.GUILD_ID) return;
+		if (message.content.includes("hetzner")) {
+			await message.reply({ content: "hetzner bad", allowedMentions: { repliedUser: false } });
+		}
+	} catch (error) {
+		defaultLogger.error(error);
+		await logErrorToDiscord({ client, error, message });
+	}
+});
+
 client.on(Events.MessageReactionAdd, async (e) => {
 	try {
 		if (e.partial) e = await e.fetch();
