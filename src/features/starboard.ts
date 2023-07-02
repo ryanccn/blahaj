@@ -17,22 +17,24 @@ const getStarboardChannel = async (message: Message) => {
 	if (message.channel.type !== ChannelType.GuildText && message.channel.type !== ChannelType.PublicThread) return null;
 	if (!message.guild || !message.guildId) return null;
 
-	const { starboard_channel, fren_starboard_channel, fren_category } = await getGuildConfig(message.guildId);
+	const { starboard_channel } = await getGuildConfig(message.guildId);
 
 	if (
 		message.channel.parent &&
-		(message.channel.parent.id === fren_category ||
-			(message.channel.parent.parent && message.channel.parent.parent.id === fren_category)) &&
-		fren_starboard_channel
+		(message.channel.parent.id === process.env.FREN_CATEGORY_ID ||
+			(message.channel.parent.parent && message.channel.parent.parent.id === process.env.FREN_CATEGORY_ID)) &&
+		process.env.FREN_STARBOARD_ID
 	) {
-		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(fren_starboard_channel);
+		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
+			process.env.FREN_STARBOARD_ID
+		);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(fren_starboard_channel);
+			starboard = await message.guild!.channels.fetch(process.env.FREN_STARBOARD_ID);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
-			throw new Error(`Configured fren_starboard_channel (${fren_starboard_channel}) is invalid!`);
+			throw new Error(`Configured FREN_STARBOARD_ID (${process.env.FREN_STARBOARD_ID}) is invalid!`);
 		}
 
 		return starboard;

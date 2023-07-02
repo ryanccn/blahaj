@@ -4,6 +4,8 @@ export const handleButton = async (i: ButtonInteraction) => {
 	const buttonId = i.customId;
 
 	if (buttonId.startsWith("fren-accept::")) {
+		if (i.guildId !== process.env.MAIN_GUILD_ID) return;
+
 		const [, userId, date] = buttonId.split("::");
 
 		if (!i.channel) return;
@@ -23,7 +25,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 			throw new Error("No FREN_ROLE_ID configured!");
 		}
 
-		const guild = await i.client.guilds.fetch(process.env.GUILD_ID);
+		const guild = await i.client.guilds.fetch(process.env.MAIN_GUILD_ID);
 		const member = await guild.members.fetch(userId);
 
 		await member.roles.add(process.env.FREN_ROLE_ID);
@@ -55,6 +57,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 			i.channel.delete();
 		}, 5000);
 	} else if (buttonId.startsWith("fren-decline::")) {
+		if (i.guildId !== process.env.MAIN_GUILD_ID) return;
 		if (!i.channel) return;
 
 		if (i.channel && i.channel.type === ChannelType.GuildText && i.channel.name.startsWith("fren-invitation-")) {

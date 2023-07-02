@@ -15,6 +15,8 @@ This invite expires in 7 days. You are free to accept or ignore this invitation,
 `.trim();
 
 export const frenAdd: SlashCommand = async (i) => {
+	if (i.guildId !== process.env.MAIN_GUILD_ID) return;
+
 	await i.deferReply({ ephemeral: true });
 	const user = i.options.getUser("user", true);
 

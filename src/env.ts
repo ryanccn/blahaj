@@ -17,7 +17,12 @@ const env = z.object({
 	GOOGLE_CLOUD_CLIENT_EMAIL: z.string().optional(),
 	GOOGLE_CLOUD_PRIVATE_KEY: z.string().optional(),
 
-	GUILD_ID: snowflake,
+	MAIN_GUILD_ID: snowflake,
+	FREN_CATEGORY_ID: snowflake.optional(),
+	FREN_ROLE_ID: snowflake.optional(),
+	FREN_STARBOARD_ID: snowflake.optional(),
+
+	CONTROL_CENTER_GUILD_ID: snowflake,
 	DM_LOGS_CHANNEL: snowflake.optional(),
 	ERROR_LOGS_CHANNEL: snowflake.optional(),
 

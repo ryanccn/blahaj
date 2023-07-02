@@ -66,30 +66,8 @@ export const reuploadCommands = async () => {
 					.setMinValue(1)
 					.setMaxValue(1000)
 			),
-		new SlashCommandBuilder()
-			.setName("stable-diffusion")
-			.setDescription("Stable Diffusion")
-			.addStringOption((option) =>
-				option.setName("prompt").setDescription("The prompt").setRequired(true).setMaxLength(500)
-			)
-			.addStringOption((option) =>
-				option.setName("negative-prompt").setDescription("The negative prompt").setRequired(false).setMaxLength(500)
-			)
-			.addIntegerOption((option) => option.setName("seed").setDescription("The random seed").setRequired(false))
-			.addBooleanOption((option) =>
-				option.setName("upscale").setDescription("Whether to upscale by 2x or not").setRequired(false)
-			),
+
 		new SlashCommandBuilder().setName("pomelo").setDescription("Statistics on the username migration in this guild"),
-		new SlashCommandBuilder()
-			.setName("fren")
-			.setDescription("fren management")
-			.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-			.addSubcommand((subcommand) =>
-				subcommand
-					.setName("add")
-					.setDescription("add a fren")
-					.addUserOption((option) => option.setName("user").setDescription("user to add to fren").setRequired(true))
-			),
 		new SlashCommandBuilder()
 			.setName("self-timeout")
 			.setDescription("Time yourself out")
@@ -112,7 +90,6 @@ export const reuploadCommands = async () => {
 									"starboard_emojis",
 									"starboard_threshold",
 									"starboard_channel",
-									"fren_starboard_channel",
 									"chatbot_channel",
 									"chatbot_escape_character",
 									"chatbot_token",
@@ -127,12 +104,69 @@ export const reuploadCommands = async () => {
 		.map((command) => command.setDMPermission(false))
 		.map((command) => command.toJSON());
 
+	const mainGuildCommands = [
+		new SlashCommandBuilder()
+			.setName("fren")
+			.setDescription("fren management")
+			.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName("add")
+					.setDescription("add a fren")
+					.addUserOption((option) => option.setName("user").setDescription("user to add to fren").setRequired(true))
+			),
+		new SlashCommandBuilder()
+			.setName("stable-diffusion")
+			.setDescription("Stable Diffusion")
+			.addStringOption((option) =>
+				option.setName("prompt").setDescription("The prompt").setRequired(true).setMaxLength(500)
+			)
+			.addStringOption((option) =>
+				option.setName("negative-prompt").setDescription("The negative prompt").setRequired(false).setMaxLength(500)
+			)
+			.addIntegerOption((option) => option.setName("seed").setDescription("The random seed").setRequired(false))
+			.addBooleanOption((option) =>
+				option.setName("upscale").setDescription("Whether to upscale by 2x or not").setRequired(false)
+			),
+	]
+		.map((command) => command.setDMPermission(false))
+		.map((command) => command.toJSON());
+
+	const controlCenterCommands = [
+		new SlashCommandBuilder()
+			.setName("presence")
+			.setDescription("Set the Rich Presence of the bot")
+			.addStringOption((opt) => opt.setName("content").setDescription("The content of the presence").setRequired(true))
+			.addStringOption((opt) =>
+				opt
+					.setName("type")
+					.setDescription("The type of the presence")
+					.setRequired(false)
+					.addChoices(
+						...["Playing", "Streaming", "Listening", "Watching", "Competing"].map((k) => ({
+							name: k,
+							value: k.toLowerCase(),
+						}))
+					)
+			),
+	]
+		.map((command) => command.setDefaultMemberPermissions(PermissionFlagsBits.Administrator).setDMPermission(false))
+		.map((command) => command.toJSON());
+
 	const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
 	const { id: appId } = (await rest.get(Routes.oauth2CurrentApplication())) as RESTGetAPIOAuth2CurrentApplicationResult;
 
 	await rest.put(Routes.applicationCommands(appId), {
 		body: commands,
+	});
+
+	await rest.put(Routes.applicationGuildCommands(appId, process.env.MAIN_GUILD_ID), {
+		body: mainGuildCommands,
+	});
+
+	await rest.put(Routes.applicationGuildCommands(appId, process.env.CONTROL_CENTER_GUILD_ID), {
+		body: controlCenterCommands,
 	});
 
 	defaultLogger.success(

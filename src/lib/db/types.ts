@@ -10,9 +10,6 @@ export interface GuildConfigTable {
 	features_starboard: boolean;
 	features_github_expansion: boolean;
 	temporary_category: string | null;
-	fren_category: string | null;
-	fren_role_id: string | null;
-	fren_starboard_channel: string | null;
 	starboard_channel: string | null;
 	starboard_emojis: ColumnType<string[], string, string>;
 	starboard_threshold: number;
