@@ -242,6 +242,8 @@ client.on(Events.MessageCreate, async (message) => {
 client.on(Events.MessageCreate, async (message) => {
 	try {
 		if (message.guildId !== process.env.GUILD_ID) return;
+		if (message.author.bot) return;
+
 		if (message.content.includes("hetzner")) {
 			await message.reply({ content: "hetzner bad", allowedMentions: { repliedUser: false } });
 		}
