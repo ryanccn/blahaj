@@ -1,10 +1,16 @@
 import { AttachmentBuilder, EmbedBuilder, type Message } from "discord.js";
 import sharp from "sharp";
+import { getGuildConfig } from "~/lib/db";
 
 const hexRegex = /#([\da-f]+)/g;
 
 export const handleColors = async (message: Message) => {
+	if (!message.guildId) return;
+
 	const hexes = message.content.matchAll(hexRegex);
+	const { features_colors } = await getGuildConfig(message.guildId);
+
+	if (!features_colors) return;
 
 	const embeds: EmbedBuilder[] = [];
 	const files: AttachmentBuilder[] = [];

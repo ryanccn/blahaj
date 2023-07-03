@@ -10,6 +10,7 @@ export interface GuildConfigTable {
 	guild: string;
 	features_starboard: ColumnWithDefault<boolean>;
 	features_github_expansion: ColumnWithDefault<boolean>;
+	features_colors: ColumnWithDefault<boolean>;
 	temporary_category: string | null;
 	starboard_channel: string | null;
 	starboard_emojis: ColumnType<string[], string | undefined, string | undefined>;

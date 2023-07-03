@@ -87,6 +87,7 @@ export const reuploadCommands = async () => {
 							.setDescription("key")
 							.addChoices(
 								...[
+									"features_colors",
 									"starboard_emojis",
 									"starboard_threshold",
 									"starboard_channel",
