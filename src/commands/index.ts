@@ -157,19 +157,21 @@ export const reuploadCommands = async () => {
 
 	const { id: appId } = (await rest.get(Routes.oauth2CurrentApplication())) as RESTGetAPIOAuth2CurrentApplicationResult;
 
-	await rest.put(Routes.applicationCommands(appId), {
-		body: commands,
-	});
-
-	await rest.put(Routes.applicationGuildCommands(appId, process.env.MAIN_GUILD_ID), {
-		body: mainGuildCommands,
-	});
-
-	await rest.put(Routes.applicationGuildCommands(appId, process.env.CONTROL_CENTER_GUILD_ID), {
-		body: controlCenterCommands,
-	});
+	await Promise.all([
+		rest.put(Routes.applicationCommands(appId), {
+			body: commands,
+		}),
+		rest.put(Routes.applicationGuildCommands(appId, process.env.MAIN_GUILD_ID), {
+			body: mainGuildCommands,
+		}),
+		rest.put(Routes.applicationGuildCommands(appId, process.env.CONTROL_CENTER_GUILD_ID), {
+			body: controlCenterCommands,
+		}),
+	]);
 
 	defaultLogger.success(
-		`Successfully registered ${commands.length} application command${commands.length === 1 ? "" : "s"}`
+		`Successfully registered ${commands.length} application command${commands.length === 1 ? "" : "s"}, ` +
+			`${mainGuildCommands.length} main guild command${mainGuildCommands.length === 1 ? "" : "s"}, ` +
+			`and ${controlCenterCommands.length} control center command${controlCenterCommands.length === 1 ? "" : "s"}`
 	);
 };
