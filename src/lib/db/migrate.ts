@@ -38,7 +38,7 @@ export const migrateToLatest = async () => {
 			}
 		}
 	} else if (error) {
-		logger.error("Failed to rexecute migrations");
+		logger.error("Failed to execute migrations");
 		logger.error(error);
 		process.exit(1);
 	}
