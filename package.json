@@ -23,6 +23,7 @@
 		"nanoid": "^4.0.2",
 		"openai": "^3.3.0",
 		"parse-duration": "^1.1.0",
+		"sharp": "^0.32.1",
 		"systeminformation": "^5.18.5",
 		"tsx": "^3.12.7",
 		"unstorage": "^1.7.0",
