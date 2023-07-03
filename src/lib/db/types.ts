@@ -6,7 +6,6 @@ export interface Database {
 
 export interface GuildConfigTable {
 	guild: string;
-	features_randomuwu: boolean;
 	features_starboard: boolean;
 	features_github_expansion: boolean;
 	temporary_category: string | null;

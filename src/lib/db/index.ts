@@ -33,7 +33,6 @@ export const getGuildConfig = async (guildId: string): Promise<GuildConfig> => {
 			.insertInto("guild_config")
 			.values({
 				guild: guildId,
-				features_randomuwu: false,
 				features_starboard: false,
 				features_github_expansion: false,
 				starboard_emojis: JSON.stringify(["⭐"]),
