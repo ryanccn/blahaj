@@ -29,17 +29,7 @@ export const getGuildConfig = async (guildId: string): Promise<GuildConfig> => {
 	const data = await db.selectFrom("guild_config").selectAll().where("guild", "=", guildId).executeTakeFirst();
 
 	if (!data) {
-		await db
-			.insertInto("guild_config")
-			.values({
-				guild: guildId,
-				features_starboard: false,
-				features_github_expansion: false,
-				starboard_emojis: JSON.stringify(["⭐"]),
-				starboard_threshold: 5,
-				chatbot_escape_character: "\\",
-			})
-			.executeTakeFirst();
+		await db.insertInto("guild_config").values({ guild: guildId }).executeTakeFirst();
 
 		return getGuildConfig(guildId);
 	}
