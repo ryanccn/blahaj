@@ -1,4 +1,4 @@
-FROM docker.io/library/node:20-alpine
+FROM node:20-alpine
 RUN corepack enable
 
 WORKDIR /app
