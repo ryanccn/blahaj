@@ -1,7 +1,9 @@
 import boto3
 from botocore.config import Config
 
-import uuid
+from datetime import datetime
+from nanoid import generate
+
 import os
 
 S3_ENDPOINT_URL = os.getenv("S3_ENDPOINT_URL")
@@ -33,7 +35,9 @@ def get_s3_resource():
 
 def upload_file(content: bytes):
     s3 = get_s3_resource()
-    remote_path = f"{uuid.uuid4()}.png"
+
+    now = datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+    remote_path = f"{now}-{generate(size=8)}.png"
 
     s3.Object(S3_BUCKET_NAME, remote_path).put(Body=content)
 
