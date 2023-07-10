@@ -26,7 +26,7 @@
 		"sharp": "^0.32.1",
 		"systeminformation": "^5.18.5",
 		"tsx": "^3.12.7",
-		"unstorage": "^1.7.0",
+		"unstorage": "^1.8.0",
 		"uwurandom-node": "^0.1.0",
 		"zod": "^3.21.4"
 	},
