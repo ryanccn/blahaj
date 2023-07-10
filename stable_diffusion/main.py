@@ -34,7 +34,7 @@ sd_image = (
         "requests",
     )
     .pip_install("xformers", "triton")
-    .pip_install("boto3", "botocore")
+    .pip_install("boto3", "botocore", "nanoid")
     .pip_install(
         "torch", "torchvision", extra_index_url="https://download.pytorch.org/whl/cu117"
     )
@@ -56,6 +56,8 @@ sd_image = (
         network_file_systems={"/root/cache/embeddings": embeddings_cache_volume},
     )
 )
+
+web_image = modal.Image.debian_slim(python_version="3.10")
 
 
 @stub.function(
@@ -196,7 +198,9 @@ async def status_endpoint(
         )
 
 
-@stub.function(secret=modal.Secret.from_name("stable-diffusion-auth-token"))
+@stub.function(
+    image=web_image, secret=modal.Secret.from_name("stable-diffusion-auth-token")
+)
 @modal.asgi_app()
 def fastapi_app():
     return web_app
