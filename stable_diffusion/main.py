@@ -17,9 +17,9 @@ import os
 
 stub = modal.Stub("blahaj-stable-diffusion")
 
-diffusers_cache_volume = modal.SharedVolume().persist("diffusers_cache_v1")
-embeddings_cache_volume = modal.SharedVolume().persist("embedding_cache_v1")
-realesrgan_cache_volume = modal.SharedVolume().persist("realesrgan_cache_v1")
+diffusers_cache_volume = modal.NetworkFileSystem.persisted("diffusers_cache_v1")
+embeddings_cache_volume = modal.NetworkFileSystem.persisted("embedding_cache_v1")
+realesrgan_cache_volume = modal.NetworkFileSystem.persisted("realesrgan_cache_v1")
 
 sd_image = (
     modal.Image.debian_slim(python_version="3.10")
@@ -41,19 +41,19 @@ sd_image = (
     .apt_install("ffmpeg", "libsm6", "libxext6")
     .run_function(
         download_model,
-        shared_volumes={
+        network_file_systems={
             "/root/cache/diffusers": diffusers_cache_volume,
         },
     )
     .run_function(
         download_realesrgan,
-        shared_volumes={
+        network_file_systems={
             "/root/cache/realesrgan": realesrgan_cache_volume,
         },
     )
     .run_function(
         download_embeddings,
-        shared_volumes={"/root/cache/embeddings": embeddings_cache_volume},
+        network_file_systems={"/root/cache/embeddings": embeddings_cache_volume},
     )
 )
 
@@ -61,7 +61,7 @@ sd_image = (
 @stub.function(
     image=sd_image,
     gpu="A10G",
-    shared_volumes={
+    network_file_systems={
         "/root/cache/diffusers": diffusers_cache_volume,
         "/root/cache/embeddings": embeddings_cache_volume,
         "/root/cache/realesrgan": realesrgan_cache_volume,
