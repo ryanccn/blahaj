@@ -36,6 +36,7 @@ import { handleGitHubExpansion } from "~/features/githubExpansion";
 import { handleAutoreply } from "~/features/autoreply";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { initRandomUwu } from "~/features/randomuwu";
+import { handleThreadCreate } from "~/features/threadCreate";
 import { handleButton } from "~/features/button";
 import { logDM } from "~/features/logDM";
 import { logErrorToDiscord, respondWithError } from "~/features/errorHandling";
@@ -249,6 +250,17 @@ client.on(Events.MessageCreate, async (message) => {
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message });
+	}
+});
+
+client.on(Events.ThreadCreate, async (channel) => {
+	try {
+		if (channel.guildId !== process.env.GUILD_ID) return;
+
+		await handleThreadCreate(channel);
+	} catch (error) {
+		defaultLogger.error(error);
+		await logErrorToDiscord({ client, error, channel });
 	}
 });
 

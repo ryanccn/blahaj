@@ -32,6 +32,8 @@ const env = z.object({
 	CHATBOT_CHANNEL: snowflake.optional(),
 	CHATBOT_ESCAPE_CHAR: z.string().optional(),
 
+	THREAD_CREATE_MESSAGE: z.string().optional(),
+
 	STABLE_DIFFUSION_API_URL: z.string().url().optional(),
 	STABLE_DIFFUSION_API_TOKEN: z.string().optional(),
 });

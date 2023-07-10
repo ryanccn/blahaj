@@ -7,6 +7,7 @@ import {
 	type CacheType,
 	type Client,
 	type Message,
+	type Channel,
 } from "discord.js";
 
 const HEX_RED = 0xfa5252;
@@ -31,20 +32,27 @@ export const respondWithError = async (interaction: HandleableInteraction) => {
 	}
 };
 
-export const logErrorToDiscord = async ({
-	client,
-	error,
-	interaction,
-	message,
-}: {
+interface BaseLogErrorOptions {
 	client: Client;
 	error: unknown;
-	interaction?: HandleableInteraction;
-	message?: Message;
-}) => {
+}
+
+interface InteractionLogError extends BaseLogErrorOptions {
+	interaction: HandleableInteraction;
+}
+interface MessageLogError extends BaseLogErrorOptions {
+	message: Message;
+}
+interface ChannelLogError extends BaseLogErrorOptions {
+	channel: Channel;
+}
+
+export const logErrorToDiscord = async (
+	opts: BaseLogErrorOptions | InteractionLogError | MessageLogError | ChannelLogError
+) => {
 	if (!process.env.ERROR_LOGS_CHANNEL) return;
 
-	const logsChannel = await client.channels.fetch(process.env.ERROR_LOGS_CHANNEL);
+	const logsChannel = await opts.client.channels.fetch(process.env.ERROR_LOGS_CHANNEL);
 	if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
 		throw new Error(
 			`Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`
@@ -52,29 +60,29 @@ export const logErrorToDiscord = async ({
 
 	const embed = new EmbedBuilder()
 		.setTitle("An error occurred!")
-		.setDescription("```\n" + (error instanceof Error ? error.stack : error) + "\n```")
+		.setDescription("```\n" + (opts.error instanceof Error ? opts.error.stack : opts.error) + "\n```")
 		.setColor(HEX_RED)
 		.setTimestamp(Date.now());
 
-	if (interaction) {
-		embed.addFields({ name: "User", value: `${interaction.user}` });
-		embed.addFields({ name: "Channel", value: `${interaction.channel}` });
+	if ("interaction" in opts) {
+		embed.addFields({ name: "User", value: `${opts.interaction.user}` });
+		embed.addFields({ name: "Channel", value: `${opts.interaction.channel}` });
 
-		if (interaction instanceof ChatInputCommandInteraction) {
-			embed.addFields({ name: "Command", value: `${interaction.commandName}` });
-		} else if (interaction instanceof ButtonInteraction) {
-			embed.addFields({ name: "Button ID", value: `\`${interaction.customId}\`` });
-			embed.addFields({ name: "Message", value: interaction.message.url });
-		} else if (interaction instanceof ContextMenuCommandInteraction) {
-			if (interaction.isMessageContextMenuCommand())
-				embed.addFields({ name: "Message", value: interaction.targetMessage.url });
-			else if (interaction.isUserContextMenuCommand())
-				embed.addFields({ name: "Message", value: `${interaction.targetUser}` });
+		if (opts.interaction instanceof ChatInputCommandInteraction) {
+			embed.addFields({ name: "Command", value: `${opts.interaction.commandName}` });
+		} else if (opts.interaction instanceof ButtonInteraction) {
+			embed.addFields({ name: "Button ID", value: `\`${opts.interaction.customId}\`` });
+			embed.addFields({ name: "Message", value: opts.interaction.message.url });
+		} else if (opts.interaction instanceof ContextMenuCommandInteraction) {
+			if (opts.interaction.isMessageContextMenuCommand())
+				embed.addFields({ name: "Message", value: opts.interaction.targetMessage.url });
+			else if (opts.interaction.isUserContextMenuCommand())
+				embed.addFields({ name: "Message", value: `${opts.interaction.targetUser}` });
 		}
-	}
-
-	if (message) {
-		embed.addFields({ name: "Message", value: message.url });
+	} else if ("message" in opts) {
+		embed.addFields({ name: "Message", value: opts.message.url });
+	} else if ("channel" in opts) {
+		embed.addFields({ name: "Channel", value: `${opts.channel}` });
 	}
 
 	await logsChannel.send({
