@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.7.1
     version: 1.7.1
   '@google-cloud/translate':
-    specifier: ^7.2.1
-    version: 7.2.1
+    specifier: ^7.2.2
+    version: 7.2.2
   '@hapi/hapi':
     specifier: ^21.3.2
     version: 21.3.2
@@ -482,8 +482,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /@google-cloud/translate@7.2.1:
-    resolution: {integrity: sha512-VXmEvMF8qa4c7p5drjUZ06B8v0DxoUfFPyjhFp/wbgoe0GWaD1y1gGk6rUZxGKD/pB19kFU+0LMMSCgBW+a0iA==}
+  /@google-cloud/translate@7.2.2:
+    resolution: {integrity: sha512-IAJhPKotLH/OF/NzWml/byLDN+OILbs1P4k+7HNUJK618NsShFelRKzh3pRUUQA4DX0je3HaEZw9nR+5uJ6ZEg==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@google-cloud/common': 4.0.3
@@ -2862,7 +2862,7 @@ packages:
       jsdoc: 4.0.2
       minimist: 1.2.8
       protobufjs: 7.2.3
-      semver: 7.5.1
+      semver: 7.5.3
       tmp: 0.2.1
       uglify-js: 3.17.4
     dev: false
@@ -3055,6 +3055,7 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
+    dev: true
 
   /semver@7.5.3:
     resolution: {integrity: sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==}
