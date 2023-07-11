@@ -28,6 +28,9 @@ const env = z.object({
 	STARBOARD_EMOJIS: z.string().optional(),
 	STARBOARD_THRESHOLD: snowflake.optional(),
 
+	PINBOARD_CHANNEL: snowflake.optional(),
+	FREN_PINBOARD_CHANNEL: snowflake.optional(),
+
 	OPENAI_TOKEN: z.string().optional(),
 	CHATBOT_CHANNEL: snowflake.optional(),
 	CHATBOT_ESCAPE_CHAR: z.string().optional(),

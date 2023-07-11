@@ -37,6 +37,7 @@ import { handleAutoreply } from "~/features/autoreply";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { initRandomUwu } from "~/features/randomuwu";
 import { handleThreadCreate } from "~/features/threadCreate";
+import { updatePinboard } from "~/features/pinboard";
 import { handleColors } from "~/features/colors";
 import { handleButton } from "~/features/button";
 import { logDM } from "~/features/logDM";
@@ -298,6 +299,15 @@ client.on(Events.MessageReactionRemove, async (e) => {
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message: await e.message.fetch() });
+	}
+});
+
+client.on(Events.GuildAuditLogEntryCreate, async (entry, guild) => {
+	try {
+		await updatePinboard(entry, guild);
+	} catch (error) {
+		defaultLogger.error(error);
+		await logErrorToDiscord({ client, error });
 	}
 });
 
