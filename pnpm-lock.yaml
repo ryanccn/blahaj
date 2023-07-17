@@ -48,8 +48,8 @@ dependencies:
     specifier: ^0.32.1
     version: 0.32.1
   systeminformation:
-    specifier: ^5.18.5
-    version: 5.18.5
+    specifier: ^5.18.7
+    version: 5.18.7
   tsx:
     specifier: ^3.12.7
     version: 3.12.7
@@ -3240,8 +3240,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /systeminformation@5.18.5:
-    resolution: {integrity: sha512-es2jgMdpjNv9B/sQc0afGlnS2ip7/Nzlo9hAgkaq22NZftQuqHTnf/CuBadzOwl/DZB2aCTLDtzw83nAnT2owg==}
+  /systeminformation@5.18.7:
+    resolution: {integrity: sha512-ROxysxhjjnhWxQDkDPxCCQdeOt9IUKIGgfM0A++kqqNC+V/hAHQRshyG+5421R//DsOfXFc11pUFGpzA8YqRNQ==}
     engines: {node: '>=8.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
