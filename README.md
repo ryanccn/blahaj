@@ -25,8 +25,6 @@ The bot is hosted on an [AWS EC2](https://aws.amazon.com/ec2/) instance; the Sta
 - System stats command
 - Username migration statistics
 - GitHub code block link expansion
-- Color hex code expansion
-- Pinboard (as an unlimited channel pins alternative)
 
 ## Development
 
