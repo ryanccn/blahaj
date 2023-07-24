@@ -96,6 +96,12 @@ export const reuploadCommands = async () => {
 			.addStringOption((option) =>
 				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
 			),
+		new SlashCommandBuilder()
+			.setName("color")
+			.setDescription("Show a color")
+			.addStringOption((option) =>
+				option.setName("color").setDescription("Hexadecimal representation of the color").setRequired(true)
+			),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))

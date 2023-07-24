@@ -26,6 +26,7 @@ import { statsCommand } from "~/commands/utils/stats";
 import { translateCommand } from "~/commands/utils/translate";
 import { pomeloCommand } from "~/commands/utils/pomelo";
 import { selfTimeoutCommand } from "~/commands/utils/selfTimeout";
+import { colorCommand } from "~/commands/utils/color";
 
 import { frenAdd } from "~/commands/fren";
 import { stableDiffusionCommand } from "~/commands/stableDiffusion";
@@ -37,7 +38,6 @@ import { handleAutoreply } from "~/features/autoreply";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { initRandomUwu } from "~/features/randomuwu";
 import { handleThreadCreate } from "~/features/threadCreate";
-import { handleColors } from "~/features/colors";
 import { handleButton } from "~/features/button";
 import { logDM } from "~/features/logDM";
 import { logErrorToDiscord, respondWithError } from "~/features/errorHandling";
@@ -163,6 +163,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 				await selfTimeoutCommand(interaction);
 				break;
 			}
+			case "color": {
+				await colorCommand(interaction);
+				break;
+			}
 			default: {
 				defaultLogger.warn(`Received unknown command ${commandName}`);
 			}
@@ -213,18 +217,6 @@ client.on(Events.MessageCreate, async (message) => {
 	try {
 		if (message.author === message.client.user) return;
 		await handleGitHubExpansion(message);
-	} catch (error) {
-		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error, message });
-	}
-});
-
-client.on(Events.MessageCreate, async (message) => {
-	try {
-		if (message.guildId !== process.env.GUILD_ID) return;
-		if (message.author.bot) return;
-
-		await handleColors(message);
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message });
