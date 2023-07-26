@@ -2,7 +2,7 @@ import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import sharp from "sharp";
 import { SlashCommand } from "../_types";
 
-const hexRegex = /^#(([\da-fA-F]{8})|([\da-fA-F]{6})|([\da-fA-F]{3,4}))$/;
+const hexRegex = /^#(([\dA-Fa-f]{8})|([\dA-Fa-f]{6})|([\dA-Fa-f]{3,4}))$/;
 export const colorCommand: SlashCommand = async (i) => {
 	await i.deferReply();
 	const input = i.options.getString("color", true);
