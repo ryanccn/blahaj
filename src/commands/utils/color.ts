@@ -1,12 +1,12 @@
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import sharp from "sharp";
 import { SlashCommand } from "../_types";
-import namedColors from "../../lib/namedColors.json" assert { type: "json" };
+import { namedColors } from "../../lib/namedColors";
 
 function getHexCodeForColor(colorName: string) {
 	colorName = colorName.toLowerCase();
 	for (const hexCode in namedColors) {
-		const colorNames = (namedColors as { [key: string]: string[] })[hexCode].map((name) => name.toLowerCase());
+		const colorNames = namedColors[hexCode].map((name) => name.toLowerCase());
 		if (colorNames.includes(colorName)) return hexCode;
 	}
 	return null;
@@ -15,7 +15,7 @@ function getHexCodeForColor(colorName: string) {
 function getNamesForHexCode(hexCode: string) {
 	hexCode = hexCode.toUpperCase();
 	if (hexCode in namedColors) {
-		return (namedColors as { [key: string]: string[] })[hexCode];
+		return namedColors[hexCode];
 	}
 	return [];
 }

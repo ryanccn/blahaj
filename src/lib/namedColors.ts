@@ -1,4 +1,4 @@
-{
+export const namedColors = {
 	"#F0F8FF": ["AliceBlue"],
 	"#FAEBD7": ["AntiqueWhite"],
 	"#00FFFF": ["Aqua", "Cyan"],
@@ -137,5 +137,5 @@
 	"#FFFFFF": ["White"],
 	"#F5F5F5": ["WhiteSmoke"],
 	"#FFFF00": ["Yellow"],
-	"#9ACD32": ["YellowGreen"]
-}
+	"#9ACD32": ["YellowGreen"],
+} as { [key: string]: string[] };
