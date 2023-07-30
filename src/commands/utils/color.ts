@@ -8,6 +8,7 @@ const hexRegex = /^#(([\dA-Fa-f]{8})|([\dA-Fa-f]{6})|([\dA-Fa-f]{3,4}))$/;
 export const colorCommand: SlashCommand = async (i) => {
 	await i.deferReply();
 	const input = i.options.getString("color", true);
+	const lowerCaseInput = input.toLowerCase();
 
 	let fullString: string;
 	let hexOnly: string;
@@ -18,9 +19,9 @@ export const colorCommand: SlashCommand = async (i) => {
 	} else if (hexRegex.test("#" + input)) {
 		fullString = "#" + input;
 		hexOnly = input;
-	} else if (Object.prototype.hasOwnProperty.call(cssColorKeywords as { [key: string]: string }, input)) {
-		fullString = cssColorKeywords[input];
-		hexOnly = cssColorKeywords[input].slice(1);
+	} else if (Object.prototype.hasOwnProperty.call(cssColorKeywords, lowerCaseInput)) {
+		fullString = cssColorKeywords[lowerCaseInput];
+		hexOnly = fullString.slice(1);
 	} else {
 		await i.editReply("Invalid color provided!");
 		return;
