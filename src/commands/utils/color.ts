@@ -1,7 +1,7 @@
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import sharp from "sharp";
 import { SlashCommand } from "../_types";
-import { namedColors } from "../../lib/namedColors";
+import { namedColors } from "~/lib/namedColors";
 
 function getHexCodeForColor(colorName: string) {
 	colorName = colorName.toLowerCase();
