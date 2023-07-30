@@ -1,8 +1,16 @@
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import sharp from "sharp";
 import { SlashCommand } from "../_types";
-// @ts-expect-error CJS
-import cssColorKeywords from "css-color-keywords";
+import namedColors from "../../lib/namedColors.json" assert { type: "json" };
+
+function getHexCodeForColor(colorName: string) {
+	colorName = colorName.toLowerCase();
+	for (const hexCode in namedColors) {
+		const colorNames = (namedColors as { [key: string]: string[] })[hexCode].map((name) => name.toLowerCase());
+		if (colorNames.includes(colorName)) return hexCode;
+	}
+	return null;
+}
 
 const hexRegex = /^#(([\dA-Fa-f]{8})|([\dA-Fa-f]{6})|([\dA-Fa-f]{3,4}))$/;
 export const colorCommand: SlashCommand = async (i) => {
@@ -18,8 +26,8 @@ export const colorCommand: SlashCommand = async (i) => {
 	} else if (hexRegex.test("#" + input)) {
 		fullString = "#" + input;
 		hexOnly = input;
-	} else if (input.toLowerCase() in cssColorKeywords) {
-		fullString = cssColorKeywords[input.toLowerCase()];
+	} else if (getHexCodeForColor(input)) {
+		fullString = getHexCodeForColor(input) as string;
 		hexOnly = fullString.slice(1);
 	} else {
 		await i.editReply("Invalid color provided!");
