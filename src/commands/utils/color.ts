@@ -12,6 +12,14 @@ function getHexCodeForColor(colorName: string) {
 	return null;
 }
 
+function getNamesForHexCode(hexCode: string) {
+	hexCode = hexCode.toUpperCase();
+	if (hexCode in namedColors) {
+		return (namedColors as { [key: string]: string[] })[hexCode];
+	}
+	return [];
+}
+
 const hexRegex = /^#(([\dA-Fa-f]{8})|([\dA-Fa-f]{6})|([\dA-Fa-f]{3,4}))$/;
 export const colorCommand: SlashCommand = async (i) => {
 	await i.deferReply();
@@ -55,6 +63,8 @@ export const colorCommand: SlashCommand = async (i) => {
 		.setTitle(fullString)
 		.setColor(intColor)
 		.setThumbnail(`attachment://hex-${hexOnly}.png`);
-
+	if (getNamesForHexCode(fullString).length > 0) {
+		embed.setDescription(getNamesForHexCode(fullString).join("/"));
+	}
 	await i.editReply({ files: [file], embeds: [embed] });
 };
