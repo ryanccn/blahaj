@@ -1,70 +1,32 @@
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import sharp from "sharp";
 import { SlashCommand } from "../_types";
-import { namedColors } from "~/lib/namedColors";
+import { ColorTranslator } from "colortranslator";
 
-function getHexCodeForColor(colorName: string) {
-	colorName = colorName.toLowerCase();
-	for (const hexCode in namedColors) {
-		const colorNames = namedColors[hexCode].map((name) => name.toLowerCase());
-		if (colorNames.includes(colorName)) return hexCode;
-	}
-	return null;
-}
-
-function getNamesForHexCode(hexCode: string) {
-	hexCode = hexCode.toUpperCase();
-	if (hexCode in namedColors) {
-		return namedColors[hexCode];
-	}
-	return [];
-}
-
-const hexRegex = /^#(([\dA-Fa-f]{8})|([\dA-Fa-f]{6})|([\dA-Fa-f]{3,4}))$/;
 export const colorCommand: SlashCommand = async (i) => {
 	await i.deferReply();
 	const input = i.options.getString("color", true);
 
-	let fullString: string;
-	let hexOnly: string;
-
-	if (hexRegex.test(input)) {
-		fullString = input;
-		hexOnly = input.slice(1);
-	} else if (hexRegex.test("#" + input)) {
-		fullString = "#" + input;
-		hexOnly = input;
-	} else if (getHexCodeForColor(input)) {
-		fullString = getHexCodeForColor(input) as string;
-		hexOnly = fullString.slice(1);
-	} else {
-		await i.editReply("Invalid color provided!");
-		return;
+	let fullColor: ColorTranslator;
+	try {
+		fullColor = new ColorTranslator(input);
+	} catch {
+		try {
+			fullColor = new ColorTranslator("#" + input);
+		} catch {
+			await i.editReply("Invalid color provided!");
+			return;
+		}
 	}
 
-	const image = await sharp({ create: { width: 256, height: 256, background: fullString, channels: 4 } })
+	const image = await sharp({ create: { width: 256, height: 256, background: fullColor.HEXA, channels: 4 } })
 		.png()
 		.toBuffer();
 
-	const normalizedHex =
-		hexOnly.length === 8
-			? hexOnly.slice(0, 6)
-			: hexOnly.length === 6
-			? hexOnly
-			: [...hexOnly]
-					.map((k) => `${k}${k}`)
-					.join("")
-					.slice(0, 6);
-
-	const intColor = Number.parseInt(normalizedHex, 16);
-
-	const file = new AttachmentBuilder(image).setName(`hex-${hexOnly}.png`);
+	const file = new AttachmentBuilder(image).setName(`hex-${fullColor.HEXA.slice(1)}.png`);
 	const embed = new EmbedBuilder()
-		.setTitle(fullString)
-		.setColor(intColor)
-		.setThumbnail(`attachment://hex-${hexOnly}.png`);
-	if (getNamesForHexCode(fullString).length > 0) {
-		embed.setDescription(getNamesForHexCode(fullString).join("/"));
-	}
+		.setTitle(fullColor.HEXA)
+		.setColor(Number.parseInt(fullColor.HEX.slice(1), 16))
+		.setThumbnail(`attachment://hex-${fullColor.HEXA.slice(1)}.png`);
 	await i.editReply({ files: [file], embeds: [embed] });
 };

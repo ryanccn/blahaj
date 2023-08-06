@@ -20,9 +20,9 @@ dependencies:
   bottomify:
     specifier: ^0.3.0
     version: 0.3.0
-  css-color-keywords:
-    specifier: ^1.0.0
-    version: 1.0.0
+  colortranslator:
+    specifier: ^3.0.2
+    version: 3.0.2
   discord.js:
     specifier: ^14.12.1
     version: 14.12.1
@@ -1343,6 +1343,10 @@ packages:
       color-string: 1.9.1
     dev: false
 
+  /colortranslator@3.0.2:
+    resolution: {integrity: sha512-BAi+1mC33m9WGMrZXGke+IHzs8DDG3EKazim8mJ/kGF3VihNmsV9Yh8mX/9emQK1qThQZ/TatYTxoLUFnCqOOg==}
+    dev: false
+
   /combined-stream@1.0.8:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
@@ -1370,11 +1374,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  /css-color-keywords@1.0.0:
-    resolution: {integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==}
-    engines: {node: '>=4'}
-    dev: false
 
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
