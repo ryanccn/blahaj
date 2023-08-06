@@ -3,19 +3,30 @@ import sharp from "sharp";
 import { SlashCommand } from "../_types";
 import { ColorTranslator } from "colortranslator";
 
+const customColors: {
+	[key: string]: string;
+} = {
+	transparent: "#00000000",
+};
+
 export const colorCommand: SlashCommand = async (i) => {
 	await i.deferReply();
 	const input = i.options.getString("color", true);
 
 	let fullColor: ColorTranslator;
-	try {
-		fullColor = new ColorTranslator(input);
-	} catch {
+
+	if (input in customColors) {
+		fullColor = new ColorTranslator(customColors[input]);
+	} else {
 		try {
-			fullColor = new ColorTranslator("#" + input);
+			fullColor = new ColorTranslator(input);
 		} catch {
-			await i.editReply("Invalid color provided!");
-			return;
+			try {
+				fullColor = new ColorTranslator("#" + input);
+			} catch {
+				await i.editReply("Invalid color provided!");
+				return;
+			}
 		}
 	}
 
