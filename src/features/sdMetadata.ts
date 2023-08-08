@@ -88,7 +88,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 							value: truncateString(
 								typeof sdMetadata.image.prompt === "string"
 									? sdMetadata.image.prompt
-									: sdMetadata.image.prompt[0].prompt ?? "Unknown"
+									: sdMetadata.image.prompt[0].prompt ?? "Unknown",
 							),
 						},
 						{
@@ -123,13 +123,13 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 									?.map((k) => `${k.type}${k.strength ? ` ${k.strength}` : ""}${k.scale ? ` ${k.scale}x` : ""}`)
 									.join("\n") || "None detected",
 							inline: true,
-						}
+						},
 					)
 					.setThumbnail(image.url)
 					.setFooter({
 						text: `Generated with ${sdMetadata.app_id} ${sdMetadata.app_version}`,
 					})
-					.setColor(0x38bdf8)
+					.setColor(0x38bdf8),
 			);
 		} else if (data["parameters"]) {
 			const parameters = (data.parameters as string).split("\n").filter(Boolean);
@@ -170,13 +170,13 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 						{
 							name: "Extras",
 							value: data["extras"] ?? "None detected",
-						}
+						},
 					)
 					.setThumbnail(image.url)
 					.setFooter({
 						text: `Generated with AUTOMATIC1111/stable-diffusion-webui`,
 					})
-					.setColor(0x38bdf8)
+					.setColor(0x38bdf8),
 			);
 		} else if (typeof data.description?.value === "string" && data.description.value.includes("Mochi Diffusion")) {
 			const mochiDiffusionData: Record<string, string> = {};
@@ -232,13 +232,13 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 							name: "Upscaler",
 							value: mochiDiffusionData["Upscaler"] || "*None*",
 							inline: true,
-						}
+						},
 					)
 					.setThumbnail(image.url)
 					.setFooter({
 						text: `Generated with ${mochiDiffusionData["Generator"]}`,
 					})
-					.setColor(0x38bdf8)
+					.setColor(0x38bdf8),
 			);
 		}
 	}

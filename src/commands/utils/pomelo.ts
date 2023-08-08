@@ -18,10 +18,10 @@ export const pomeloCommand: SlashCommand = async (i) => {
 				.setTitle("Username migration / Pomelo")
 				.setDescription(
 					`**${pomeloed.size}** out of ${members.size} members (${((pomeloed.size / members.size) * 100).toFixed(
-						1
+						1,
 					)}%) of **${
 						i.guild.name
-					}** have had their usernames migrated to [the new format](https://discord.com/blog/usernames).`
+					}** have had their usernames migrated to [the new format](https://discord.com/blog/usernames).`,
 				)
 				.addFields({
 					name: "Unmigrated users",

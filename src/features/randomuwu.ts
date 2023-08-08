@@ -13,7 +13,7 @@ const randomlyUwu = async (client: Client) => {
 			const requiredPermissions = PermissionFlagsBits.ViewChannel | PermissionFlagsBits.SendMessages;
 
 			return everyonePermissions?.has(requiredPermissions) || frenPermissions?.has(requiredPermissions);
-		})
+		}),
 	);
 
 	const randomChannel = channelPool.random() as GuildTextBasedChannel | null | undefined;
@@ -23,8 +23,11 @@ const randomlyUwu = async (client: Client) => {
 };
 
 export const initRandomUwu = (client: Client) => {
-	setInterval(() => {
-		if (Math.random() > 0.001) return;
-		randomlyUwu(client);
-	}, 5 * 60 * 1000);
+	setInterval(
+		() => {
+			if (Math.random() > 0.001) return;
+			randomlyUwu(client);
+		},
+		5 * 60 * 1000,
+	);
 };

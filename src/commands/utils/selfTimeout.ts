@@ -29,7 +29,7 @@ export const selfTimeoutCommand: SlashCommand = async (i) => {
 		new ButtonBuilder()
 			.setStyle(ButtonStyle.Danger)
 			.setLabel("Proceed")
-			.setCustomId(`self-timeout-proceed::${i.user.id}::${duration}`)
+			.setCustomId(`self-timeout-proceed::${i.user.id}::${duration}`),
 	);
 
 	await i.editReply({
@@ -37,7 +37,7 @@ export const selfTimeoutCommand: SlashCommand = async (i) => {
 			new EmbedBuilder()
 				.setTitle("Self-timeout")
 				.setDescription(
-					`This command will time you out in this server for \`${durationString}\`. **Think carefully before you proceed with this action!** Moderators will not process requests to undo self-timeouts.`
+					`This command will time you out in this server for \`${durationString}\`. **Think carefully before you proceed with this action!** Moderators will not process requests to undo self-timeouts.`,
 				)
 				.setColor(0xfacc15),
 		],

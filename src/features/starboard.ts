@@ -33,7 +33,7 @@ const getStarboardChannel = async (message: Message) => {
 		process.env.FREN_STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
-			process.env.FREN_STARBOARD_CHANNEL
+			process.env.FREN_STARBOARD_CHANNEL,
 		);
 
 		if (!starboard) {
@@ -57,7 +57,7 @@ const getStarboardChannel = async (message: Message) => {
 		process.env.STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
-			process.env.STARBOARD_CHANNEL
+			process.env.STARBOARD_CHANNEL,
 		);
 
 		if (!starboard) {
@@ -81,7 +81,7 @@ const updateStarboard = async (message: Message) => {
 	const reactions = message.reactions.cache.filter(
 		(reaction) =>
 			STARBOARD_EMOJIS.includes(reaction.emoji.id ?? reaction.emoji.name ?? "") &&
-			reaction.count >= EMOJI_REACTION_THRESHOLD
+			reaction.count >= EMOJI_REACTION_THRESHOLD,
 	);
 
 	const reactionString = reactions.map((reaction) => `${reaction.emoji} ${reaction.count}`).join(" ");
@@ -112,7 +112,7 @@ const updateStarboard = async (message: Message) => {
 	if (reactions.size === 0) return;
 
 	const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-		new ButtonBuilder().setLabel("Jump to message").setURL(message.url).setStyle(ButtonStyle.Link)
+		new ButtonBuilder().setLabel("Jump to message").setURL(message.url).setStyle(ButtonStyle.Link),
 	);
 
 	const msg = await starboard.send({

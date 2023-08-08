@@ -48,14 +48,14 @@ interface ChannelLogError extends BaseLogErrorOptions {
 }
 
 export const logErrorToDiscord = async (
-	opts: BaseLogErrorOptions | InteractionLogError | MessageLogError | ChannelLogError
+	opts: BaseLogErrorOptions | InteractionLogError | MessageLogError | ChannelLogError,
 ) => {
 	if (!process.env.ERROR_LOGS_CHANNEL) return;
 
 	const logsChannel = await opts.client.channels.fetch(process.env.ERROR_LOGS_CHANNEL);
 	if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
 		throw new Error(
-			`Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`
+			`Specified error logging channel ${process.env.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`,
 		);
 
 	const embed = new EmbedBuilder()

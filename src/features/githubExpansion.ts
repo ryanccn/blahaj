@@ -43,7 +43,7 @@ export const handleGitHubExpansion = async (message: Message) => {
 				new EmbedBuilder()
 					.setDescription(`\`\`\`${block.language}\n${block.content}\n\`\`\``)
 					.setAuthor({ name: block.name })
-					.setColor(0xa7f3d0)
+					.setColor(0xa7f3d0),
 			),
 			allowedMentions: { repliedUser: false, roles: [], users: [] },
 		});

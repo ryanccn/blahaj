@@ -39,7 +39,7 @@ export const frenAdd: SlashCommand = async (i) => {
 				new ButtonBuilder()
 					.setStyle(ButtonStyle.Danger)
 					.setLabel("Decline")
-					.setCustomId(`fren-decline::${user.id}::${Date.now()}`)
+					.setCustomId(`fren-decline::${user.id}::${Date.now()}`),
 			),
 		],
 		allowedMentions: { users: [user.id], roles: [] },

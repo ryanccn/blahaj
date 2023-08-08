@@ -62,7 +62,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 		],
 		components: [
 			new ActionRowBuilder<ButtonBuilder>().addComponents(
-				new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Original message").setURL(message.url)
+				new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Original message").setURL(message.url),
 			),
 		],
 	});

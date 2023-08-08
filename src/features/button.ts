@@ -40,7 +40,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 						.setStyle(ButtonStyle.Danger)
 						.setLabel("Decline")
 						.setCustomId(`fren-disabled-decline`)
-						.setDisabled(true)
+						.setDisabled(true),
 				),
 			],
 		});

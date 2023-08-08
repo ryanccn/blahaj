@@ -93,8 +93,8 @@ client.once(Events.ClientReady, async () => {
 					PermissionFlagsBits.SendMessagesInThreads,
 					PermissionFlagsBits.ReadMessageHistory,
 				],
-			})
-		)
+			}),
+		),
 	);
 
 	if (process.env.NODE_ENV !== "development") {
