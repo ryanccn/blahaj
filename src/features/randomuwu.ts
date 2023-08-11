@@ -1,15 +1,16 @@
 import { PermissionFlagsBits, type Client, ChannelType, GuildTextBasedChannel } from "discord.js";
 import { uwurandom } from "~/lib/uwurandom";
+import { config } from "~/env";
 
 const randomlyUwu = async (client: Client) => {
-	const guild = await client.guilds.fetch(process.env.GUILD_ID);
+	const guild = await client.guilds.fetch(config.GUILD_ID);
 	const channelPool = await guild.channels.fetch().then((channels) =>
 		channels.filter((channel) => {
 			if (!channel) return false;
 			if (channel.type !== ChannelType.GuildText) return false;
 
 			const everyonePermissions = channel.permissionsFor(guild.id, false);
-			const frenPermissions = process.env.FREN_ROLE_ID ? channel.permissionsFor(process.env.FREN_ROLE_ID, false) : null;
+			const frenPermissions = config.FREN_ROLE_ID ? channel.permissionsFor(config.FREN_ROLE_ID, false) : null;
 			const requiredPermissions = PermissionFlagsBits.ViewChannel | PermissionFlagsBits.SendMessages;
 
 			return everyonePermissions?.has(requiredPermissions) || frenPermissions?.has(requiredPermissions);

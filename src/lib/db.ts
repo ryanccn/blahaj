@@ -2,12 +2,14 @@ import { createStorage } from "unstorage";
 import MemoryDriver from "unstorage/drivers/memory";
 import RedisDriver from "unstorage/drivers/redis";
 
+import { config } from "~/env";
+
 const storage = createStorage({
-	driver: process.env.REDIS_URL ? RedisDriver({ url: process.env.REDIS_URL }) : MemoryDriver(),
+	driver: config.REDIS_URL ? RedisDriver({ url: config.REDIS_URL }) : MemoryDriver(),
 });
 
 const resolveKey = (k: string | string[]) => (typeof k === "string" ? k : k.join(":"));
-const scopeToEnv = (k: string[]) => [process.env.NODE_ENV, ...k];
+const scopeToEnv = (k: string[]) => [config.NODE_ENV, ...k];
 
 export const get = async (k: string[]) => {
 	return storage.getItem(resolveKey(scopeToEnv(k)));
@@ -40,6 +42,6 @@ export const del = async (k: string[]) => {
 };
 
 export const keys = async () => {
-	const dbKeys = await storage.getKeys(process.env.NODE_ENV);
+	const dbKeys = await storage.getKeys(config.NODE_ENV);
 	return dbKeys.length;
 };

@@ -1,6 +1,7 @@
 import { EmbedBuilder } from "discord.js";
 import type { SlashCommand } from "./_types";
 import { Logger } from "~/lib/logger";
+import { config } from "~/env";
 
 const logger = new Logger("stable-diffusion");
 
@@ -18,7 +19,7 @@ interface StableDiffusionAPIResponse {
 }
 
 export const stableDiffusionCommand: SlashCommand = async (i) => {
-	if (!process.env.STABLE_DIFFUSION_API_URL || !process.env.STABLE_DIFFUSION_API_TOKEN) {
+	if (!config.STABLE_DIFFUSION_API_URL || !config.STABLE_DIFFUSION_API_TOKEN) {
 		await i.reply({
 			embeds: [
 				new EmbedBuilder()
@@ -30,9 +31,8 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		return;
 	}
 
-	const startURL = new URL("/start", process.env.STABLE_DIFFUSION_API_URL).toString();
-	const getStatusURL = (callId: string) =>
-		new URL(`/status/${callId}`, process.env.STABLE_DIFFUSION_API_URL).toString();
+	const startURL = new URL("/start", config.STABLE_DIFFUSION_API_URL).toString();
+	const getStatusURL = (callId: string) => new URL(`/status/${callId}`, config.STABLE_DIFFUSION_API_URL).toString();
 
 	const prompt = i.options.getString("prompt", true);
 	const negativePrompt = i.options.getString("negative-prompt") ?? "<EasyNegative>";
@@ -50,7 +50,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		}),
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${process.env.STABLE_DIFFUSION_API_TOKEN}`,
+			Authorization: `Bearer ${config.STABLE_DIFFUSION_API_TOKEN}`,
 			"Content-Type": "application/json",
 		},
 	}).then((res) => {
@@ -78,7 +78,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		logger.info(`Polling ${callId} (try ${_}/60)`);
 		const statusResp = await fetch(getStatusURL(callId), {
 			headers: {
-				Authorization: `Bearer ${process.env.STABLE_DIFFUSION_API_TOKEN}`,
+				Authorization: `Bearer ${config.STABLE_DIFFUSION_API_TOKEN}`,
 			},
 		});
 

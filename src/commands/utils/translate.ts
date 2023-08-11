@@ -2,22 +2,19 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "disc
 import type { ContextMenuCommand } from "../_types";
 
 import { v2 } from "@google-cloud/translate";
+import { config } from "~/env";
 
 const client = new v2.Translate({
-	projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+	projectId: config.GOOGLE_CLOUD_PROJECT_ID,
 	credentials: {
-		client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
-		private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY,
+		client_email: config.GOOGLE_CLOUD_CLIENT_EMAIL,
+		private_key: config.GOOGLE_CLOUD_PRIVATE_KEY,
 	},
 });
 
 export const translateCommand: ContextMenuCommand = async (i) => {
 	if (!i.isMessageContextMenuCommand()) return;
-	if (
-		!process.env.GOOGLE_CLOUD_PROJECT_ID ||
-		!process.env.GOOGLE_CLOUD_CLIENT_EMAIL ||
-		!process.env.GOOGLE_CLOUD_PRIVATE_KEY
-	) {
+	if (!config.GOOGLE_CLOUD_PROJECT_ID || !config.GOOGLE_CLOUD_CLIENT_EMAIL || !config.GOOGLE_CLOUD_PRIVATE_KEY) {
 		await i.reply({
 			embeds: [
 				new EmbedBuilder()

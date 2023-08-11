@@ -3,7 +3,7 @@ import { ActivityType, EmbedBuilder, type Client } from "discord.js";
 import { del, get, set } from "~/lib/db";
 
 import capitalize from "just-capitalize";
-import { z } from "zod";
+import * as v from "valibot";
 
 import type { SlashCommand } from "../_types";
 
@@ -48,10 +48,11 @@ export const presenceCommand: SlashCommand = async (i) => {
 	});
 };
 
-const PresenceData = z.object({ type: z.string(), content: z.string() });
+const PresenceData = v.object({ type: v.string(), content: v.string() });
 
 export const restorePresence = async (client: Client) => {
-	const storedData = PresenceData.safeParse(await get(["presence", "v1"]));
+	const storedData = v.safeParse(PresenceData, await get(["presence", "v1"]));
+
 	if (!storedData.success) {
 		await del(["presence", "v1"]);
 		return;

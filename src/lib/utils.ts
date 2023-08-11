@@ -1,7 +1,7 @@
 import { EmbedBuilder, type Guild } from "discord.js";
-import { blue, bold, red, dim } from "kleur/colors";
+import { blue, bold, red, dim, cyan } from "kleur/colors";
 
-import { type ZodError } from "zod";
+import { type ValiError } from "valibot";
 
 export const getGuildEmoji = async (guild: Guild, nameOrId: string) => {
 	const emojis = guild.emojis.cache;
@@ -13,13 +13,18 @@ export const successEmbed = (title: string, description: string) => {
 	return new EmbedBuilder().setTitle(title).setDescription(description).setColor(0x51cf66);
 };
 
-export const formatZodError = (err: ZodError) => {
+export const formatValiError = (err: ValiError) => {
 	const issues = err.issues;
 	let ret = red(bold(`${issues.length} validation error${issues.length === 1 ? "" : "s"}!\n`));
 
 	for (const issue of issues) {
-		ret +=
-			`${blue(issue.path.join(" > "))} ` + `${dim("::")} ` + issue.code + " " + `${dim("::")} ` + issue.message + "\n";
+		const issuePath =
+			issue.path?.map((p) => (p.key as string | number | symbol).toString()).join(dim(" > ")) ?? "unknown path";
+
+		ret += blue(issuePath) + "\n";
+		ret += "  " + dim("Validation ") + issue.validation + "\n";
+		ret += "  " + dim("Reason ") + issue.reason + "\n";
+		ret += "  " + dim("Message ") + cyan(issue.message) + "\n";
 	}
 
 	return ret.trim();

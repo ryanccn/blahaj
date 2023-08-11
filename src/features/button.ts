@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType, EmbedBuilder } from "discord.js";
+import { config } from "~/env";
 
 export const handleButton = async (i: ButtonInteraction) => {
 	const buttonId = i.customId;
@@ -19,14 +20,14 @@ export const handleButton = async (i: ButtonInteraction) => {
 			return;
 		}
 
-		if (!process.env.FREN_ROLE_ID) {
+		if (!config.FREN_ROLE_ID) {
 			throw new Error("No FREN_ROLE_ID configured!");
 		}
 
-		const guild = await i.client.guilds.fetch(process.env.GUILD_ID);
+		const guild = await i.client.guilds.fetch(config.GUILD_ID);
 		const member = await guild.members.fetch(userId);
 
-		await member.roles.add(process.env.FREN_ROLE_ID);
+		await member.roles.add(config.FREN_ROLE_ID);
 
 		await i.update({
 			components: [
@@ -46,7 +47,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 		});
 
 		await i.channel.send({
-			content: `<@${userId}> You have been added to <@&${process.env.FREN_ROLE_ID}>. Have fun!`,
+			content: `<@${userId}> You have been added to <@&${config.FREN_ROLE_ID}>. Have fun!`,
 			allowedMentions: { roles: [], users: [userId] },
 		});
 

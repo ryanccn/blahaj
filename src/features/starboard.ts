@@ -11,15 +11,16 @@ import {
 
 import { messageEmbed } from "~/lib/messageEmbed";
 import { get, set, del } from "~/lib/db";
+import { config } from "~/env";
 
 let EMOJI_REACTION_THRESHOLD = 3;
-if (process.env.STARBOARD_THRESHOLD) {
-	EMOJI_REACTION_THRESHOLD = Number.parseInt(process.env.STARBOARD_THRESHOLD);
+if (config.STARBOARD_THRESHOLD) {
+	EMOJI_REACTION_THRESHOLD = Number.parseInt(config.STARBOARD_THRESHOLD);
 }
 
 let STARBOARD_EMOJIS = ["⭐"];
-if (process.env.STARBOARD_EMOJIS) {
-	STARBOARD_EMOJIS = process.env.STARBOARD_EMOJIS.split(",");
+if (config.STARBOARD_EMOJIS) {
+	STARBOARD_EMOJIS = config.STARBOARD_EMOJIS.split(",");
 }
 
 const getStarboardChannel = async (message: Message) => {
@@ -28,20 +29,20 @@ const getStarboardChannel = async (message: Message) => {
 
 	if (
 		message.channel.parent &&
-		(message.channel.parent.id === process.env.FREN_CATEGORY_ID ||
-			(message.channel.parent.parent && message.channel.parent.parent.id === process.env.FREN_CATEGORY_ID)) &&
-		process.env.FREN_STARBOARD_CHANNEL
+		(message.channel.parent.id === config.FREN_CATEGORY_ID ||
+			(message.channel.parent.parent && message.channel.parent.parent.id === config.FREN_CATEGORY_ID)) &&
+		config.FREN_STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
-			process.env.FREN_STARBOARD_CHANNEL,
+			config.FREN_STARBOARD_CHANNEL,
 		);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(process.env.FREN_STARBOARD_CHANNEL);
+			starboard = await message.guild!.channels.fetch(config.FREN_STARBOARD_CHANNEL);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
-			throw new Error(`Configured FREN_STARBOARD_CHANNEL (${process.env.FREN_STARBOARD_CHANNEL}) is invalid!`);
+			throw new Error(`Configured FREN_STARBOARD_CHANNEL (${config.FREN_STARBOARD_CHANNEL}) is invalid!`);
 		}
 
 		return starboard;
@@ -54,18 +55,16 @@ const getStarboardChannel = async (message: Message) => {
 			: message.channel.type === ChannelType.PublicThread
 			? message.channel.parent!.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel)
 			: false) &&
-		process.env.STARBOARD_CHANNEL
+		config.STARBOARD_CHANNEL
 	) {
-		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
-			process.env.STARBOARD_CHANNEL,
-		);
+		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(config.STARBOARD_CHANNEL);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(process.env.STARBOARD_CHANNEL);
+			starboard = await message.guild!.channels.fetch(config.STARBOARD_CHANNEL);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
-			throw new Error(`Configured STARBOARD_CHANNEL (${process.env.STARBOARD_CHANNEL}) is invalid!`);
+			throw new Error(`Configured STARBOARD_CHANNEL (${config.STARBOARD_CHANNEL}) is invalid!`);
 		}
 
 		return starboard;

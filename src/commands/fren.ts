@@ -2,6 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { createTemporaryChannel } from "~/lib/tmpChannel";
 import type { SlashCommand } from "./_types";
+import { config } from "~/env";
 
 const frenAddMessage = ({ id, fren }: { id: string; fren: string }) =>
 	`
@@ -18,7 +19,7 @@ export const frenAdd: SlashCommand = async (i) => {
 	await i.deferReply({ ephemeral: true });
 	const user = i.options.getUser("user", true);
 
-	if (!process.env.FREN_ROLE_ID) {
+	if (!config.FREN_ROLE_ID) {
 		throw new Error("No FREN_ROLE_ID configured!");
 	}
 
@@ -29,7 +30,7 @@ export const frenAdd: SlashCommand = async (i) => {
 	});
 
 	await channel.send({
-		content: frenAddMessage({ id: user.id, fren: process.env.FREN_ROLE_ID }),
+		content: frenAddMessage({ id: user.id, fren: config.FREN_ROLE_ID }),
 		components: [
 			new ActionRowBuilder<ButtonBuilder>().addComponents(
 				new ButtonBuilder()

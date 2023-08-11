@@ -12,6 +12,7 @@ import type { RESTGetAPIOAuth2CurrentApplicationResult } from "discord-api-types
 import { defaultLogger } from "~/lib/logger";
 
 import "dotenv/config";
+import { config } from "~/env";
 
 export const reuploadCommands = async () => {
 	const commands = [
@@ -107,7 +108,7 @@ export const reuploadCommands = async () => {
 		.map((command) => command.setDMPermission(false))
 		.map((command) => command.toJSON());
 
-	const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
+	const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
 
 	const { id: appId } = (await rest.get(Routes.oauth2CurrentApplication())) as RESTGetAPIOAuth2CurrentApplicationResult;
 

@@ -1,5 +1,6 @@
 import { PermissionFlagsBits, ChannelType, type Client, type UserResolvable, type TextChannel } from "discord.js";
 import { nanoid } from "nanoid";
+import { config } from "~/env";
 
 export const createTemporaryChannel = async ({
 	client,
@@ -10,15 +11,15 @@ export const createTemporaryChannel = async ({
 	viewableUser: UserResolvable;
 	prefix: string;
 }): Promise<TextChannel> => {
-	if (!process.env.GUILD_ID || !process.env.TEMPORARY_CATEGORY_ID)
+	if (!config.GUILD_ID || !config.TEMPORARY_CATEGORY_ID)
 		throw new Error("GUILD_ID or TEMPORARY_CATEGORY_ID not configured properly!");
 
-	const guild = await client.guilds.fetch(process.env.GUILD_ID);
+	const guild = await client.guilds.fetch(config.GUILD_ID);
 
-	const temporaryCategory = await guild.channels.fetch(process.env.TEMPORARY_CATEGORY_ID);
+	const temporaryCategory = await guild.channels.fetch(config.TEMPORARY_CATEGORY_ID);
 
 	if (!temporaryCategory) {
-		throw new Error(`Could not find (temporary) category with ID \`${process.env.TEMPORARY_CATEGORY_ID}\``);
+		throw new Error(`Could not find (temporary) category with ID \`${config.TEMPORARY_CATEGORY_ID}\``);
 	}
 	if (temporaryCategory.type !== ChannelType.GuildCategory) {
 		throw new Error(`#${temporaryCategory.name} (${temporaryCategory.id}) is not a (temporary) category channel!`);

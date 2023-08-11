@@ -1,10 +1,8 @@
-import { validateEnv } from "~/env";
 import "dotenv/config";
-validateEnv();
+import { config } from "~/env";
 
 import {
 	Client,
-	Options,
 	GatewayIntentBits,
 	Partials,
 	Events,
@@ -59,13 +57,6 @@ const client = new Client({
 		GatewayIntentBits.GuildEmojisAndStickers,
 	],
 	partials: [Partials.Channel, Partials.Message, Partials.Reaction],
-	sweepers: {
-		...Options.DefaultSweeperSettings,
-		messages: {
-			interval: 3600,
-			lifetime: 1800,
-		},
-	},
 });
 
 client.once(Events.ClientReady, async () => {
@@ -97,7 +88,7 @@ client.once(Events.ClientReady, async () => {
 		),
 	);
 
-	if (process.env.NODE_ENV !== "development") {
+	if (config.NODE_ENV !== "development") {
 		defaultLogger.warn("Running in production mode!");
 	}
 });
@@ -226,7 +217,7 @@ client.on(Events.MessageCreate, async (message) => {
 client.on(Events.MessageCreate, async (message) => {
 	try {
 		if (message.channel.type !== ChannelType.GuildText) return;
-		if (message.channel.id !== process.env.CHATBOT_CHANNEL) return;
+		if (message.channel.id !== config.CHATBOT_CHANNEL) return;
 		if (message.author.bot && !message.webhookId) return;
 
 		await handleChat(message);
@@ -248,7 +239,7 @@ client.on(Events.MessageCreate, async (message) => {
 
 client.on(Events.MessageCreate, async (message) => {
 	try {
-		if (message.guildId !== process.env.GUILD_ID) return;
+		if (message.guildId !== config.GUILD_ID) return;
 		if (message.author.bot) return;
 
 		await handleAutoreply(message);
@@ -260,7 +251,7 @@ client.on(Events.MessageCreate, async (message) => {
 
 client.on(Events.ThreadCreate, async (channel) => {
 	try {
-		if (channel.guildId !== process.env.GUILD_ID) return;
+		if (channel.guildId !== config.GUILD_ID) return;
 
 		await handleThreadCreate(channel);
 	} catch (error) {
@@ -295,7 +286,7 @@ client.on(Events.MessageReactionRemove, async (e) => {
 
 try {
 	await Promise.all([startServer(), reuploadCommands()]);
-	await client.login(process.env.DISCORD_TOKEN);
+	await client.login(config.DISCORD_TOKEN);
 } catch (error) {
 	defaultLogger.error(error);
 	process.exit(1);

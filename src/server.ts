@@ -1,8 +1,9 @@
 import { server as hapi } from "@hapi/hapi";
 import { defaultLogger } from "~/lib/logger";
+import { config } from "./env";
 
 export const startServer = async () => {
-	const hs = hapi({ port: process.env.PORT ?? 3000 });
+	const hs = hapi({ port: config.PORT ?? 3000 });
 
 	hs.route({
 		method: "GET",
