@@ -20,6 +20,9 @@ dependencies:
   bottomify:
     specifier: ^0.3.0
     version: 0.3.0
+  colortranslator:
+    specifier: ^3.0.2
+    version: 3.0.2
   discord.js:
     specifier: ^14.12.1
     version: 14.12.1
@@ -1338,6 +1341,10 @@ packages:
     dependencies:
       color-convert: 2.0.1
       color-string: 1.9.1
+    dev: false
+
+  /colortranslator@3.0.2:
+    resolution: {integrity: sha512-BAi+1mC33m9WGMrZXGke+IHzs8DDG3EKazim8mJ/kGF3VihNmsV9Yh8mX/9emQK1qThQZ/TatYTxoLUFnCqOOg==}
     dev: false
 
   /combined-stream@1.0.8:
