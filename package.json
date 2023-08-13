@@ -1,7 +1,6 @@
 {
 	"name": "blahaj",
 	"version": "0.0.1",
-	"type": "module",
 	"private": true,
 	"license": "AGPL-3.0-only",
 	"scripts": {
@@ -34,14 +33,19 @@
 	},
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
-		"@types/node": "^20.4.9",
+		"@types/node": "^20.4.10",
 		"@typescript-eslint/eslint-plugin": "^6.3.0",
 		"@typescript-eslint/parser": "^6.3.0",
 		"discord-api-types": "^0.37.52",
-		"eslint": "^8.46.0",
+		"eslint": "^8.47.0",
 		"eslint-plugin-unicorn": "^48.0.1",
 		"prettier": "^3.0.1",
 		"typescript": "^5.1.6"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"discord.js@14.12.1": "patches/discord.js@14.12.1.patch"
+		}
 	},
 	"engines": {
 		"node": ">=18"

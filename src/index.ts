@@ -284,10 +284,14 @@ client.on(Events.MessageReactionRemove, async (e) => {
 	}
 });
 
-try {
-	await Promise.all([startServer(), reuploadCommands()]);
-	await client.login(config.DISCORD_TOKEN);
-} catch (error) {
-	defaultLogger.error(error);
-	process.exit(1);
-}
+const main = async () => {
+	try {
+		await Promise.all([startServer(), reuploadCommands()]);
+		await client.login(config.DISCORD_TOKEN);
+	} catch (error) {
+		defaultLogger.error(error);
+		process.exit(1);
+	}
+};
+
+main();

@@ -33,7 +33,7 @@ export const reuploadCommands = async () => {
 					.setDescription("The type of the presence")
 					.setRequired(false)
 					.addChoices(
-						...["Playing", "Streaming", "Listening", "Watching", "Competing"].map((k) => ({
+						...["Playing", "Streaming", "Listening", "Watching", "Competing", "Custom"].map((k) => ({
 							name: k,
 							value: k.toLowerCase(),
 						})),

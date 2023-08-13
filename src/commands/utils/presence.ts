@@ -10,22 +10,24 @@ import type { SlashCommand } from "../_types";
 const setPresence = ({ content, type, client }: { content: string; type: string; client: Client }) => {
 	if (!client.user) return;
 
-	const parsedType =
-		type === "playing"
-			? ActivityType.Playing
-			: type === "streaming"
-			? ActivityType.Streaming
-			: type === "listening"
-			? ActivityType.Listening
-			: type === "watching"
-			? ActivityType.Watching
-			: type === "competing"
-			? ActivityType.Competing
-			: ActivityType.Playing;
+	if (type === "custom") {
+		client.user.setActivity({ type: ActivityType.Custom, name: "placeholder", state: content });
+	} else {
+		const parsedType =
+			type === "playing"
+				? ActivityType.Playing
+				: type === "streaming"
+				? ActivityType.Streaming
+				: type === "listening"
+				? ActivityType.Listening
+				: type === "watching"
+				? ActivityType.Watching
+				: type === "competing"
+				? ActivityType.Competing
+				: ActivityType.Playing;
 
-	client.user.setPresence({
-		activities: [{ type: parsedType, name: content }],
-	});
+		client.user.setActivity({ type: parsedType, name: content });
+	}
 };
 
 export const presenceCommand: SlashCommand = async (i) => {
