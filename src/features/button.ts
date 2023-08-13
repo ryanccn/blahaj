@@ -87,7 +87,7 @@ export const handleButton = async (i: ButtonInteraction) => {
 			embeds: [
 				new EmbedBuilder()
 					.setTitle("Self-timeout in effect")
-					.addFields({ name: "Start", value: `<t:${now}:F> ` })
+					.addFields({ name: "Start", value: `<t:${now}:F>` })
 					.addFields({ name: "End", value: `<t:${now + durationS}:F> (<t:${now + durationS}:R>)` })
 					.setColor(0x4ade80),
 			],
