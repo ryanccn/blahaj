@@ -34,7 +34,7 @@
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"@types/node": "^20.4.10",
-		"@typescript-eslint/eslint-plugin": "^6.3.0",
+		"@typescript-eslint/eslint-plugin": "^6.4.0",
 		"@typescript-eslint/parser": "^6.3.0",
 		"discord-api-types": "^0.37.52",
 		"eslint": "^8.47.0",
