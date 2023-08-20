@@ -32,10 +32,10 @@ import { stableDiffusionCommand } from "~/commands/stableDiffusion";
 import { parseSDMetadata } from "~/features/sdMetadata";
 import { handleChat } from "~/features/chat";
 import { handleGitHubExpansion } from "~/features/githubExpansion";
-import { handleAutoreply } from "~/features/autoreply";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { initRandomUwu } from "~/features/randomuwu";
 import { handleThreadCreate } from "~/features/threadCreate";
+import { handleSmartModeration } from "~/features/smartModeration";
 import { handleButton } from "~/features/button";
 import { logDM } from "~/features/logDM";
 import { logErrorToDiscord, respondWithError } from "~/features/errorHandling";
@@ -229,8 +229,12 @@ client.on(Events.MessageCreate, async (message) => {
 
 client.on(Events.MessageCreate, async (message) => {
 	try {
-		if (message.channel.type !== ChannelType.DM) return;
-		await logDM(message);
+		if (!config.SMART_MODERATION_ENABLE) return;
+		if (message.channel.type !== ChannelType.GuildText) return;
+		if (!message.mentions.users.has(message.client.user.id)) return;
+		if (!message.member || !message.member.permissions.has(PermissionFlagsBits.ManageGuild)) return;
+
+		await handleSmartModeration(message);
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message });
@@ -239,10 +243,8 @@ client.on(Events.MessageCreate, async (message) => {
 
 client.on(Events.MessageCreate, async (message) => {
 	try {
-		if (message.guildId !== config.GUILD_ID) return;
-		if (message.author.bot) return;
-
-		await handleAutoreply(message);
+		if (message.channel.type !== ChannelType.DM) return;
+		await logDM(message);
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message });

@@ -7,25 +7,26 @@ A multipurpose, fun Discord bot for Ryanland.
 
 Made with [discord.js](https://discordjs.guide/) and TypeScript.
 
-The bot is hosted on an [AWS EC2](https://aws.amazon.com/ec2/) instance; the Stable Diffusion API is hosted on [Modal](https://modal.com/).
+The bot is hosted on a VPS; the Stable Diffusion API is hosted on [Modal](https://modal.com/).
 
 ## Features
 
-- Presence customization
 - Configurable starboard
-- Stable Diffusion metadata parsing
+- Presence customization
+- Smart moderation text commands
+- GitHub code block link expansion
 - Bottom encoding / decoding
 - `cat /dev/uwurandom`
 - Chatbot powered by OpenAI
 - Special friend category handling
 - Context menu translation
-- Advanced error handling and logging
-- Direct Message logging
+- Stable Diffusion metadata parsing
 - Stable Diffusion generation (powered by [Modal](https://modal.com/))
 - System stats command
-- Username migration statistics
-- GitHub code block link expansion
+- Username migration (aka Pomelo) statistics
 - Color preview command
+- Direct Message logging
+- Advanced error handling and logging
 
 ## Development
 

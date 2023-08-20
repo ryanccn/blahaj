@@ -32,6 +32,8 @@ const Config = v.object({
 	CHATBOT_CHANNEL: v.optional(snowflake),
 	CHATBOT_ESCAPE_CHAR: v.optional(v.string()),
 
+	SMART_MODERATION_ENABLE: v.optional(v.string()),
+
 	THREAD_CREATE_MESSAGE: v.optional(v.string()),
 
 	STABLE_DIFFUSION_API_URL: v.optional(v.string([v.url()])),
