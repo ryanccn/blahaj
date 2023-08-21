@@ -1,9 +1,9 @@
 import {
-	SlashCommandBuilder,
-	Routes,
-	PermissionFlagsBits,
-	ContextMenuCommandBuilder,
 	ApplicationCommandType,
+	ContextMenuCommandBuilder,
+	PermissionFlagsBits,
+	Routes,
+	SlashCommandBuilder,
 } from "discord.js";
 
 import { REST } from "@discordjs/rest";
@@ -37,7 +37,7 @@ export const reuploadCommands = async () => {
 							name: k,
 							value: k.toLowerCase(),
 						})),
-					),
+					)
 			)
 			.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 		new SlashCommandBuilder().setName("stats").setDescription("Get system statistics and information"),
@@ -48,13 +48,13 @@ export const reuploadCommands = async () => {
 				subcommand
 					.setName("encode")
 					.setDescription("Encode UTF-8 into the Bottom Encoding Standard 🥺")
-					.addStringOption((option) => option.setName("content").setDescription("UTF-8 content").setRequired(true)),
+					.addStringOption((option) => option.setName("content").setDescription("UTF-8 content").setRequired(true))
 			)
 			.addSubcommand((subcommand) =>
 				subcommand
 					.setName("decode")
 					.setDescription("Decode from the Bottom Encoding Standard into UTF-8 🥺")
-					.addStringOption((option) => option.setName("content").setDescription("BES content").setRequired(true)),
+					.addStringOption((option) => option.setName("content").setDescription("BES content").setRequired(true))
 			),
 		new SlashCommandBuilder()
 			.setName("uwurandom")
@@ -65,20 +65,20 @@ export const reuploadCommands = async () => {
 					.setDescription("Desired length of text")
 					.setRequired(true)
 					.setMinValue(1)
-					.setMaxValue(1000),
+					.setMaxValue(1000)
 			),
 		new SlashCommandBuilder()
 			.setName("stable-diffusion")
 			.setDescription("Stable Diffusion")
 			.addStringOption((option) =>
-				option.setName("prompt").setDescription("The prompt").setRequired(true).setMaxLength(500),
+				option.setName("prompt").setDescription("The prompt").setRequired(true).setMaxLength(500)
 			)
 			.addStringOption((option) =>
-				option.setName("negative-prompt").setDescription("The negative prompt").setRequired(false).setMaxLength(500),
+				option.setName("negative-prompt").setDescription("The negative prompt").setRequired(false).setMaxLength(500)
 			)
 			.addIntegerOption((option) => option.setName("seed").setDescription("The random seed").setRequired(false))
 			.addBooleanOption((option) =>
-				option.setName("upscale").setDescription("Whether to upscale by 2x or not").setRequired(false),
+				option.setName("upscale").setDescription("Whether to upscale by 2x or not").setRequired(false)
 			),
 		new SlashCommandBuilder().setName("pomelo").setDescription("Statistics on the username migration in this guild"),
 		new SlashCommandBuilder()
@@ -89,19 +89,19 @@ export const reuploadCommands = async () => {
 				subcommand
 					.setName("add")
 					.setDescription("add a fren")
-					.addUserOption((option) => option.setName("user").setDescription("user to add to fren").setRequired(true)),
+					.addUserOption((option) => option.setName("user").setDescription("user to add to fren").setRequired(true))
 			),
 		new SlashCommandBuilder()
 			.setName("self-timeout")
 			.setDescription("Time yourself out")
 			.addStringOption((option) =>
-				option.setName("duration").setDescription("Duration of the timeout").setRequired(true),
+				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
 			),
 		new SlashCommandBuilder()
 			.setName("color")
 			.setDescription("Show a color")
 			.addStringOption((option) =>
-				option.setName("color").setDescription("Hexadecimal representation of the color").setRequired(true),
+				option.setName("color").setDescription("Hexadecimal representation of the color").setRequired(true)
 			),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]

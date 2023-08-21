@@ -1,8 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
+import { config } from "~/env";
 import { createTemporaryChannel } from "~/lib/tmpChannel";
 import type { SlashCommand } from "./_types";
-import { config } from "~/env";
 
 const frenAddMessage = ({ id, fren }: { id: string; fren: string }) =>
 	`

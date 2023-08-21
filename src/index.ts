@@ -2,13 +2,13 @@ import "dotenv/config";
 import { config } from "~/env";
 
 import {
-	Client,
-	GatewayIntentBits,
-	Partials,
-	Events,
-	OAuth2Scopes,
-	PermissionFlagsBits,
 	ChannelType,
+	Client,
+	Events,
+	GatewayIntentBits,
+	OAuth2Scopes,
+	Partials,
+	PermissionFlagsBits,
 } from "discord.js";
 
 import { reuploadCommands } from "~/commands";
@@ -17,28 +17,28 @@ import { startServer } from "~/server";
 import { bottomCommand } from "~/commands/fun/bottom";
 import { uwurandomCommand } from "~/commands/fun/uwurandom";
 
+import { colorCommand } from "~/commands/utils/color";
 import { pingCommand } from "~/commands/utils/ping";
-import { sayCommand } from "~/commands/utils/say";
+import { pomeloCommand } from "~/commands/utils/pomelo";
 import { presenceCommand, restorePresence } from "~/commands/utils/presence";
+import { sayCommand } from "~/commands/utils/say";
+import { selfTimeoutCommand } from "~/commands/utils/selfTimeout";
 import { statsCommand } from "~/commands/utils/stats";
 import { translateCommand } from "~/commands/utils/translate";
-import { pomeloCommand } from "~/commands/utils/pomelo";
-import { selfTimeoutCommand } from "~/commands/utils/selfTimeout";
-import { colorCommand } from "~/commands/utils/color";
 
 import { frenAdd } from "~/commands/fren";
 import { stableDiffusionCommand } from "~/commands/stableDiffusion";
 
-import { parseSDMetadata } from "~/features/sdMetadata";
-import { handleChat } from "~/features/chat";
-import { handleGitHubExpansion } from "~/features/githubExpansion";
-import { handleStarAdd, handleStarRemove } from "~/features/starboard";
-import { initRandomUwu } from "~/features/randomuwu";
-import { handleThreadCreate } from "~/features/threadCreate";
-import { handleSmartModeration } from "~/features/smartModeration";
 import { handleButton } from "~/features/button";
-import { logDM } from "~/features/logDM";
+import { handleChat } from "~/features/chat";
 import { logErrorToDiscord, respondWithError } from "~/features/errorHandling";
+import { handleGitHubExpansion } from "~/features/githubExpansion";
+import { logDM } from "~/features/logDM";
+import { initRandomUwu } from "~/features/randomuwu";
+import { parseSDMetadata } from "~/features/sdMetadata";
+import { handleSmartModeration } from "~/features/smartModeration";
+import { handleStarAdd, handleStarRemove } from "~/features/starboard";
+import { handleThreadCreate } from "~/features/threadCreate";
 
 import { defaultLogger } from "~/lib/logger";
 

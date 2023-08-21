@@ -1,6 +1,6 @@
 import { ChannelType, type Message } from "discord.js";
-import { messageEmbed } from "~/lib/messageEmbed";
 import { config } from "~/env";
+import { messageEmbed } from "~/lib/messageEmbed";
 
 export const logDM = async (message: Message<boolean>) => {
 	if (!config.DM_LOGS_CHANNEL) return;

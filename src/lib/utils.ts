@@ -1,5 +1,5 @@
 import { EmbedBuilder, type Guild } from "discord.js";
-import { blue, bold, red, dim, cyan } from "kleur/colors";
+import { blue, bold, cyan, dim, red } from "kleur/colors";
 
 import { type ValiError } from "valibot";
 
@@ -18,8 +18,8 @@ export const formatValiError = (err: ValiError) => {
 	let ret = red(bold(`${issues.length} validation error${issues.length === 1 ? "" : "s"}!\n`));
 
 	for (const issue of issues) {
-		const issuePath =
-			issue.path?.map((p) => (p.key as string | number | symbol).toString()).join(dim(" > ")) ?? "unknown path";
+		const issuePath = issue.path?.map((p) => (p.key as string | number | symbol).toString()).join(dim(" > "))
+			?? "unknown path";
 
 		ret += blue(issuePath) + "\n";
 		ret += "  " + dim("Validation ") + issue.validation + "\n";

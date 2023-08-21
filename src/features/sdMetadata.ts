@@ -1,5 +1,5 @@
-import { EmbedBuilder, type Message } from "discord.js";
 import { parse } from "@ryanccn/exifr";
+import { EmbedBuilder, type Message } from "discord.js";
 
 import { createWriteStream } from "node:fs";
 import { mkdir, rm } from "node:fs/promises";
@@ -118,10 +118,9 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 						},
 						{
 							name: "Postprocessing",
-							value:
-								sdMetadata.image.postprocessing
-									?.map((k) => `${k.type}${k.strength ? ` ${k.strength}` : ""}${k.scale ? ` ${k.scale}x` : ""}`)
-									.join("\n") || "None detected",
+							value: sdMetadata.image.postprocessing
+								?.map((k) => `${k.type}${k.strength ? ` ${k.strength}` : ""}${k.scale ? ` ${k.scale}x` : ""}`)
+								.join("\n") || "None detected",
 							inline: true,
 						},
 					)
@@ -140,11 +139,10 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 				.find((k) => k.startsWith("Negative prompt:"))
 				?.replace("Negative prompt: ", "");
 
-			const options =
-				parameters
-					.at(-1)
-					?.split(", ")
-					.map((k) => k.split(": ")) ?? [];
+			const options = parameters
+				.at(-1)
+				?.split(", ")
+				.map((k) => k.split(": ")) ?? [];
 
 			resultEmbeds.push(
 				new EmbedBuilder()
@@ -156,11 +154,11 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 						},
 						...(negativePrompt
 							? [
-									{
-										name: "Negative prompt",
-										value: truncateString(negativePrompt),
-									},
-							  ]
+								{
+									name: "Negative prompt",
+									value: truncateString(negativePrompt),
+								},
+							]
 							: []),
 						...options.map((opt) => ({
 							name: opt[0],

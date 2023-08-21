@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, ChannelType, type Client, type UserResolvable, type TextChannel } from "discord.js";
+import { ChannelType, type Client, PermissionFlagsBits, type TextChannel, type UserResolvable } from "discord.js";
 import { nanoid } from "nanoid";
 import { config } from "~/env";
 
@@ -11,8 +11,9 @@ export const createTemporaryChannel = async ({
 	viewableUser: UserResolvable;
 	prefix: string;
 }): Promise<TextChannel> => {
-	if (!config.GUILD_ID || !config.TEMPORARY_CATEGORY_ID)
+	if (!config.GUILD_ID || !config.TEMPORARY_CATEGORY_ID) {
 		throw new Error("GUILD_ID or TEMPORARY_CATEGORY_ID not configured properly!");
+	}
 
 	const guild = await client.guilds.fetch(config.GUILD_ID);
 

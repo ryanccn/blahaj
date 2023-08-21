@@ -1,4 +1,4 @@
-import { ActivityType, EmbedBuilder, type Client } from "discord.js";
+import { ActivityType, type Client, EmbedBuilder } from "discord.js";
 
 import { del, get, set } from "~/lib/db";
 
@@ -13,18 +13,17 @@ const setPresence = ({ content, type, client }: { content: string; type: string;
 	if (type === "custom") {
 		client.user.setActivity({ type: ActivityType.Custom, name: "placeholder", state: content });
 	} else {
-		const parsedType =
-			type === "playing"
-				? ActivityType.Playing
-				: type === "streaming"
-				? ActivityType.Streaming
-				: type === "listening"
-				? ActivityType.Listening
-				: type === "watching"
-				? ActivityType.Watching
-				: type === "competing"
-				? ActivityType.Competing
-				: ActivityType.Playing;
+		const parsedType = type === "playing"
+			? ActivityType.Playing
+			: type === "streaming"
+			? ActivityType.Streaming
+			: type === "listening"
+			? ActivityType.Listening
+			: type === "watching"
+			? ActivityType.Watching
+			: type === "competing"
+			? ActivityType.Competing
+			: ActivityType.Playing;
 
 		client.user.setActivity({ type: parsedType, name: content });
 	}

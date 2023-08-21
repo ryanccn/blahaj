@@ -17,11 +17,11 @@ export const pomeloCommand: SlashCommand = async (i) => {
 			new EmbedBuilder()
 				.setTitle("Username migration / Pomelo")
 				.setDescription(
-					`**${pomeloed.size}** out of ${members.size} members (${((pomeloed.size / members.size) * 100).toFixed(
-						1,
-					)}%) of **${
-						i.guild.name
-					}** have had their usernames migrated to [the new format](https://discord.com/blog/usernames).`,
+					`**${pomeloed.size}** out of ${members.size} members (${
+						((pomeloed.size / members.size) * 100).toFixed(
+							1,
+						)
+					}%) of **${i.guild.name}** have had their usernames migrated to [the new format](https://discord.com/blog/usernames).`,
 				)
 				.addFields({
 					name: "Unmigrated users",

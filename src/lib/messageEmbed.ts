@@ -1,4 +1,4 @@
-import { EmbedBuilder, type User, type Message } from "discord.js";
+import { EmbedBuilder, type Message, type User } from "discord.js";
 
 const getUsername = (user: User) => (user.discriminator === "0" ? user.username : user.tag);
 
@@ -6,9 +6,8 @@ export const messageEmbed = async (message: Message) => {
 	const embed = new EmbedBuilder()
 		.setDescription(message.content || "*No content*")
 		.setAuthor({
-			name:
-				getUsername(message.author) +
-				(message.channel.isDMBased()
+			name: getUsername(message.author)
+				+ (message.channel.isDMBased()
 					? message.author === message.client.user
 						? ` → ${message.channel.recipient ? getUsername(message.channel.recipient) : "unknown"}`
 						: ` ← ${getUsername(message.client.user)}`

@@ -1,13 +1,13 @@
 import {
-	EmbedBuilder,
-	ChannelType,
 	ButtonInteraction,
-	ChatInputCommandInteraction,
-	ContextMenuCommandInteraction,
 	type CacheType,
-	type Client,
-	type Message,
 	type Channel,
+	ChannelType,
+	ChatInputCommandInteraction,
+	type Client,
+	ContextMenuCommandInteraction,
+	EmbedBuilder,
+	type Message,
 } from "discord.js";
 import { config } from "~/env";
 
@@ -54,10 +54,11 @@ export const logErrorToDiscord = async (
 	if (!config.ERROR_LOGS_CHANNEL) return;
 
 	const logsChannel = await opts.client.channels.fetch(config.ERROR_LOGS_CHANNEL);
-	if (!logsChannel || logsChannel.type !== ChannelType.GuildText)
+	if (!logsChannel || logsChannel.type !== ChannelType.GuildText) {
 		throw new Error(
 			`Specified error logging channel ${config.ERROR_LOGS_CHANNEL} does not exist or is not a text channel!`,
 		);
+	}
 
 	const embed = new EmbedBuilder()
 		.setTitle("An error occurred!")
@@ -75,10 +76,11 @@ export const logErrorToDiscord = async (
 			embed.addFields({ name: "Button ID", value: `\`${opts.interaction.customId}\`` });
 			embed.addFields({ name: "Message", value: opts.interaction.message.url });
 		} else if (opts.interaction instanceof ContextMenuCommandInteraction) {
-			if (opts.interaction.isMessageContextMenuCommand())
+			if (opts.interaction.isMessageContextMenuCommand()) {
 				embed.addFields({ name: "Message", value: opts.interaction.targetMessage.url });
-			else if (opts.interaction.isUserContextMenuCommand())
+			} else if (opts.interaction.isUserContextMenuCommand()) {
 				embed.addFields({ name: "Message", value: `${opts.interaction.targetUser}` });
+			}
 		}
 	} else if ("message" in opts) {
 		embed.addFields({ name: "Message", value: opts.message.url });

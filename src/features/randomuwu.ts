@@ -1,6 +1,6 @@
-import { PermissionFlagsBits, type Client, ChannelType, GuildTextBasedChannel } from "discord.js";
-import { uwurandom } from "~/lib/uwurandom";
+import { ChannelType, type Client, GuildTextBasedChannel, PermissionFlagsBits } from "discord.js";
 import { config } from "~/env";
+import { uwurandom } from "~/lib/uwurandom";
 
 const randomlyUwu = async (client: Client) => {
 	const guild = await client.guilds.fetch(config.GUILD_ID);
@@ -14,7 +14,7 @@ const randomlyUwu = async (client: Client) => {
 			const requiredPermissions = PermissionFlagsBits.ViewChannel | PermissionFlagsBits.SendMessages;
 
 			return everyonePermissions?.has(requiredPermissions) || frenPermissions?.has(requiredPermissions);
-		}),
+		})
 	);
 
 	const randomChannel = channelPool.random() as GuildTextBasedChannel | null | undefined;

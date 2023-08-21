@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "discord.js";
-import type { SlashCommand } from "./_types";
-import { Logger } from "~/lib/logger";
 import { config } from "~/env";
+import { Logger } from "~/lib/logger";
+import type { SlashCommand } from "./_types";
 
 const logger = new Logger("stable-diffusion");
 
@@ -50,7 +50,7 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 		}),
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${config.STABLE_DIFFUSION_API_TOKEN}`,
+			"Authorization": `Bearer ${config.STABLE_DIFFUSION_API_TOKEN}`,
 			"Content-Type": "application/json",
 		},
 	}).then((res) => {
@@ -65,8 +65,8 @@ export const stableDiffusionCommand: SlashCommand = async (i) => {
 			new EmbedBuilder()
 				.setTitle("Working...")
 				.setDescription(
-					"Your image is being generated!\n" +
-						`Estimated to be done <t:${
+					"Your image is being generated!\n"
+						+ `Estimated to be done <t:${
 							Math.floor(Date.now() / 1000) + 30 + Math.floor(Math.random() * 21) + (upscale ? 20 : 0)
 						}:R>`,
 				)

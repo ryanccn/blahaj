@@ -3,15 +3,15 @@ import {
 	ButtonBuilder,
 	ButtonStyle,
 	ChannelType,
-	PermissionFlagsBits,
 	type GuildBasedChannel,
-	type MessageReaction,
 	type Message,
+	type MessageReaction,
+	PermissionFlagsBits,
 } from "discord.js";
 
-import { messageEmbed } from "~/lib/messageEmbed";
-import { get, set, del } from "~/lib/db";
 import { config } from "~/env";
+import { del, get, set } from "~/lib/db";
+import { messageEmbed } from "~/lib/messageEmbed";
 
 let EMOJI_REACTION_THRESHOLD = 3;
 if (config.STARBOARD_THRESHOLD) {
@@ -28,10 +28,10 @@ const getStarboardChannel = async (message: Message) => {
 	if (!message.guild) return null;
 
 	if (
-		message.channel.parent &&
-		(message.channel.parent.id === config.FREN_CATEGORY_ID ||
-			(message.channel.parent.parent && message.channel.parent.parent.id === config.FREN_CATEGORY_ID)) &&
-		config.FREN_STARBOARD_CHANNEL
+		message.channel.parent
+		&& (message.channel.parent.id === config.FREN_CATEGORY_ID
+			|| (message.channel.parent.parent && message.channel.parent.parent.id === config.FREN_CATEGORY_ID))
+		&& config.FREN_STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
 			config.FREN_STARBOARD_CHANNEL,
@@ -49,13 +49,13 @@ const getStarboardChannel = async (message: Message) => {
 	}
 
 	if (
-		message.channel &&
-		(message.channel.type === ChannelType.GuildText
+		message.channel
+		&& (message.channel.type === ChannelType.GuildText
 			? message.channel.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel)
 			: message.channel.type === ChannelType.PublicThread
 			? message.channel.parent!.permissionsFor(message.guild.id)?.has(PermissionFlagsBits.ViewChannel)
-			: false) &&
-		config.STARBOARD_CHANNEL
+			: false)
+		&& config.STARBOARD_CHANNEL
 	) {
 		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(config.STARBOARD_CHANNEL);
 
@@ -79,8 +79,8 @@ const updateStarboard = async (message: Message) => {
 
 	const reactions = message.reactions.cache.filter(
 		(reaction) =>
-			STARBOARD_EMOJIS.includes(reaction.emoji.id ?? reaction.emoji.name ?? "") &&
-			reaction.count >= EMOJI_REACTION_THRESHOLD,
+			STARBOARD_EMOJIS.includes(reaction.emoji.id ?? reaction.emoji.name ?? "")
+			&& reaction.count >= EMOJI_REACTION_THRESHOLD,
 	);
 
 	const reactionString = reactions.map((reaction) => `${reaction.emoji} ${reaction.count}`).join(" ");

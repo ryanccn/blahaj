@@ -1,4 +1,4 @@
-import { Colors, DiscordAPIError, EmbedBuilder, SnowflakeUtil, type Message } from "discord.js";
+import { Colors, DiscordAPIError, EmbedBuilder, type Message, SnowflakeUtil } from "discord.js";
 import { type OpenAI } from "openai";
 import { openai } from "~/lib/openai";
 
@@ -6,7 +6,7 @@ import { config } from "~/env";
 import { Logger } from "~/lib/logger";
 
 const SYSTEM_MESSAGE =
-	'You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. Your developer is Ryan Cao (username RyanCaoDev), the owner of the guild, and you were written in Discord.js. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, messages NOT BY YOU will be prefixed with the username or nickname of the author, folloed by a colon. You can treat the username as the name of the author. However, you should not not prefix the messages you send with any username whatsoever (e.g. "Blåhaj" or "Blåhaj (Bot)"). You can use the emoji <a:catpat:1102492443523416114> to give members virtual pats when they feel down or ask for pets.';
+	"You are a friendly Discord bot named Blåhaj in a small personal Discord guild called Ryanland. Your developer is Ryan Cao (username RyanCaoDev), the owner of the guild, and you were written in Discord.js. You mainly chat casually with members of the community and often make jokes (nicely). You should use very concise language. Due to the conversational nature of Discord, messages NOT BY YOU will be prefixed with the username or nickname of the author, folloed by a colon. You can treat the username as the name of the author. However, you should not not prefix the messages you send with any username whatsoever (e.g. \"Blåhaj\" or \"Blåhaj (Bot)\"). You can use the emoji <a:catpat:1102492443523416114> to give members virtual pats when they feel down or ask for pets.";
 
 let CHATBOT_ESCAPE_CHAR = "\\";
 if (config.CHATBOT_ESCAPE_CHAR) {
@@ -47,10 +47,10 @@ export const handleChat = async (message: Message) => {
 		].reverse();
 
 		if (
-			msgs.length >= 2 &&
-			msgs.at(-1)!.webhookId &&
-			!msgs.at(-2)!.webhookId &&
-			msgs.at(-2)!.content.includes(msgs.at(-1)!.content)
+			msgs.length >= 2
+			&& msgs.at(-1)!.webhookId
+			&& !msgs.at(-2)!.webhookId
+			&& msgs.at(-2)!.content.includes(msgs.at(-1)!.content)
 		) {
 			unproxiedMessages.add(msgs.at(-2)!.id);
 			msgs.splice(-2, 1);
@@ -66,9 +66,9 @@ export const handleChat = async (message: Message) => {
 
 				return {
 					role: "user",
-					content: `${msg.member?.nickname ?? msg.author.username}${roles?.length ? ` (${roles.join(", ")})` : ""}: ${
-						msg.content
-					}`,
+					content: `${msg.member?.nickname ?? msg.author.username}${
+						roles?.length ? ` (${roles.join(", ")})` : ""
+					}: ${msg.content}`,
 				};
 			});
 
