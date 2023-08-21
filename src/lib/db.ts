@@ -28,7 +28,7 @@ export const incr = async (k: string[], delta?: number) => {
 	else if (typeof oldValue === "string") oldValue = Number.parseInt(oldValue);
 
 	if (typeof oldValue !== "number" || Number.isNaN(oldValue)) {
-		throw new Error(`${key} is not a number, cannot increment!`);
+		throw new TypeError(`${key} is not a number, cannot increment!`);
 	}
 
 	await storage.setItem(key, oldValue + (delta ?? 1));

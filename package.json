@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "NODE_ENV=development tsx watch src/index.ts",
 		"start": "NODE_ENV=production tsx src/index.ts",
-		"lint": "tsc && eslint src && dprint check",
+		"lint": "tsc && eslint . && dprint check",
+		"lint:ci": "tsc && eslint . -f @microsoft/eslint-formatter-sarif -o /tmp/lint.sarif && dprint check",
 		"format": "dprint fmt"
 	},
 	"dependencies": {
@@ -38,7 +39,6 @@
 		"@typescript-eslint/eslint-plugin": "^6.4.0",
 		"@typescript-eslint/parser": "^6.4.0",
 		"discord-api-types": "^0.37.54",
-		"dprint": "^0.40.2",
 		"eslint": "^8.47.0",
 		"eslint-plugin-unicorn": "^48.0.1",
 		"typescript": "^5.1.6"

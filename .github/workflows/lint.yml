@@ -25,12 +25,17 @@ jobs:
           node-version: 20
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
+      
+      - name: Install dprint
+        uses: taiki-e/install-action@v2
+        with:
+          tool: dprint
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm run lint -f @microsoft/eslint-formatter-sarif -o /tmp/lint.sarif
+        run: pnpm run lint:ci
         continue-on-error: true
 
       - name: Strip suppressed results
