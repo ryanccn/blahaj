@@ -21,6 +21,7 @@ import { colorCommand } from "~/commands/utils/color";
 import { pingCommand } from "~/commands/utils/ping";
 import { pomeloCommand } from "~/commands/utils/pomelo";
 import { presenceCommand, restorePresence } from "~/commands/utils/presence";
+import { presenceApiCommand } from "~/commands/utils/presenceApi";
 import { sayCommand } from "~/commands/utils/say";
 import { selfTimeoutCommand } from "~/commands/utils/selfTimeout";
 import { statsCommand } from "~/commands/utils/stats";
@@ -158,6 +159,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 				await colorCommand(interaction);
 				break;
 			}
+			case "presence-api": {
+				await presenceApiCommand(interaction);
+				break;
+			}
 			default: {
 				defaultLogger.warn(`Received unknown command ${commandName}`);
 			}
@@ -288,7 +293,7 @@ client.on(Events.MessageReactionRemove, async (e) => {
 
 const main = async () => {
 	try {
-		await Promise.all([startServer(), reuploadCommands()]);
+		await Promise.all([startServer({ client }), reuploadCommands()]);
 		await client.login(config.DISCORD_TOKEN);
 	} catch (error) {
 		defaultLogger.error(error);

@@ -1,5 +1,7 @@
+import { hash } from "argon2";
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChannelType, EmbedBuilder } from "discord.js";
 import { config } from "~/env";
+import { set } from "~/lib/db";
 
 export const handleButton = async (i: ButtonInteraction) => {
 	const buttonId = i.customId;
@@ -90,6 +92,42 @@ export const handleButton = async (i: ButtonInteraction) => {
 					.addFields({ name: "Start", value: `<t:${now}:F>` })
 					.addFields({ name: "End", value: `<t:${now + durationS}:F> (<t:${now + durationS}:R>)` })
 					.setColor(0x4ade80),
+			],
+			components: [],
+		});
+	} else if (buttonId === "presenceapi-create" || buttonId === "presenceapi-reset") {
+		await i.deferUpdate();
+		const token = `blhj_${crypto.randomUUID().replaceAll("-", "")}`;
+		await set(["presenceapi-token", i.user.id], await hash(token));
+
+		await i.editReply({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("Presence API key")
+					.setDescription(
+						"This will only be displayed once for security reasons.",
+					)
+					.addFields({ name: "Token", value: `\`${token}\`` })
+					.addFields({
+						name: "How to use",
+						value: `
+The API endpoint for your user is \`https://blahaj.ryanccn.dev/presence/${i.user.id}\`. Make a GET request to this endpoint with the \`Authorization\` header set to \`token ${token}\` and you will receive a JSON response.
+
+The API is CORS-enabled, so you can make a request from any website.
+					`.trim(),
+					})
+					.setColor(0x34d399),
+			],
+			components: [],
+		});
+	} else if (buttonId === "presenceapi-cancel") {
+		await i.deferUpdate();
+
+		await i.editReply({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle("Presence API action cancelled")
+					.setColor(0xef4444),
 			],
 			components: [],
 		});

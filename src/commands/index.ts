@@ -98,6 +98,9 @@ export const reuploadCommands = async () => {
 				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
 			),
 		new SlashCommandBuilder()
+			.setName("presence-api")
+			.setDescription("Manage access to the presence API"),
+		new SlashCommandBuilder()
 			.setName("color")
 			.setDescription("Show a color")
 			.addStringOption((option) =>
