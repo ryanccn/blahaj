@@ -1,4 +1,5 @@
 FROM docker.io/library/node:20-alpine
+RUN apk add --update --no-cache python3 make g++
 RUN corepack enable
 
 WORKDIR /app
