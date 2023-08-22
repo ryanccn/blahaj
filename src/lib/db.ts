@@ -1,11 +1,13 @@
 import { createStorage } from "unstorage";
-import MemoryDriver from "unstorage/drivers/memory";
+import FsDriver from "unstorage/drivers/fs";
 import RedisDriver from "unstorage/drivers/redis";
 
 import { config } from "~/env";
 
 const storage = createStorage({
-	driver: config.REDIS_URL ? RedisDriver({ url: config.REDIS_URL }) : MemoryDriver(),
+	driver: config.REDIS_URL
+		? RedisDriver({ url: config.REDIS_URL })
+		: FsDriver({ base: "./.unstorage" }),
 });
 
 const resolveKey = (k: string | string[]) => (typeof k === "string" ? k : k.join(":"));
