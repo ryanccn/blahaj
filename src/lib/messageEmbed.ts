@@ -10,7 +10,7 @@ export const messageEmbed = async (message: Message) => {
 				+ (message.channel.isDMBased()
 					? message.author === message.client.user
 						? ` → ${message.channel.recipient ? getUsername(message.channel.recipient) : "unknown"}`
-						: ` ← ${getUsername(message.client.user)}`
+						: ` → ${getUsername(message.client.user)}`
 					: ""),
 
 			iconURL: message.author.avatarURL() ?? undefined,
