@@ -91,6 +91,6 @@ export const startServer = async ({ client }: { client: Client }) => {
 		fetch: app.fetch,
 		port: config.PORT ? Number.parseInt(config.PORT) : 3000,
 	}, (info) => {
-		defaultLogger.success(`Started server at ${info.address}:${info.port}`);
+		defaultLogger.success(`Started server at http://${info.address}:${info.port}`);
 	});
 };
