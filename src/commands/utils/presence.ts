@@ -59,5 +59,5 @@ export const restorePresence = async (client: Client) => {
 		return;
 	}
 
-	setPresence({ ...storedData.data, client });
+	setPresence({ ...storedData.output, client });
 };

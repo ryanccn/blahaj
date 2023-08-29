@@ -4,8 +4,8 @@
 	"private": true,
 	"license": "AGPL-3.0-only",
 	"scripts": {
-		"dev": "NODE_ENV=development tsx watch src/index.ts",
-		"start": "NODE_ENV=production tsx src/index.ts",
+		"dev": "NODE_ENV=development NODE_NO_WARNINGS=1 tsx watch src/index.ts",
+		"start": "NODE_ENV=production NODE_NO_WARNINGS=1 tsx src/index.ts",
 		"lint": "tsc && eslint . && dprint check",
 		"lint:ci": "tsc && eslint . -f @microsoft/eslint-formatter-sarif -o /tmp/lint.sarif && dprint check",
 		"format": "dprint fmt"
@@ -21,29 +21,29 @@
 		"destr": "^2.0.1",
 		"discord.js": "^14.13.0",
 		"dotenv": "^16.3.1",
-		"hono": "^3.5.0",
+		"hono": "^3.5.5",
 		"just-capitalize": "^3.2.0",
 		"just-random": "^3.2.0",
 		"kleur": "^4.1.5",
 		"nanoid": "^4.0.2",
-		"openai": "^4.0.1",
+		"openai": "^4.3.1",
 		"parse-duration": "^1.1.0",
 		"sharp": "^0.32.5",
-		"systeminformation": "^5.18.15",
+		"systeminformation": "^5.21.1",
 		"tsx": "^3.12.7",
 		"unstorage": "^1.9.0",
 		"uwurandom-node": "^0.1.0",
-		"valibot": "^0.12.0"
+		"valibot": "^0.13.1"
 	},
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
-		"@types/node": "^20.5.1",
-		"@typescript-eslint/eslint-plugin": "^6.4.1",
-		"@typescript-eslint/parser": "^6.4.1",
-		"discord-api-types": "^0.37.54",
-		"eslint": "^8.47.0",
+		"@types/node": "^20.5.7",
+		"@typescript-eslint/eslint-plugin": "^6.5.0",
+		"@typescript-eslint/parser": "^6.5.0",
+		"discord-api-types": "^0.37.55",
+		"eslint": "^8.48.0",
 		"eslint-plugin-unicorn": "^48.0.1",
-		"typescript": "^5.1.6"
+		"typescript": "^5.2.2"
 	},
 	"engines": {
 		"node": ">=18"
