@@ -3,10 +3,17 @@ def download_file(url: str, path: str):
 
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
+
         with open(path, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
+
+
+def ensure_directory(path: str):
+    from os import makedirs
+
+    makedirs(path, exist_ok=True)
 
 
 def download_model():
@@ -14,6 +21,8 @@ def download_model():
     from .config import HF_MODEL_ID
     import torch
     import gc
+
+    ensure_directory("/root/cache/diffusers")
 
     _ = StableDiffusionPipeline.from_pretrained(
         HF_MODEL_ID,
@@ -27,6 +36,8 @@ def download_model():
 
 
 def download_realesrgan():
+    ensure_directory("/root/cache/realesrgan")
+
     download_file(
         "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth",
         "/root/cache/realesrgan/realesr-general-x4v3.pth",
@@ -40,6 +51,8 @@ def download_realesrgan():
 def download_embeddings() -> list[str]:
     import os
     from .config import TI_EMBEDDINGS
+
+    ensure_directory("/root/cache/embeddings")
 
     ret = []
 

@@ -17,10 +17,6 @@ import os
 
 stub = modal.Stub("blahaj-stable-diffusion")
 
-diffusers_cache_volume = modal.NetworkFileSystem.persisted("diffusers_cache_v1")
-embeddings_cache_volume = modal.NetworkFileSystem.persisted("embedding_cache_v1")
-realesrgan_cache_volume = modal.NetworkFileSystem.persisted("realesrgan_cache_v1")
-
 sd_image = (
     modal.Image.debian_slim(python_version="3.10")
     .pip_install(
@@ -39,22 +35,9 @@ sd_image = (
         "torch", "torchvision", extra_index_url="https://download.pytorch.org/whl/cu117"
     )
     .apt_install("ffmpeg", "libsm6", "libxext6")
-    .run_function(
-        download_model,
-        network_file_systems={
-            "/root/cache/diffusers": diffusers_cache_volume,
-        },
-    )
-    .run_function(
-        download_realesrgan,
-        network_file_systems={
-            "/root/cache/realesrgan": realesrgan_cache_volume,
-        },
-    )
-    .run_function(
-        download_embeddings,
-        network_file_systems={"/root/cache/embeddings": embeddings_cache_volume},
-    )
+    .run_function(download_model)
+    .run_function(download_realesrgan)
+    .run_function(download_embeddings)
 )
 
 web_image = modal.Image.debian_slim(python_version="3.10")
@@ -63,11 +46,6 @@ web_image = modal.Image.debian_slim(python_version="3.10")
 @stub.function(
     image=sd_image,
     gpu="A10G",
-    network_file_systems={
-        "/root/cache/diffusers": diffusers_cache_volume,
-        "/root/cache/embeddings": embeddings_cache_volume,
-        "/root/cache/realesrgan": realesrgan_cache_volume,
-    },
     secret=modal.Secret.from_name("stable-diffusion-s3"),
 )
 def generate(
