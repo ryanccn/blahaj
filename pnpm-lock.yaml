@@ -36,8 +36,8 @@ dependencies:
     specifier: ^16.3.1
     version: 16.3.1
   hono:
-    specifier: ^3.5.5
-    version: 3.5.5
+    specifier: ^3.5.7
+    version: 3.5.7
   just-capitalize:
     specifier: ^3.2.0
     version: 3.2.0
@@ -1975,8 +1975,8 @@ packages:
       function-bind: 1.1.1
     dev: true
 
-  /hono@3.5.5:
-    resolution: {integrity: sha512-XDRLCLNWOWTtDhM86dTHSbhqgY4fbTscG2BiWwMcZ87yz8TneAXKMfQi22LPa7t7x8Eo459wMcibHd1aZtJkAA==}
+  /hono@3.5.7:
+    resolution: {integrity: sha512-FKbkgLYpO9tQKkX5dzsmsUKDlat03LSjOjHfP7emsonKpj4bbr4ewWp7wiF8PnH4QUIM8r7XL+Zhrofe//zO6Q==}
     engines: {node: '>=16.0.0'}
     dev: false
 

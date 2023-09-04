@@ -21,7 +21,7 @@
 		"destr": "^2.0.1",
 		"discord.js": "^14.13.0",
 		"dotenv": "^16.3.1",
-		"hono": "^3.5.5",
+		"hono": "^3.5.7",
 		"just-capitalize": "^3.2.0",
 		"just-random": "^3.2.0",
 		"kleur": "^4.1.5",
