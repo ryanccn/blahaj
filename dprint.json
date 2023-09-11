@@ -10,7 +10,14 @@
 	"toml": {},
 	"dockerfile": {},
 	"includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,toml,dockerfile}"],
-	"excludes": ["**/node_modules", "**/*-lock.json", "**/*.lock"],
+	"excludes": [
+		"**/node_modules/**/*",
+		"**/__pycache__/**/*",
+		"**/.venv/**/*",
+		"**/.unstorage/**/*",
+		"**/*-lock.json",
+		"**/*.lock"
+	],
 	"plugins": [
 		"https://plugins.dprint.dev/typescript-0.86.2.wasm",
 		"https://plugins.dprint.dev/json-0.17.4.wasm",
