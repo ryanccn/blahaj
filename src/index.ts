@@ -11,10 +11,11 @@ import {
 	PermissionFlagsBits,
 } from "discord.js";
 
-import { reuploadCommands } from "~/commands";
+import { reuploadCommands } from "~/commands/_registry";
 import { startServer } from "~/server";
 
 import { bottomCommand } from "~/commands/fun/bottom";
+import { shiggyCommand } from "~/commands/fun/shiggy";
 import { uwurandomCommand } from "~/commands/fun/uwurandom";
 
 import { colorCommand } from "~/commands/utils/color";
@@ -136,6 +137,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			}
 			case "uwurandom": {
 				await uwurandomCommand(interaction);
+				break;
+			}
+			case "shiggy": {
+				await shiggyCommand(interaction);
 				break;
 			}
 			case "fren": {

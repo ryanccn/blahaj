@@ -106,6 +106,9 @@ export const reuploadCommands = async () => {
 			.addStringOption((option) =>
 				option.setName("color").setDescription("Hexadecimal representation of the color").setRequired(true)
 			),
+		new SlashCommandBuilder()
+			.setName("shiggy")
+			.setDescription("random shiggy"),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))
