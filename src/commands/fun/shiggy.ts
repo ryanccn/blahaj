@@ -10,8 +10,7 @@ interface ImageResponse {
 
 const fetchRandomShiggy = async () => {
 	const url = new URL("https://safebooru.donmai.us/posts/random.json");
-	url.searchParams.append("tags", "kemomimi-chan_(naga_u)");
-	url.searchParams.append("tags", "naga_u");
+	url.searchParams.append("tags", "kemomimi-chan_(naga_u) naga_u");
 	url.searchParams.append("only", "id,source,tag_string,file_url");
 
 	const resp = await fetch(url);
