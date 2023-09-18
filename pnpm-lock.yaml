@@ -36,8 +36,8 @@ dependencies:
     specifier: ^16.3.1
     version: 16.3.1
   hono:
-    specifier: ^3.6.0
-    version: 3.6.0
+    specifier: ^3.6.3
+    version: 3.6.3
   js-yaml:
     specifier: ^4.1.0
     version: 4.1.0
@@ -1925,8 +1925,8 @@ packages:
       function-bind: 1.1.1
     dev: true
 
-  /hono@3.6.0:
-    resolution: {integrity: sha512-snkW8naO1WCrQvpAGE/du30Ek0h71gSM3g4RzzdPIB2LQnl12BEwZYH3s2Kssd6kXGORqHmpoyMBMLWtc9nzKQ==}
+  /hono@3.6.3:
+    resolution: {integrity: sha512-8WszeHGzUm45qJy2JcCXkEFXMsAysciGGQs+fbpdUYPO2bRMbjJznZE3LX8tCXBqR4f/3e6225B3YOX6pQZWvA==}
     engines: {node: '>=16.0.0'}
     dev: false
 
