@@ -13,7 +13,7 @@ The bot is hosted on a VPS; the Stable Diffusion API is hosted on [Modal](https:
 
 - Configurable starboard
 - Presence customization
-- Smart moderation text commands
+- Trivia games
 - GitHub code block link expansion
 - Bottom encoding / decoding
 - `cat /dev/uwurandom`

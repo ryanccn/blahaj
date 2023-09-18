@@ -16,6 +16,7 @@ import { startServer } from "~/server";
 
 import { bottomCommand } from "~/commands/fun/bottom";
 import { shiggyCommand } from "~/commands/fun/shiggy";
+import { triviaStartCommand, triviaStopCommand } from "~/commands/fun/trivia";
 import { uwurandomCommand } from "~/commands/fun/uwurandom";
 
 import { colorCommand } from "~/commands/utils/color";
@@ -38,7 +39,6 @@ import { handleGitHubExpansion } from "~/features/githubExpansion";
 import { logDM } from "~/features/logDM";
 import { initRandomUwu } from "~/features/randomuwu";
 import { parseSDMetadata } from "~/features/sdMetadata";
-import { handleSmartModeration } from "~/features/smartModeration";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { handleThreadCreate } from "~/features/threadCreate";
 
@@ -143,6 +143,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
 				await shiggyCommand(interaction);
 				break;
 			}
+			case "trivia": {
+				const sub = options.getSubcommand();
+				if (sub === "start") await triviaStartCommand(interaction);
+				else if (sub === "stop") await triviaStopCommand(interaction);
+				break;
+			}
 			case "fren": {
 				const sub = options.getSubcommand();
 				if (sub === "add") await frenAdd(interaction);
@@ -231,20 +237,6 @@ client.on(Events.MessageCreate, async (message) => {
 		if (message.author.bot && !message.webhookId) return;
 
 		await handleChat(message);
-	} catch (error) {
-		defaultLogger.error(error);
-		await logErrorToDiscord({ client, error, message });
-	}
-});
-
-client.on(Events.MessageCreate, async (message) => {
-	try {
-		if (!config.SMART_MODERATION_ENABLE) return;
-		if (message.channel.type !== ChannelType.GuildText) return;
-		if (!message.mentions.users.has(message.client.user.id)) return;
-		if (!message.member || !message.member.permissions.has(PermissionFlagsBits.ManageGuild)) return;
-
-		await handleSmartModeration(message);
 	} catch (error) {
 		defaultLogger.error(error);
 		await logErrorToDiscord({ client, error, message });

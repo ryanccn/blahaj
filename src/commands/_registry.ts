@@ -109,6 +109,24 @@ export const reuploadCommands = async () => {
 		new SlashCommandBuilder()
 			.setName("shiggy")
 			.setDescription("random shiggy"),
+		new SlashCommandBuilder()
+			.setName("trivia")
+			.setDescription("Manage trivia sessions")
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName("start")
+					.setDescription("Start a trivia session!")
+					.addStringOption((option) =>
+						option
+							.setName("name")
+							.setDescription("Name of trivia set")
+							.setRequired(true)
+					)
+			).addSubcommand((subcommand) =>
+				subcommand
+					.setName("stop")
+					.setDescription("Stop the current trivia session.")
+			),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	]
 		.map((command) => command.setDMPermission(false))

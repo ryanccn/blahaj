@@ -22,8 +22,10 @@
 		"discord.js": "^14.13.0",
 		"dotenv": "^16.3.1",
 		"hono": "^3.6.0",
+		"js-yaml": "^4.1.0",
 		"just-capitalize": "^3.2.0",
 		"just-random": "^3.2.0",
+		"just-shuffle": "^4.2.0",
 		"kleur": "^4.1.5",
 		"nanoid": "^5.0.1",
 		"openai": "^4.6.0",
@@ -37,6 +39,7 @@
 	},
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
+		"@types/js-yaml": "^4.0.6",
 		"@types/node": "^20.6.0",
 		"@typescript-eslint/eslint-plugin": "^6.7.0",
 		"@typescript-eslint/parser": "^6.7.0",

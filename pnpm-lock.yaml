@@ -38,12 +38,18 @@ dependencies:
   hono:
     specifier: ^3.6.0
     version: 3.6.0
+  js-yaml:
+    specifier: ^4.1.0
+    version: 4.1.0
   just-capitalize:
     specifier: ^3.2.0
     version: 3.2.0
   just-random:
     specifier: ^3.2.0
     version: 3.2.0
+  just-shuffle:
+    specifier: ^4.2.0
+    version: 4.2.0
   kleur:
     specifier: ^4.1.5
     version: 4.1.5
@@ -79,6 +85,9 @@ devDependencies:
   '@microsoft/eslint-formatter-sarif':
     specifier: ^3.0.0
     version: 3.0.0
+  '@types/js-yaml':
+    specifier: ^4.0.6
+    version: 4.0.6
   '@types/node':
     specifier: ^20.6.0
     version: 20.6.0
@@ -681,6 +690,10 @@ packages:
     engines: {node: '>= 10'}
     dev: false
 
+  /@types/js-yaml@4.0.6:
+    resolution: {integrity: sha512-ACTuifTSIIbyksx2HTon3aFtCKWcID7/h3XEmRpDYdMCXxPbl+m9GteOJeaAkiAta/NJaSFuA7ahZ0NkwajDSw==}
+    dev: true
+
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
     dev: true
@@ -977,7 +990,6 @@ packages:
 
   /argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
-    dev: true
 
   /array-union@2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
@@ -2137,7 +2149,6 @@ packages:
     hasBin: true
     dependencies:
       argparse: 2.0.1
-    dev: true
 
   /jschardet@3.0.0:
     resolution: {integrity: sha512-lJH6tJ77V8Nzd5QWRkFYCLc13a3vADkh3r/Fi8HupZGWk2OVVDfnZP8V/VgQgZ+lzW0kG2UGb5hFgt3V3ndotQ==}
@@ -2187,6 +2198,10 @@ packages:
 
   /just-random@3.2.0:
     resolution: {integrity: sha512-RMf8vbtCfLIbAEHvIPu2FwMkpB/JudGyk/VPfqPItcRgt7k8QnV+Aa7s7kRFPo+bavQkUi8Yg1x/ooW6Ttyb9A==}
+    dev: false
+
+  /just-shuffle@4.2.0:
+    resolution: {integrity: sha512-/dDmNseAWLf3XkFY9xf3/BdQoiy27LNUy/7uG4zdSAX526nIHMYPYeJ4pN4lT1/pgNEX8XCXPtUB6gJqTpBEng==}
     dev: false
 
   /jwa@2.0.0:
