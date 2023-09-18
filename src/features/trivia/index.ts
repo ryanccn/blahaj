@@ -50,7 +50,12 @@ export const initTrivia = async (name: string, channel: GuildTextBasedChannel) =
 			return;
 		}
 
-		if (state.questionIdx >= 0 && state.data[state.questionIdx].answers.includes(message.cleanContent)) {
+		if (
+			state.questionIdx >= 0
+			&& state.data[state.questionIdx].answers
+				.map(ans => ans.toLowerCase())
+				.includes(message.cleanContent.toLowerCase().trim())
+		) {
 			await message.reply("Correct!");
 			state.scores.set(message.author.id, (state.scores.get(message.author.id) ?? 0) + 1);
 			await nextTrivia(channel);
