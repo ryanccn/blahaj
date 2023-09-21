@@ -66,8 +66,8 @@ dependencies:
     specifier: ^0.32.5
     version: 0.32.5
   systeminformation:
-    specifier: ^5.21.4
-    version: 5.21.4
+    specifier: ^5.21.7
+    version: 5.21.7
   tsx:
     specifier: ^3.12.10
     version: 3.12.10
@@ -3089,8 +3089,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /systeminformation@5.21.4:
-    resolution: {integrity: sha512-fLW6j47UoAJDlZPEqykkWTKxubxb8IFuow6pMQlqf4irZ2lBgCrCReavMkH2t8VxxjOcg6wBlZ2EPQcluAT6xg==}
+  /systeminformation@5.21.7:
+    resolution: {integrity: sha512-K3LjnajrazTLTD61+87DFg8IXFk5ljx6nSBqB8pQLtC1UPivAjDtTYGPZ8jaBFxcesPaCOkvLRtBq+RFscrsLw==}
     engines: {node: '>=8.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
