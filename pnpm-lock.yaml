@@ -98,8 +98,8 @@ devDependencies:
     specifier: ^6.7.2
     version: 6.7.2(eslint@8.50.0)(typescript@5.2.2)
   discord-api-types:
-    specifier: ^0.37.57
-    version: 0.37.57
+    specifier: ^0.37.58
+    version: 0.37.58
   eslint:
     specifier: ^8.50.0
     version: 8.50.0
@@ -1307,8 +1307,8 @@ packages:
     resolution: {integrity: sha512-X4CDiMnDbA3s3RaUXWXmgAIbY1uxab3fqe3qwzg5XutR3wjqi7M3IkgQbsIBzpqBN2YWr/Qdv7JrFRqSgb4TFg==}
     dev: false
 
-  /discord-api-types@0.37.57:
-    resolution: {integrity: sha512-EGZgYrNVFVYux2tWZNMnemNgZh6sjQmKj1d9PS7++fYzHx7ksXtO5e++PqOZXzXkQ38z2uJ2tRlPFS8iKHl7qw==}
+  /discord-api-types@0.37.58:
+    resolution: {integrity: sha512-LubQHjyrr4nXjotWuao9T5RjzvvDstRztIpf5vamIXreSu75FQD20BJv2FnNc+vqrWLWnQwqg3qPb9P6cE2sUw==}
     dev: true
 
   /discord.js@14.13.0:
