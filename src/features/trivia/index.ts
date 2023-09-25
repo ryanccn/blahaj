@@ -29,16 +29,26 @@ export const nextTrivia = async (channel: GuildTextBasedChannel) => {
 	setTimeout(async () => {
 		const state = triviaState.get(channel.id);
 		if (state && state.questionIdx === thisQuestionIdx) {
-			await channel.send(`The answer is ||${state.data[thisQuestionIdx].answers[0]}||`);
+			await channel.send(
+				`The answer is ||${state.data[thisQuestionIdx].answers[0]}||`,
+			);
 			await nextTrivia(channel);
 		}
 	}, 20_000);
 };
 
-export const initTrivia = async (name: string, channel: GuildTextBasedChannel) => {
+export const initTrivia = async (
+	name: string,
+	channel: GuildTextBasedChannel,
+) => {
 	const data = await getTrivia(name);
 
-	triviaState.set(channel.id, { name, questionIdx: -1, data: shuffle(data), scores: new Map() });
+	triviaState.set(channel.id, {
+		name,
+		questionIdx: -1,
+		data: shuffle(data),
+		scores: new Map(),
+	});
 
 	const collector = channel.createMessageCollector();
 	triviaCollectors.set(channel.id, collector);
@@ -53,11 +63,14 @@ export const initTrivia = async (name: string, channel: GuildTextBasedChannel) =
 		if (
 			state.questionIdx >= 0
 			&& state.data[state.questionIdx].answers
-				.map(ans => ans.toLowerCase())
+				.map((ans) => ans.toLowerCase())
 				.includes(message.cleanContent.toLowerCase().trim())
 		) {
 			await message.reply("Correct!");
-			state.scores.set(message.author.id, (state.scores.get(message.author.id) ?? 0) + 1);
+			state.scores.set(
+				message.author.id,
+				(state.scores.get(message.author.id) ?? 0) + 1,
+			);
 			await nextTrivia(channel);
 		}
 	});
@@ -74,7 +87,9 @@ export const stopTrivia = async (channel: GuildTextBasedChannel) => {
 				.setDescription(
 					[...state.scores.entries()]
 						.sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
-						.map(([user, score]) => (`<@${user}>: **${score}**`)).join("\n"),
+						.map(([user, score]) => `<@${user}>: **${score}**`)
+						.join("\n")
+						|| "*No scores*",
 				)
 				.setColor(0xc084fc),
 		],
