@@ -28,7 +28,7 @@
 		"just-shuffle": "^4.2.0",
 		"kleur": "^4.1.5",
 		"nanoid": "^5.0.1",
-		"openai": "^4.10.0",
+		"openai": "^4.11.0",
 		"parse-duration": "^1.1.0",
 		"sharp": "^0.32.6",
 		"systeminformation": "^5.21.8",

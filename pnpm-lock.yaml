@@ -57,8 +57,8 @@ dependencies:
     specifier: ^5.0.1
     version: 5.0.1
   openai:
-    specifier: ^4.10.0
-    version: 4.10.0
+    specifier: ^4.11.0
+    version: 4.11.0
   parse-duration:
     specifier: ^1.1.0
     version: 1.1.0
@@ -2542,8 +2542,8 @@ packages:
       mimic-fn: 2.1.0
     dev: false
 
-  /openai@4.10.0:
-    resolution: {integrity: sha512-II4b5/7qzwYkqA9MSjgqdofCc798EW+dtF2h6qNaVLet+qO7FShAJTWnoyzb50J4ZH1rPxRFAsmDLIhY3PT6DQ==}
+  /openai@4.11.0:
+    resolution: {integrity: sha512-zU/MJxZTijL0Ym6CKoQPbnmHDsGZlH9g5zorPszdc41OyLxlhnlrorBcGzmGS9qpnjGGNncJR1hfg/mXq0OONw==}
     hasBin: true
     dependencies:
       '@types/node': 18.17.19
