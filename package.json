@@ -41,7 +41,7 @@
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"@types/js-yaml": "^4.0.6",
 		"@types/node": "^20.6.5",
-		"@typescript-eslint/eslint-plugin": "^6.7.2",
+		"@typescript-eslint/eslint-plugin": "^6.7.5",
 		"@typescript-eslint/parser": "^6.7.2",
 		"discord-api-types": "^0.37.57",
 		"eslint": "^8.50.0",
