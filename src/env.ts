@@ -41,10 +41,10 @@ const Config = v.object({
 });
 type Config = v.Input<typeof Config>;
 
-let config: Config;
+let config_: Config;
 
 try {
-	config = v.parse(Config, process.env);
+	config_ = v.parse(Config, process.env);
 } catch (error) {
 	if (error instanceof v.ValiError) {
 		defaultLogger.error(formatValiError(error));
@@ -54,4 +54,4 @@ try {
 	}
 }
 
-export { config };
+export const config: Readonly<typeof config_> = config_;
