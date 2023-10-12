@@ -21,35 +21,35 @@
 		"destr": "^2.0.1",
 		"discord.js": "^14.13.0",
 		"dotenv": "^16.3.1",
-		"hono": "^3.7.2",
+		"hono": "^3.7.6",
 		"js-yaml": "^4.1.0",
 		"just-capitalize": "^3.2.0",
 		"just-random": "^3.2.0",
 		"just-shuffle": "^4.2.0",
 		"kleur": "^4.1.5",
 		"nanoid": "^5.0.1",
-		"openai": "^4.10.0",
+		"openai": "^4.12.1",
 		"parse-duration": "^1.1.0",
 		"sharp": "^0.32.6",
-		"systeminformation": "^5.21.8",
+		"systeminformation": "^5.21.11",
 		"tsx": "^3.13.0",
 		"unstorage": "^1.9.0",
 		"uwurandom-node": "^0.1.0",
-		"valibot": "^0.17.1"
+		"valibot": "^0.19.0"
 	},
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
-		"@types/js-yaml": "^4.0.6",
-		"@types/node": "^20.6.5",
-		"@typescript-eslint/eslint-plugin": "^6.7.2",
-		"@typescript-eslint/parser": "^6.7.2",
-		"discord-api-types": "^0.37.57",
-		"eslint": "^8.50.0",
+		"@types/js-yaml": "^4.0.7",
+		"@types/node": "^20.8.4",
+		"@typescript-eslint/eslint-plugin": "^6.7.5",
+		"@typescript-eslint/parser": "^6.7.5",
+		"discord-api-types": "^0.37.60",
+		"eslint": "^8.51.0",
 		"eslint-plugin-unicorn": "^48.0.1",
 		"typescript": "^5.2.2"
 	},
 	"engines": {
 		"node": ">=18"
 	},
-	"packageManager": "pnpm@8.7.5"
+	"packageManager": "pnpm@8.9.0"
 }
