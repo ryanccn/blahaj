@@ -29,6 +29,6 @@ export const initRandomUwu = (client: Client) => {
 			if (Math.random() > 0.001) return;
 			randomlyUwu(client);
 		},
-		5 * 60 * 1000,
+		10 * 60 * 1000,
 	);
 };
