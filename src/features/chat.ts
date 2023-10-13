@@ -58,7 +58,7 @@ export const handleChat = async (message: Message) => {
 
 		const context = msgs
 			.filter((k) => !k.content.startsWith(CHATBOT_ESCAPE_CHAR))
-			.map<OpenAI.Chat.CreateChatCompletionRequestMessage>((msg) => {
+			.map<OpenAI.Chat.ChatCompletionMessageParam>((msg) => {
 				if (msg.author === msg.author.client.user) {
 					return { role: "assistant", content: msg.content };
 				}
