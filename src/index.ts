@@ -37,7 +37,6 @@ import { handleChat } from "~/features/chat";
 import { logErrorToDiscord, respondWithError } from "~/features/errorHandling";
 import { handleGitHubExpansion } from "~/features/githubExpansion";
 import { logDM } from "~/features/logDM";
-import { initRandomUwu } from "~/features/randomuwu";
 import { parseSDMetadata } from "~/features/sdMetadata";
 import { handleStarAdd, handleStarRemove } from "~/features/starboard";
 import { handleThreadCreate } from "~/features/threadCreate";
@@ -93,10 +92,6 @@ client.once(Events.ClientReady, async () => {
 	if (config.NODE_ENV !== "development") {
 		defaultLogger.warn("Running in production mode!");
 	}
-});
-
-client.once(Events.ClientReady, () => {
-	initRandomUwu(client);
 });
 
 client.once(Events.ClientReady, async () => {
