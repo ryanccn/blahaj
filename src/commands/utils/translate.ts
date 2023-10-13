@@ -50,7 +50,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 	await i.editReply({
 		embeds: [
 			new EmbedBuilder()
-				.setTitle("Trans:tm:lation")
+				.setTitle("Translation")
 				.setDescription(response)
 				.setColor(0x34d399)
 				.setFooter({
