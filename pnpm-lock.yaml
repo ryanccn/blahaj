@@ -54,8 +54,8 @@ dependencies:
     specifier: ^4.1.5
     version: 4.1.5
   nanoid:
-    specifier: ^5.0.1
-    version: 5.0.1
+    specifier: ^5.0.2
+    version: 5.0.2
   openai:
     specifier: ^4.12.1
     version: 4.12.1
@@ -89,8 +89,8 @@ devDependencies:
     specifier: ^4.0.7
     version: 4.0.7
   '@types/node':
-    specifier: ^20.8.4
-    version: 20.8.4
+    specifier: ^20.8.6
+    version: 20.8.6
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.7.5
     version: 6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2)
@@ -485,7 +485,7 @@ packages:
     engines: {node: ^8.13.0 || >=10.10.0}
     dependencies:
       '@grpc/proto-loader': 0.7.9
-      '@types/node': 20.8.4
+      '@types/node': 20.8.6
     dev: false
 
   /@grpc/proto-loader@0.7.9:
@@ -679,16 +679,16 @@ packages:
   /@types/node-fetch@2.6.6:
     resolution: {integrity: sha512-95X8guJYhfqiuVVhRFxVQcf4hW/2bCuoPwDasMf/531STFoNoWTT7YDnWdXHEZKqAGUigmpG31r2FE70LwnzJw==}
     dependencies:
-      '@types/node': 20.8.4
+      '@types/node': 20.8.6
       form-data: 4.0.0
     dev: false
 
-  /@types/node@18.18.4:
-    resolution: {integrity: sha512-t3rNFBgJRugIhackit2mVcLfF6IRc0JE4oeizPQL8Zrm8n2WY/0wOdpOPhdtG0V9Q2TlW/axbF1MJ6z+Yj/kKQ==}
+  /@types/node@18.18.5:
+    resolution: {integrity: sha512-4slmbtwV59ZxitY4ixUZdy1uRLf9eSIvBWPQxNjhHYWEtn0FryfKpyS2cvADYXTayWdKEIsJengncrVvkI4I6A==}
     dev: false
 
-  /@types/node@20.8.4:
-    resolution: {integrity: sha512-ZVPnqU58giiCjSxjVUESDtdPk4QR5WQhhINbc9UBrKLU68MX5BF6kbQzTrkwbolyr0X8ChBpXfavr5mZFKZQ5A==}
+  /@types/node@20.8.6:
+    resolution: {integrity: sha512-eWO4K2Ji70QzKUqRy6oyJWUeB7+g2cRagT3T/nxYibYcT4y2BDL8lqolRXjTHmkZCdJfIPaY73KbJAZmcryxTQ==}
     dependencies:
       undici-types: 5.25.3
 
@@ -703,7 +703,7 @@ packages:
   /@types/ws@8.5.5:
     resolution: {integrity: sha512-lwhs8hktwxSjf9UaZ9tG5M03PGogvFaH8gUgLNbN9HKIg0dvv6q+gkSuJ8HN4/VbyxkuLzCjlN7GquQ0gUJfIg==}
     dependencies:
-      '@types/node': 20.8.4
+      '@types/node': 20.8.6
     dev: false
 
   /@types/yargs-parser@21.0.0:
@@ -2417,8 +2417,8 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: false
 
-  /nanoid@5.0.1:
-    resolution: {integrity: sha512-vWeVtV5Cw68aML/QaZvqN/3QQXc6fBfIieAlu05m7FZW2Dgb+3f0xc0TTxuJW+7u30t7iSDTV/j3kVI0oJqIfQ==}
+  /nanoid@5.0.2:
+    resolution: {integrity: sha512-2ustYUX1R2rL/Br5B/FMhi8d5/QzvkJ912rBYxskcpu0myTHzSZfTr1LAS2Sm7jxRUObRrSBFoyzwAhL49aVSg==}
     engines: {node: ^18 || >=20}
     hasBin: true
     dev: false
@@ -2548,7 +2548,7 @@ packages:
     resolution: {integrity: sha512-EAoUwm4dtiWvFwBhOCK/VfF8sj1ZU8+aAIJnfT4NyeTfrt1DM/6Gdd6fOZWTjBYryTAqu9Vpb5+9Wu6JMtm/gA==}
     hasBin: true
     dependencies:
-      '@types/node': 18.18.4
+      '@types/node': 18.18.5
       '@types/node-fetch': 2.6.6
       abort-controller: 3.0.0
       agentkeepalive: 4.5.0
@@ -2715,7 +2715,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.8.4
+      '@types/node': 20.8.6
       long: 5.2.3
     dev: false
 
