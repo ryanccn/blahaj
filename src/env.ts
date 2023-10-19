@@ -36,6 +36,8 @@ const Config = v.object({
 
 	STABLE_DIFFUSION_API_URL: v.optional(v.string([v.url()])),
 	STABLE_DIFFUSION_API_TOKEN: v.optional(v.string()),
+
+	VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: v.optional(v.string()),
 });
 type Config = v.Input<typeof Config>;
 

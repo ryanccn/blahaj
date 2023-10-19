@@ -363,7 +363,7 @@ class TextualInversionManager(BaseTextualInversionManager):
             if token_counter < 0:
                 trigger = embedding_ckpt["name"]
             elif token_counter == 0:
-                trigger = f"<basename>"
+                trigger = f"<{basename}>"
             else:
                 trigger = f"<{basename}-{int(token_counter:=token_counter)}>"
             token_counter += 1

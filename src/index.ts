@@ -45,6 +45,10 @@ import { defaultLogger } from "~/lib/logger";
 
 import { cyan } from "kleur/colors";
 
+if (config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
+	defaultLogger.warn("Private Valfisk migration flag is on; do not use this flag unless you know what it does!");
+}
+
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -216,6 +220,8 @@ client.on(Events.MessageCreate, async (message) => {
 });
 
 client.on(Events.MessageCreate, async (message) => {
+	if (config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) return;
+
 	try {
 		if (message.author === message.client.user) return;
 		await handleGitHubExpansion(message);

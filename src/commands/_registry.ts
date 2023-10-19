@@ -15,7 +15,7 @@ import "dotenv/config";
 import { config } from "~/env";
 
 export const reuploadCommands = async () => {
-	const commands = [
+	const mainCommands = [
 		new SlashCommandBuilder().setName("ping").setDescription("Replies with pong!"),
 		new SlashCommandBuilder()
 			.setName("say")
@@ -80,7 +80,6 @@ export const reuploadCommands = async () => {
 			.addBooleanOption((option) =>
 				option.setName("upscale").setDescription("Whether to upscale by 2x or not").setRequired(false)
 			),
-		new SlashCommandBuilder().setName("pomelo").setDescription("Statistics on the username migration in this guild"),
 		new SlashCommandBuilder()
 			.setName("fren")
 			.setDescription("fren management")
@@ -107,9 +106,6 @@ export const reuploadCommands = async () => {
 				option.setName("color").setDescription("Hexadecimal representation of the color").setRequired(true)
 			),
 		new SlashCommandBuilder()
-			.setName("shiggy")
-			.setDescription("random shiggy"),
-		new SlashCommandBuilder()
 			.setName("trivia")
 			.setDescription("Manage trivia sessions")
 			.addSubcommand((subcommand) =>
@@ -127,10 +123,21 @@ export const reuploadCommands = async () => {
 					.setName("stop")
 					.setDescription("Stop the current trivia session.")
 			),
+	];
+
+	const valfiskMigratedCommands = [
+		new SlashCommandBuilder().setName("pomelo").setDescription("Statistics on the username migration in this guild"),
+		new SlashCommandBuilder()
+			.setName("shiggy")
+			.setDescription("random shiggy"),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
-	]
-		.map((command) => command.setDMPermission(false))
-		.map((command) => command.toJSON());
+	];
+
+	const commands =
+		(config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+			? mainCommands
+			: [...mainCommands, ...valfiskMigratedCommands]).map((command) => command.setDMPermission(false))
+			.map((command) => command.toJSON());
 
 	const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
 
