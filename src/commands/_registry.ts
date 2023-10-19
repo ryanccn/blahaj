@@ -91,12 +91,6 @@ export const reuploadCommands = async () => {
 					.addUserOption((option) => option.setName("user").setDescription("user to add to fren").setRequired(true))
 			),
 		new SlashCommandBuilder()
-			.setName("self-timeout")
-			.setDescription("Time yourself out")
-			.addStringOption((option) =>
-				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
-			),
-		new SlashCommandBuilder()
 			.setName("presence-api")
 			.setDescription("Manage access to the presence API"),
 		new SlashCommandBuilder()
@@ -130,14 +124,19 @@ export const reuploadCommands = async () => {
 		new SlashCommandBuilder()
 			.setName("shiggy")
 			.setDescription("random shiggy"),
+		new SlashCommandBuilder()
+			.setName("self-timeout")
+			.setDescription("Time yourself out")
+			.addStringOption((option) =>
+				option.setName("duration").setDescription("Duration of the timeout").setRequired(true)
+			),
 		new ContextMenuCommandBuilder().setName("Translate").setType(ApplicationCommandType.Message),
 	];
 
-	const commands =
-		(config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-			? mainCommands
-			: [...mainCommands, ...valfiskMigratedCommands]).map((command) => command.setDMPermission(false))
-			.map((command) => command.toJSON());
+	const commands = (config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+		? mainCommands
+		: [...mainCommands, ...valfiskMigratedCommands]).map((command) => command.setDMPermission(false))
+		.map((command) => command.toJSON());
 
 	const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
 

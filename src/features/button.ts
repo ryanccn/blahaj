@@ -63,7 +63,9 @@ export const handleButton = async (i: ButtonInteraction) => {
 		if (i.channel && i.channel.type === ChannelType.GuildText && i.channel.name.startsWith("fren-invitation-")) {
 			await i.channel.delete();
 		}
-	} else if (buttonId.startsWith("self-timeout-cancel::")) {
+	} else if (
+		buttonId.startsWith("self-timeout-cancel::") && !config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+	) {
 		const [, userId] = buttonId.split("::");
 		if (i.user.id !== userId) return;
 
@@ -76,7 +78,9 @@ export const handleButton = async (i: ButtonInteraction) => {
 			],
 			components: [],
 		});
-	} else if (buttonId.startsWith("self-timeout-proceed::")) {
+	} else if (
+		buttonId.startsWith("self-timeout-proceed::") && !config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+	) {
 		const [, userId, durationString] = buttonId.split("::");
 		if (!i.guild || i.user.id !== userId) return;
 
