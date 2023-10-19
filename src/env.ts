@@ -5,6 +5,16 @@ import { formatValiError } from "~/lib/utils";
 
 const snowflake = v.string([v.regex(/^\d+$/, "Should be a snowflake, not a generic string")]);
 
+const flagSchema = () =>
+	v.transform(
+		v.string([(value) => {
+			const acceptable = ["1", "0", "true", "false", "on", "off"];
+			if (acceptable.includes(value.toLowerCase())) return v.getOutput(value);
+			return v.getPipeIssues("stringFlag", `"${value}" is not a valid flag`, value);
+		}]),
+		(value) => value === "1" || value.toLowerCase() === "true" || value.toLowerCase() === "on",
+	);
+
 const Config = v.object({
 	NODE_ENV: v.string([v.minLength(1)]),
 	PORT: v.optional(v.string([v.regex(/^\d+$/)])),
@@ -37,9 +47,10 @@ const Config = v.object({
 	STABLE_DIFFUSION_API_URL: v.optional(v.string([v.url()])),
 	STABLE_DIFFUSION_API_TOKEN: v.optional(v.string()),
 
-	VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: v.optional(v.string()),
+	VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: v.optional(flagSchema()),
 });
-type Config = v.Input<typeof Config>;
+
+type Config = v.Output<typeof Config>;
 
 let config_: Config;
 
