@@ -18,7 +18,7 @@
 		"argon2": "^0.31.1",
 		"bottomify": "^0.3.0",
 		"colortranslator": "^3.0.2",
-		"destr": "^2.0.1",
+		"destr": "^2.0.2",
 		"discord.js": "^14.13.0",
 		"dotenv": "^16.3.1",
 		"hono": "^3.7.6",
