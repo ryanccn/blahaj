@@ -7,11 +7,10 @@ const snowflake = v.string([v.regex(/^\d+$/, "Should be a snowflake, not a gener
 
 const flagSchema = () =>
 	v.transform(
-		v.string([(value) => {
+		v.string([v.custom((value) => {
 			const acceptable = ["1", "0", "true", "false", "on", "off"];
-			if (acceptable.includes(value.toLowerCase())) return v.getOutput(value);
-			return v.getPipeIssues("stringFlag", `"${value}" is not a valid flag`, value);
-		}]),
+			return acceptable.includes(value.toLowerCase());
+		}, "Invalid input flag")]),
 		(value) => value === "1" || value.toLowerCase() === "true" || value.toLowerCase() === "on",
 	);
 
