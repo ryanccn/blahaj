@@ -12,8 +12,8 @@ dependencies:
     specifier: ^8.0.2
     version: 8.0.2
   '@hono/node-server':
-    specifier: ^1.3.3
-    version: 1.3.3
+    specifier: ^1.4.0
+    version: 1.4.0
   '@ryanccn/exifr':
     specifier: ^7.1.3
     version: 7.1.3
@@ -526,8 +526,8 @@ packages:
       yargs: 17.7.2
     dev: false
 
-  /@hono/node-server@1.3.3:
-    resolution: {integrity: sha512-zD+TJvSBb5rqx5KSRlpoxNM3ESC8JU3pdecNZc2nK/TJSt88Ae/ko2nKnzYqX2IDegc+4hxLs8CW92B683C2VQ==}
+  /@hono/node-server@1.4.0:
+    resolution: {integrity: sha512-bhDkhldW7w9VgjrX0gG1vJ2YyvTxFWd5WG9nHjSR4UauhVECQZC3qy7mVVuQ054I5NWhKttHfKzYfoPzmUzAjw==}
     engines: {node: '>=18.14.1'}
     dev: false
 
