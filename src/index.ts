@@ -266,6 +266,8 @@ client.on(Events.ThreadCreate, async (channel) => {
 });
 
 client.on(Events.MessageReactionAdd, async (e) => {
+	if (config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) return;
+
 	try {
 		if (e.partial) e = await e.fetch();
 		if (!e.message.channelId || !e.message.guild) return;
@@ -278,6 +280,8 @@ client.on(Events.MessageReactionAdd, async (e) => {
 });
 
 client.on(Events.MessageReactionRemove, async (e) => {
+	if (config.VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) return;
+
 	try {
 		if (e.partial) e = await e.fetch();
 		if (!e.message.channel || !e.message.guild) return;
