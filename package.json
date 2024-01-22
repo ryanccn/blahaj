@@ -35,7 +35,7 @@
 		"tsx": "^4.7.0",
 		"unstorage": "^1.10.1",
 		"uwurandom-node": "^0.1.0",
-		"valibot": "^0.24.1"
+		"valibot": "^0.26.0"
 	},
 	"devDependencies": {
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
