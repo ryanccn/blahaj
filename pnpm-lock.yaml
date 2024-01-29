@@ -78,8 +78,8 @@ dependencies:
     specifier: ^0.1.0
     version: 0.1.0
   valibot:
-    specifier: ^0.24.1
-    version: 0.24.1
+    specifier: ^0.27.1
+    version: 0.27.1
 
 devDependencies:
   '@microsoft/eslint-formatter-sarif':
@@ -3566,8 +3566,8 @@ packages:
     resolution: {integrity: sha512-CoPPYAyDWCwQkSX3ml8+8lTs2A8PrndzbuOX+6qzA9F1G/AC+KN8BalLrwMUABHYXZcYw1SnPe1kp3JFNmYUHw==}
     dev: false
 
-  /valibot@0.24.1:
-    resolution: {integrity: sha512-Toclbuy20XsECZiueh2dkQ63he2AGaBIj/FJRDAFti2kueFldm9bjJzSYvPaL5CE1HXDMRhq7olak8at7xCz5A==}
+  /valibot@0.27.1:
+    resolution: {integrity: sha512-k57/5/kMwMjiVP0LUMpa+n4ihSemuXshz1ND4fftKw1bkHZYN/TnHcbjaEie3K7FwAceiOgugLZPjSaNxdygeg==}
     dev: false
 
   /validate-npm-package-license@3.0.4:
