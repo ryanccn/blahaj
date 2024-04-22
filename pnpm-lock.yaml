@@ -98,8 +98,8 @@ devDependencies:
     specifier: ^6.16.0
     version: 6.16.0(eslint@8.56.0)(typescript@5.3.3)
   discord-api-types:
-    specifier: ^0.37.66
-    version: 0.37.66
+    specifier: ^0.37.80
+    version: 0.37.80
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
@@ -766,7 +766,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       eslint: 8.56.0
-      jschardet: 3.0.0
+      jschardet: 3.1.2
       lodash: 4.17.21
       utf8: 3.0.0
     transitivePeerDependencies:
@@ -1673,8 +1673,8 @@ packages:
     resolution: {integrity: sha512-o/dXNFfhBpYHpQFdT6FWzeO7pKc838QeeZ9d91CfVAtpr5XLK4B/zYxQbYgPdoMiTDvJfzcsLW5naXgmHGDNXw==}
     dev: false
 
-  /discord-api-types@0.37.66:
-    resolution: {integrity: sha512-3Q+6uBODmVaPAmZZ1jYQiQBbp0hqArgSU9Y6DuYY6KW5Sdij91bwbmFnnVI5XvATRkY+Wk9KMBWFzAEwSDs+1w==}
+  /discord-api-types@0.37.80:
+    resolution: {integrity: sha512-aQTZn3C34TOyOmbr9499DgMINZGRmh5K2gT4lZv1/tUb3swPQ6iCthqMVmA5G8d38lTiCwoSyULYAMHifjHh1g==}
     dev: true
 
   /discord.js@14.14.1:
@@ -2460,8 +2460,8 @@ packages:
     dependencies:
       argparse: 2.0.1
 
-  /jschardet@3.0.0:
-    resolution: {integrity: sha512-lJH6tJ77V8Nzd5QWRkFYCLc13a3vADkh3r/Fi8HupZGWk2OVVDfnZP8V/VgQgZ+lzW0kG2UGb5hFgt3V3ndotQ==}
+  /jschardet@3.1.2:
+    resolution: {integrity: sha512-mw3CBZGzW8nUBPYhFU2ztZ/kJ6NClQUQVpyzvFMfznZsoC///ZQ30J2RCUanNsr5yF22LqhgYr/lj807/ZleWA==}
     engines: {node: '>=0.1.90'}
     dev: true
 
