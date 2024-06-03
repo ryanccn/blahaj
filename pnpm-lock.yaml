@@ -36,8 +36,8 @@ dependencies:
     specifier: ^16.3.1
     version: 16.3.1
   hono:
-    specifier: ^3.11.10
-    version: 3.11.10
+    specifier: ^4.4.3
+    version: 4.4.3
   js-yaml:
     specifier: ^4.1.0
     version: 4.1.0
@@ -766,7 +766,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       eslint: 8.56.0
-      jschardet: 3.0.0
+      jschardet: 3.1.2
       lodash: 4.17.21
       utf8: 3.0.0
     transitivePeerDependencies:
@@ -2247,8 +2247,8 @@ packages:
       function-bind: 1.1.2
     dev: true
 
-  /hono@3.11.10:
-    resolution: {integrity: sha512-vizPp5PfVq5dwgN+EM+8v7RHlvrrEbnpkHtM2GMsl6KICA/MvWcnEMJ5L8SjYPxueB8VJMwc6nzzgKj5Vovp7g==}
+  /hono@4.4.3:
+    resolution: {integrity: sha512-G7rTruKzrHXPz1KB4B50deKydPA9+aeei+WC1hikP0abN9N+a6yORuweageaqWocYfYNkpoqA5ezGV2mzQasvw==}
     engines: {node: '>=16.0.0'}
     dev: false
 
@@ -2460,8 +2460,8 @@ packages:
     dependencies:
       argparse: 2.0.1
 
-  /jschardet@3.0.0:
-    resolution: {integrity: sha512-lJH6tJ77V8Nzd5QWRkFYCLc13a3vADkh3r/Fi8HupZGWk2OVVDfnZP8V/VgQgZ+lzW0kG2UGb5hFgt3V3ndotQ==}
+  /jschardet@3.1.2:
+    resolution: {integrity: sha512-mw3CBZGzW8nUBPYhFU2ztZ/kJ6NClQUQVpyzvFMfznZsoC///ZQ30J2RCUanNsr5yF22LqhgYr/lj807/ZleWA==}
     engines: {node: '>=0.1.90'}
     dev: true
 
