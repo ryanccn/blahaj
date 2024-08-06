@@ -4,7 +4,7 @@ import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 
 import { verify } from "argon2";
-import { type Client, type Presence } from "discord.js";
+import { ActivityType, type Client, type Presence } from "discord.js";
 
 import { config } from "~/env";
 import { get } from "~/lib/db";
@@ -21,17 +21,17 @@ const serializePresence = (presence: Presence) => {
 
 		activities: presence.activities.map(activity => ({
 			name: activity.name,
-			type: activity.type === 0
+			type: activity.type === ActivityType.Playing
 				? "playing" as const
-				: activity.type === 1
+				: activity.type === ActivityType.Streaming
 				? "streaming" as const
-				: activity.type === 2
+				: activity.type === ActivityType.Listening
 				? "listening" as const
-				: activity.type === 3
+				: activity.type === ActivityType.Watching
 				? "watching" as const
-				: activity.type === 4
+				: activity.type === ActivityType.Custom
 				? "custom" as const
-				: activity.type === 5
+				: activity.type === ActivityType.Competing
 				? "competing" as const
 				: unreachable(),
 			url: activity.url,
@@ -56,7 +56,7 @@ const serializePresence = (presence: Presence) => {
 	};
 };
 
-export const startServer = async ({ client }: { client: Client }) => {
+export const startServer = ({ client }: { client: Client }) => {
 	const app = new Hono();
 	app.use("*", secureHeaders());
 

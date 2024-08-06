@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildTextBasedChannel, MessageCollector } from "discord.js";
+import { EmbedBuilder, type GuildTextBasedChannel, MessageCollector } from "discord.js";
 import shuffle from "just-shuffle";
 import { getTrivia } from "./data";
 
@@ -24,13 +24,15 @@ export const nextTrivia = async (channel: GuildTextBasedChannel) => {
 	}
 
 	const thisQuestionIdx = state.questionIdx;
-	await channel.send(state.data[thisQuestionIdx].question);
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+	await channel.send(state.data[thisQuestionIdx]!.question);
 
 	setTimeout(async () => {
 		const state = triviaState.get(channel.id);
 		if (state && state.questionIdx === thisQuestionIdx) {
 			await channel.send(
-				`The answer is ||${state.data[thisQuestionIdx].answers[0]}||`,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+				`The answer is ||${state.data[thisQuestionIdx]!.answers[0]}||`,
 			);
 			await nextTrivia(channel);
 		}
@@ -62,7 +64,8 @@ export const initTrivia = async (
 
 		if (
 			state.questionIdx >= 0
-			&& state.data[state.questionIdx].answers
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+			&& state.data[state.questionIdx]!.answers
 				.map((ans) => ans.toLowerCase())
 				.includes(message.cleanContent.toLowerCase().trim())
 		) {

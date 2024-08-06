@@ -18,7 +18,7 @@ const logger = new Logger("chat");
 const unproxiedMessages = new Set<string>();
 
 class UnproxiedMessageError extends Error {
-	name = "UnproxiedMessageError";
+	override name = "UnproxiedMessageError";
 }
 
 export const handleChat = async (message: Message) => {

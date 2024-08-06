@@ -17,7 +17,9 @@ export const handleButton = async (i: ButtonInteraction) => {
 
 			setTimeout(() => {
 				if (!i.channel) return;
-				i.channel.delete();
+				i.channel.delete().catch((error) => {
+					console.error(error);
+				});
 			}, 5000);
 			return;
 		}
@@ -55,7 +57,9 @@ export const handleButton = async (i: ButtonInteraction) => {
 
 		setTimeout(() => {
 			if (!i.channel) return;
-			i.channel.delete();
+			i.channel.delete().catch((error) => {
+				console.error(error);
+			});
 		}, 5000);
 	} else if (buttonId.startsWith("fren-decline::")) {
 		if (!i.channel) return;

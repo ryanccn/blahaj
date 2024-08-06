@@ -1,4 +1,6 @@
+// @ts-expect-error misconfigured typings
 import { parse } from "@ryanccn/exifr";
+import destr from "destr";
 import { EmbedBuilder, type Message } from "discord.js";
 
 import { createWriteStream } from "node:fs";
@@ -6,7 +8,6 @@ import { mkdir, rm } from "node:fs/promises";
 
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import type { ReadableStream } from "node:stream/web";
 
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -61,17 +62,19 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 		}
 
 		const tempPath = join(TEMP_DIR, `${crypto.randomUUID()}.png`);
-		await pipeline(Readable.fromWeb(body as ReadableStream), createWriteStream(tempPath));
+		// @ts-expect-error messed up Node.js types
+		await pipeline(Readable.fromWeb(body), createWriteStream(tempPath));
 
-		const data = await parse(tempPath, {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+		const data: Record<string, unknown> = await parse(tempPath, {
 			xmp: true,
 		});
 		await rm(tempPath);
 
 		if (!data) return;
 
-		if (data["sd-metadata"]) {
-			const sdMetadata = JSON.parse(data["sd-metadata"]) as SDMetadata;
+		if (typeof data["sd-metadata"] === "string") {
+			const sdMetadata = destr<SDMetadata>(data["sd-metadata"], { strict: true });
 
 			resultEmbeds.push(
 				new EmbedBuilder()
@@ -167,7 +170,7 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 						})),
 						{
 							name: "Extras",
-							value: data["extras"] ?? "None detected",
+							value: data["extras"] as string ?? "None detected",
 						},
 					)
 					.setThumbnail(image.url)
@@ -176,10 +179,14 @@ export const parseSDMetadata = async (e: Message<boolean>) => {
 					})
 					.setColor(0x38bdf8),
 			);
-		} else if (typeof data.description?.value === "string" && data.description.value.includes("Mochi Diffusion")) {
+		} else if (
+			!!data.description && typeof data.description === "object" && "value" in data.description
+			&& typeof data.description?.value === "string"
+			&& data.description.value.includes("Mochi Diffusion")
+		) {
 			const mochiDiffusionData: Record<string, string> = {};
 
-			const dataFragments = (data.description.value as string).split("; ").map((k) => k.split(": "));
+			const dataFragments = data.description.value.split("; ").map((k) => k.split(": "));
 
 			for (const [a, ...b] of dataFragments) {
 				mochiDiffusionData[a] = b.join(": ");

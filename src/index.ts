@@ -64,7 +64,7 @@ const client = new Client({
 	partials: [Partials.Channel, Partials.Message, Partials.Reaction],
 });
 
-client.once(Events.ClientReady, async () => {
+client.once(Events.ClientReady, () => {
 	defaultLogger.success("Connected to Discord gateway!");
 
 	defaultLogger.info(
@@ -293,14 +293,10 @@ client.on(Events.MessageReactionRemove, async (e) => {
 	}
 });
 
-const main = async () => {
-	try {
-		await Promise.all([startServer({ client }), reuploadCommands()]);
-		await client.login(config.DISCORD_TOKEN);
-	} catch (error) {
-		defaultLogger.error(error);
-		process.exit(1);
-	}
-};
-
-main();
+try {
+	await Promise.all([startServer({ client }), reuploadCommands()]);
+	await client.login(config.DISCORD_TOKEN);
+} catch (error) {
+	defaultLogger.error(error);
+	process.exit(1);
+}

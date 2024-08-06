@@ -1,7 +1,7 @@
 import { ColorTranslator } from "colortranslator";
 import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import sharp from "sharp";
-import { SlashCommand } from "../_types";
+import { type SlashCommand } from "../_types";
 
 const customColors: {
 	[key: string]: string;

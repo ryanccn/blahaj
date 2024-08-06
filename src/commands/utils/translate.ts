@@ -43,6 +43,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 
 	const message = i.targetMessage;
 
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const [response, { data }] = await client.translate(message.content, {
 		to: "en",
 	});
@@ -54,6 +55,7 @@ export const translateCommand: ContextMenuCommand = async (i) => {
 				.setDescription(response)
 				.setColor(0x34d399)
 				.setFooter({
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					text: `${data.translations[0].detectedSourceLanguage} → en`,
 				}),
 		],

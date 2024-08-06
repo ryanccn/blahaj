@@ -6,8 +6,8 @@ import { join } from "node:path";
 
 const TRIVIA_DATA_PATH = join("src", "features", "trivia", "data");
 
-const TriviaSchema = v.record(v.array(v.union([v.string(), v.number()])));
-export type TriviaSchema = v.Input<typeof TriviaSchema>;
+const TriviaSchema = v.record(v.string(), v.array(v.union([v.string(), v.number()])));
+export type TriviaSchema = v.InferOutput<typeof TriviaSchema>;
 
 export const getTriviaNames = async () => {
 	return await readdir(TRIVIA_DATA_PATH).then(d =>

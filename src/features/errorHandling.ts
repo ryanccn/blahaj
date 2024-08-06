@@ -62,13 +62,14 @@ export const logErrorToDiscord = async (
 
 	const embed = new EmbedBuilder()
 		.setTitle("An error occurred!")
-		.setDescription("```\n" + (opts.error instanceof Error ? opts.error.stack : opts.error) + "\n```")
+		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+		.setDescription(`\`\`\`\n${opts.error instanceof Error ? opts.error.stack : opts.error}\n\`\`\``)
 		.setColor(HEX_RED)
 		.setTimestamp(Date.now());
 
 	if ("interaction" in opts) {
-		embed.addFields({ name: "User", value: `${opts.interaction.user}` });
-		embed.addFields({ name: "Channel", value: `${opts.interaction.channel}` });
+		embed.addFields({ name: "User", value: `${opts.interaction.user.toString()}` });
+		if (opts.interaction.channel) embed.addFields({ name: "Channel", value: `${opts.interaction.channel.toString()}` });
 
 		if (opts.interaction instanceof ChatInputCommandInteraction) {
 			embed.addFields({ name: "Command", value: `${opts.interaction.commandName}` });
@@ -79,13 +80,13 @@ export const logErrorToDiscord = async (
 			if (opts.interaction.isMessageContextMenuCommand()) {
 				embed.addFields({ name: "Message", value: opts.interaction.targetMessage.url });
 			} else if (opts.interaction.isUserContextMenuCommand()) {
-				embed.addFields({ name: "Message", value: `${opts.interaction.targetUser}` });
+				embed.addFields({ name: "Message", value: `${opts.interaction.targetUser.toString()}` });
 			}
 		}
 	} else if ("message" in opts) {
 		embed.addFields({ name: "Message", value: opts.message.url });
 	} else if ("channel" in opts) {
-		embed.addFields({ name: "Channel", value: `${opts.channel}` });
+		embed.addFields({ name: "Channel", value: `${opts.channel.toString()}` });
 	}
 
 	await logsChannel.send({

@@ -1,13 +1,14 @@
 import { createStorage } from "unstorage";
-import FsDriver from "unstorage/drivers/fs";
-import RedisDriver from "unstorage/drivers/redis";
+import fsDriver from "unstorage/drivers/fs";
+import redisDriver from "unstorage/drivers/redis";
 
 import { config } from "~/env";
 
 const storage = createStorage({
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	driver: config.REDIS_URL
-		? RedisDriver({ url: config.REDIS_URL })
-		: FsDriver({ base: "./.unstorage" }),
+		? redisDriver({ url: config.REDIS_URL })
+		: fsDriver({ base: "./.unstorage" }),
 });
 
 const resolveKey = (k: string | string[]) => (typeof k === "string" ? k : k.join(":"));

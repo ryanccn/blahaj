@@ -42,7 +42,7 @@ export const shiggyCommand: SlashCommand = async (i) => {
 		embeds: [
 			new EmbedBuilder()
 				.setTitle(`${shiggy.id}`)
-				.addFields({ name: "Tags", value: shiggy.tag_string.replaceAll("_", "\\_") })
+				.addFields({ name: "Tags", value: shiggy.tag_string.replaceAll("_", String.raw`\_`) })
 				.addFields({ name: "Source", value: shiggy.source })
 				.setURL(`https://safebooru.donmai.us/posts/${shiggy.id}`)
 				.setImage(shiggy.file_url),

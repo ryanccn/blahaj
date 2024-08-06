@@ -47,7 +47,8 @@ export const messageEmbed = async (message: Message) => {
 		const colorRoles = [...message.member.roles.cache.filter((v) => v.color !== 0).values()];
 		colorRoles.sort((a, b) => b.comparePositionTo(a));
 
-		if (colorRoles.length > 0) embed.setColor(colorRoles[0].color);
+		const firstRole = colorRoles[0];
+		if (firstRole) embed.setColor(firstRole.color);
 	}
 
 	return embed;

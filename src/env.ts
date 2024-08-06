@@ -3,23 +3,24 @@ import * as v from "valibot";
 import { defaultLogger } from "~/lib/logger";
 import { formatValiError } from "~/lib/utils";
 
-const snowflake = v.string([v.regex(/^\d+$/, "Should be a snowflake, not a generic string")]);
+const snowflake = v.pipe(v.string(), v.regex(/^\d+$/, "Should be a snowflake, not a generic string"));
 
 const flagSchema = () =>
-	v.transform(
-		v.string([v.custom((value) => {
+	v.pipe(
+		v.string(),
+		v.check((value) => {
 			const acceptable = ["1", "0", "true", "false", "on", "off"];
 			return acceptable.includes(value.toLowerCase());
-		}, "Invalid input flag")]),
-		(value) => value === "1" || value.toLowerCase() === "true" || value.toLowerCase() === "on",
+		}, "Invalid input flag"),
+		v.transform((value) => value === "1" || value.toLowerCase() === "true" || value.toLowerCase() === "on"),
 	);
 
 const Config = v.object({
-	NODE_ENV: v.string([v.minLength(1)]),
-	PORT: v.optional(v.string([v.regex(/^\d+$/)])),
+	NODE_ENV: v.pipe(v.string(), v.minLength(1)),
+	PORT: v.optional(v.pipe(v.string(), v.regex(/^\d+$/))),
 
-	DISCORD_TOKEN: v.string([v.minLength(1)]),
-	REDIS_URL: v.optional(v.string([v.url()])),
+	DISCORD_TOKEN: v.pipe(v.string(), v.minLength(1)),
+	REDIS_URL: v.optional(v.pipe(v.string(), v.url())),
 
 	GOOGLE_CLOUD_PROJECT_ID: v.optional(v.string()),
 	GOOGLE_CLOUD_CLIENT_EMAIL: v.optional(v.string()),
@@ -43,13 +44,13 @@ const Config = v.object({
 
 	THREAD_CREATE_MESSAGE: v.optional(v.string()),
 
-	STABLE_DIFFUSION_API_URL: v.optional(v.string([v.url()])),
+	STABLE_DIFFUSION_API_URL: v.optional(v.pipe(v.string(), v.url())),
 	STABLE_DIFFUSION_API_TOKEN: v.optional(v.string()),
 
 	VALFISK_MIGRATION_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: v.optional(flagSchema()),
 });
 
-type Config = v.Output<typeof Config>;
+type Config = v.InferOutput<typeof Config>;
 
 let config_: Config;
 

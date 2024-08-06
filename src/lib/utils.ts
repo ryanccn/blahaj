@@ -1,9 +1,9 @@
 import { EmbedBuilder, type Guild } from "discord.js";
 import { blue, bold, cyan, dim, red } from "kleur/colors";
 
-import { type ValiError } from "valibot";
+import { type BaseIssue, type BaseSchema, type BaseSchemaAsync, type ValiError } from "valibot";
 
-export const getGuildEmoji = async (guild: Guild, nameOrId: string) => {
+export const getGuildEmoji = (guild: Guild, nameOrId: string) => {
 	const emojis = guild.emojis.cache;
 	const foundEmoji = emojis.find((k) => k.id === nameOrId || k.name === nameOrId);
 	return foundEmoji ? `<:${nameOrId}:${foundEmoji.id}>` : `:${nameOrId}:`;
@@ -13,7 +13,11 @@ export const successEmbed = (title: string, description: string) => {
 	return new EmbedBuilder().setTitle(title).setDescription(description).setColor(0x51cf66);
 };
 
-export const formatValiError = (err: ValiError) => {
+export const formatValiError = <
+	TSchema extends
+		| BaseSchema<unknown, unknown, BaseIssue<unknown>>
+		| BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>,
+>(err: ValiError<TSchema>) => {
 	const issues = err.issues;
 	let ret = red(bold(`${issues.length} validation error${issues.length === 1 ? "" : "s"}!\n`));
 
@@ -22,9 +26,9 @@ export const formatValiError = (err: ValiError) => {
 			?? "unknown path";
 
 		ret += blue(issuePath) + "\n";
-		ret += "  " + dim("Validation ") + issue.validation + "\n";
-		ret += "  " + dim("Reason ") + issue.reason + "\n";
-		ret += "  " + dim("Message ") + cyan(issue.message) + "\n";
+		ret += "  " + dim("Message  ") + cyan(issue.message) + "\n";
+		ret += "  " + dim("Expected ") + issue.expected + "\n";
+		ret += "  " + dim("Received ") + issue.received + "\n";
 	}
 
 	return ret.trim();

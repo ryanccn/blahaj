@@ -33,12 +33,12 @@ const getStarboardChannel = async (message: Message) => {
 			|| (message.channel.parent.parent && message.channel.parent.parent.id === config.FREN_CATEGORY_ID))
 		&& config.FREN_STARBOARD_CHANNEL
 	) {
-		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(
+		let starboard: GuildBasedChannel | null | undefined = message.guild.channels.cache.get(
 			config.FREN_STARBOARD_CHANNEL,
 		);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(config.FREN_STARBOARD_CHANNEL);
+			starboard = await message.guild.channels.fetch(config.FREN_STARBOARD_CHANNEL);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
@@ -57,10 +57,10 @@ const getStarboardChannel = async (message: Message) => {
 			: false)
 		&& config.STARBOARD_CHANNEL
 	) {
-		let starboard: GuildBasedChannel | null | undefined = message.guild!.channels.cache.get(config.STARBOARD_CHANNEL);
+		let starboard: GuildBasedChannel | null | undefined = message.guild.channels.cache.get(config.STARBOARD_CHANNEL);
 
 		if (!starboard) {
-			starboard = await message.guild!.channels.fetch(config.STARBOARD_CHANNEL);
+			starboard = await message.guild.channels.fetch(config.STARBOARD_CHANNEL);
 		}
 
 		if (!starboard || starboard.type !== ChannelType.GuildText) {
@@ -83,7 +83,7 @@ const updateStarboard = async (message: Message) => {
 			&& reaction.count >= EMOJI_REACTION_THRESHOLD,
 	);
 
-	const reactionString = reactions.map((reaction) => `${reaction.emoji} ${reaction.count}`).join(" ");
+	const reactionString = reactions.map((reaction) => `${reaction.emoji.toString()} ${reaction.count}`).join(" ");
 
 	let existingMessageId = await get(["starboard", message.id, "message"]);
 

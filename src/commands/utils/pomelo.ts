@@ -25,7 +25,7 @@ export const pomeloCommand: SlashCommand = async (i) => {
 				)
 				.addFields({
 					name: "Unmigrated users",
-					value: unpomeloed.map((m) => `${m}`).join(" ") || "*None*",
+					value: unpomeloed.map((m) => `${m.toString()}`).join(" ") || "*None*",
 				})
 				.setTimestamp(new Date())
 				.setColor(0x2dd4bf),
