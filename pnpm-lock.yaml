@@ -12,8 +12,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0
       '@google-cloud/translate':
-        specifier: ^8.3.0
-        version: 8.3.0
+        specifier: ^8.4.0
+        version: 8.4.0
       '@hono/node-server':
         specifier: ^1.12.0
         version: 1.12.0
@@ -341,8 +341,8 @@ packages:
     resolution: {integrity: sha512-Orxzlfb9c67A15cq2JQEyVc7wEsmFBmHjZWZYQMUyJ1qivXyMwdyNOs9odi79hze+2zqdTtu1E19IM/FtqZ10g==}
     engines: {node: '>=14'}
 
-  '@google-cloud/translate@8.3.0':
-    resolution: {integrity: sha512-c9VXb0V/OzusaHMPh/hjAmaxPZXtNMEr1cRRHd2rRgsGZLSde7vU8rIsD9F959O7US4uFSkLxqjiyqYm1ConJA==}
+  '@google-cloud/translate@8.4.0':
+    resolution: {integrity: sha512-Teu/wMq4o0CcDCtMSE3dXJdQzwhYOeria9DgigAynHKuEWd/1cbSYdZJ9uCI2WLqeSSz5VXnJMS8fWRLx3gr8g==}
     engines: {node: '>=14.0.0'}
 
   '@grpc/grpc-js@1.11.1':
@@ -2398,7 +2398,7 @@ snapshots:
 
   '@google-cloud/promisify@4.0.0': {}
 
-  '@google-cloud/translate@8.3.0':
+  '@google-cloud/translate@8.4.0':
     dependencies:
       '@google-cloud/common': 5.0.2
       '@google-cloud/promisify': 4.0.0
