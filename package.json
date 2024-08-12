@@ -32,7 +32,7 @@
 		"openai": "^4.54.0",
 		"parse-duration": "^1.1.0",
 		"sharp": "^0.33.4",
-		"systeminformation": "^5.23.3",
+		"systeminformation": "^5.23.4",
 		"tsx": "^4.16.5",
 		"unstorage": "^1.10.2",
 		"uwurandom-node": "^0.1.0",
