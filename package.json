@@ -22,7 +22,7 @@
 		"destr": "^2.0.3",
 		"discord.js": "^14.15.3",
 		"dotenv": "^16.4.5",
-		"hono": "^4.5.3",
+		"hono": "^4.5.6",
 		"js-yaml": "^4.1.0",
 		"just-capitalize": "^3.2.0",
 		"just-random": "^3.2.0",
