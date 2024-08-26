@@ -69,8 +69,8 @@ importers:
         specifier: ^0.33.4
         version: 0.33.4
       systeminformation:
-        specifier: ^5.23.3
-        version: 5.23.3
+        specifier: ^5.23.5
+        version: 5.23.5
       tsx:
         specifier: ^4.16.5
         version: 4.16.5
@@ -1949,8 +1949,8 @@ packages:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
     engines: {node: '>=18'}
 
-  systeminformation@5.23.3:
-    resolution: {integrity: sha512-jnj0GjvWQaMLz7eSuYjZLim+pyZ6bjClwTz+YLoOT50DSJdWSEnISOCnq35IzoEfRa2rX9wdwlaQ/LxUu6RMFQ==}
+  systeminformation@5.23.5:
+    resolution: {integrity: sha512-PEpJwhRYxZgBCAlWZhWIgfMTjXLqfcaZ1pJsJn9snWNfBW/Z1YQg1mbIUSWrEV3ErAHF7l/OoVLQeaZDlPzkpA==}
     engines: {node: '>=8.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
@@ -4069,7 +4069,7 @@ snapshots:
 
   system-architecture@0.1.0: {}
 
-  systeminformation@5.23.3: {}
+  systeminformation@5.23.5: {}
 
   teeny-request@9.0.0:
     dependencies:
